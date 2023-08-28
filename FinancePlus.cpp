@@ -1,3 +1,6 @@
+#include <stdio.h>
+#include <iostream>
+
 struct Data {
     int dia;
     int mes;
