@@ -127,7 +127,7 @@ int inserirPessoa(Pessoa *pessoas, int &quant, Pessoa add, IndPessoaId *indice)
     
     quant++; //atualiza a quantidade de registros no fim
 }
-int bscPessoaId(int id, Pessoa *pessoas, IndPessoaId *indice, int quant)
+int bscPessoaById(int id, Pessoa *pessoas, IndPessoaId *indice, int quant)
 //retorna 0 se achar, 1 se não, 2 se achar mas estiver excluído, 3 se o desenvolvedor for burro
 {
 	int i = 0, f = quant;
@@ -178,7 +178,7 @@ int bscPessoaId(int id, Pessoa *pessoas, IndPessoaId *indice, int quant)
     return 1;
 
 }
-int excPessoaId(int id, Pessoa *pessoas, IndPessoaId *indice, int &quant)
+int excPessoaById(int id, Pessoa *pessoas, IndPessoaId *indice, int &quant)
 {
 	//retorna 0 se achar e excluir, 1 se não achar, 2 se achar mas estiver excluído, -1 se a exclusão for cancelada, 3 se o desenvolvedor for burro
 
@@ -295,7 +295,7 @@ int main()
 
 	for (int i = 1; i < quantPessoas; i++) {
 		std::cout << "i: " << i;
-		bscPessoaId(i, pessoas, indPessoasId, quantPessoas);
+		bscPessoaById(i, pessoas, indPessoasId, quantPessoas);
 
 		};
 
@@ -305,20 +305,20 @@ int main()
 
 	std::cout   << "\n\n--------------------------------------------------------\n\nTestando Exclusão\n"
                 << "\nTentando Excluir id 8 (existe)\n";
-    excPessoaId(8, pessoas, indPessoasId, quantPessoas);
+    excPessoaById(8, pessoas, indPessoasId, quantPessoas);
     std::cout   << "\nTentando Excluir id 8 de novo\n";
 	std::cout << 
-    excPessoaId(8, pessoas, indPessoasId, quantPessoas);
+    excPessoaById(8, pessoas, indPessoasId, quantPessoas);
 
     /*
     std::cout   << "Tentando Excluir id 6 (existe mas já foi excluído)\n";
-    excPessoaId(6, pessoas, indPessoasId, quantPessoas);
+    excPessoaById(6, pessoas, indPessoasId, quantPessoas);
     
     std::cout   << "Tentando Excluir id 8 (não existe)\n";
-    excPessoaId(8, pessoas, indPessoasId, quantPessoas);
+    excPessoaById(8, pessoas, indPessoasId, quantPessoas);
     
     std::cout << "\nTentando Excluir id 2 (existe)\n";
-    excPessoaId(2, pessoas, indPessoasId, quantPessoas);
+    excPessoaById(2, pessoas, indPessoasId, quantPessoas);
 	*/
 	
 }
