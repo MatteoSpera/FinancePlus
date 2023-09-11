@@ -34,14 +34,16 @@ void printIndicePessoa(IndPessoaId *indice, int quant)
                 << " | " << quant << " Registros\t |"
                 << "\n |---------------|\n";
 }
-void printPessoas(Pessoa *pessoas, int quant)
+void lExaustPessoasById(Pessoa *pessoas, IndPessoaId *indice, int quant)
 {
     std::cout   << "\n |----------------------------|"
+    		   	<< "\n |   Pessoas - ID crescente   |"
+    		   	<< "\n |----------------------------|"
                 << "\n |  ID   |   Nome   | Status  |"
                 << "\n |----------------------------|\n";
      for(int i = 0; i < quant; i++) 
      {
-        Pessoa p = pessoas[i];
+        Pessoa p = pessoas[indice[i].pos];
         
         std::string status;
         if (p.excluido == 0) status = "Ativo  ";
@@ -285,11 +287,11 @@ int main()
 	inserirPessoa(pessoas, quantPessoas, pAdd2, indPessoasId);
 	inserirPessoa(pessoas, quantPessoas, pAdd3, indPessoasId);
 
-	printPessoas(pessoas, quantPessoas);
-	
-	
 	criarIndicePessoas(pessoas, indPessoasId, quantPessoas);
 	printIndicePessoa(indPessoasId, quantPessoas);
+	
+	lExaustPessoasById(pessoas, indPessoasId, quantPessoas);
+
 
 	for (int i = 1; i < quantPessoas; i++) {
 		std::cout << "i: " << i;
@@ -300,7 +302,6 @@ int main()
 	organizarArquivoPessoas(pessoas, indPessoasId, quantPessoas);
 	printIndicePessoa(indPessoasId, quantPessoas);
 
-	//printPessoas(pessoas, quantPessoas);
 
 	std::cout   << "\n\n--------------------------------------------------------\n\nTestando Exclusão\n"
                 << "\nTentando Excluir id 8 (existe)\n";
