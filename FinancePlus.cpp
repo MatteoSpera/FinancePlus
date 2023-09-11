@@ -214,8 +214,10 @@ int excPessoaById(int id, Pessoa *pessoas, IndPessoaId *indice, int &quant)
                         quant--;
                         return 0;
                     }
-                    else std::cout << "\nExclusão Cancelada.\n";
-                    return -1;
+                    else {
+						std::cout << "\nExclusão Cancelada.\n";
+                    	return -1;
+					}
                 }
                 cursor++;
             }
@@ -294,7 +296,6 @@ int main()
 
 
 	for (int i = 1; i < quantPessoas; i++) {
-		std::cout << "i: " << i;
 		bscPessoaById(i, pessoas, indPessoasId, quantPessoas);
 
 		};
@@ -307,7 +308,6 @@ int main()
                 << "\nTentando Excluir id 8 (existe)\n";
     excPessoaById(8, pessoas, indPessoasId, quantPessoas);
     std::cout   << "\nTentando Excluir id 8 de novo\n";
-	std::cout << 
     excPessoaById(8, pessoas, indPessoasId, quantPessoas);
 
     /*
