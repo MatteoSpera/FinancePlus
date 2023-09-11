@@ -176,6 +176,64 @@ int bscPessoaId(int id, Pessoa *pessoas, IndPessoaId *indice, int quant)
     return 1;
 
 }
+int excPessoaId(int id, Pessoa *pessoas, IndPessoaId *indice, int &quant)
+{
+	//retorna 0 se achar e excluir, 1 se não achar, 2 se achar mas estiver excluído, -1 se a exclusão for cancelada, 3 se o desenvolvedor for burro
+
+	int i = 0, f = quant;
+    int cursor = (i + f) / 2; // calcula a media para ficar no meio, mas para inicializar poderia ser quant/2 tbm
+
+	for 
+	(;
+	f >= i; 
+	cursor= (i + f) / 2)
+	{
+		if (indice[cursor].id == id)
+        {
+            while (indice[cursor].id == id) 
+            {
+                if (!pessoas[indice[cursor].pos].excluido)
+                {
+                    int pos = indice[cursor].pos;
+                    Pessoa p = pessoas[pos];
+
+                    std::cout << "\nPessoa Encontrada\n"
+                            << p.id << ", " << p.nome << std::endl;
+                    std::cout << "\nVocê Confirma a Exclusão deste Registro? \n (Insira [S] para confirmar)";
+
+                    char conf = 0;
+                    char *entrada;
+                    std::cin >> entrada;
+                    conf = entrada[0];
+                    if (toupper(conf) == 'S') 
+                    {
+                        pessoas[pos].excluido = true;
+                        std::cout << "\nRegistro Excluído com sucesso.\n";
+                        quant--;
+                        return 0;
+                    }
+                    else std::cout << "\nExclusão Cancelada.\n";
+                    return -1;
+                }
+                cursor++;
+            }
+            std::cout << "\nPessoa Não Encontrada.\n"; 
+            return 2;
+        }
+        else if(indice[cursor].id > id) f = cursor-1;
+        else if(indice[cursor].id < id) i = cursor+1;
+        
+		else {
+            std::cout << "\n excBin Tem bug nesse código: \n";
+            std::cout << std::endl << indice[cursor].id << " < " << id << "\ni : " << i << "; cursor: " << cursor << "; f: " << f;
+            return 3;
+        }
+		
+		
+	}
+	std::cout << "\nPessoa Não Encontrada.\n";
+    return 1;
+}
 
 struct Categoria_Gasto
 {
@@ -243,5 +301,23 @@ int main()
 	printIndicePessoa(indPessoasId, quantPessoas);
 
 	//printPessoas(pessoas, quantPessoas);
+
+	std::cout   << "\n\n--------------------------------------------------------\n\nTestando Exclusão\n"
+                << "\nTentando Excluir id 8 (existe)\n";
+    excPessoaId(8, pessoas, indPessoasId, quantPessoas);
+    std::cout   << "\nTentando Excluir id 8 de novo\n";
+	std::cout << 
+    excPessoaId(8, pessoas, indPessoasId, quantPessoas);
+
+    /*
+    std::cout   << "Tentando Excluir id 6 (existe mas já foi excluído)\n";
+    excPessoaId(6, pessoas, indPessoasId, quantPessoas);
+    
+    std::cout   << "Tentando Excluir id 8 (não existe)\n";
+    excPessoaId(8, pessoas, indPessoasId, quantPessoas);
+    
+    std::cout << "\nTentando Excluir id 2 (existe)\n";
+    excPessoaId(2, pessoas, indPessoasId, quantPessoas);
+	*/
 	
 }
