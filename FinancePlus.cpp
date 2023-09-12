@@ -256,6 +256,35 @@ void printCategoria(Categoria_Gasto categoria)
 {
 	std::cout << std::endl << categoria.id << ", " << categoria.descricao << std::endl; 
 }
+void lExaustCategoriasById(Categoria_Gasto *categorias, IndCategoriaById *indice, int quant)
+{
+    std::cout   << "\n |-----------------------------|"
+    		   	<< "\n |  Categorias - ID crescente  |"
+    		   	<< "\n |-----------------------------|"
+                << "\n |  ID   | Descrição | Status  |"
+                << "\n |-----------------------------|\n";
+     for(int i = 0; i < quant; i++) 
+     {
+        Categoria_Gasto categoria = categorias[indice[i].pos];
+        
+        std::string status;
+        if (categoria.excluido == 0) status = "Ativo  ";
+        if (categoria.excluido == 1) status = "Inativo";
+
+        std::string descricao = categoria.descricao;
+        if(descricao.size() > 8) 
+        {
+            descricao.resize(7, ' ');
+            descricao.append(".");
+        }
+        else descricao.resize(8, ' ');
+        std::cout   << " | "<< categoria.id <<"\t | "<< descricao <<" | "<< status <<" |\n";
+     }
+     std::cout  << " |-----------------------------|\n"
+                << " | " << quant << " Registros               |\n"
+                << " |-----------------------------|\n";
+     
+}
 void criarIndiceCategorias(Categoria_Gasto *categorias, IndCategoriaById *indice, int quant) 
 {
     for (int i = 0; i < quant; i++)
