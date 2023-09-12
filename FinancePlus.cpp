@@ -449,6 +449,7 @@ struct Banco
 {
     int id;
     char descricao[40];
+	bool excluido;
 };
 struct IndBancoById
 {
@@ -465,6 +466,7 @@ struct Transacao
     Data data;
     float valor;
     char tipo; //Débito ou Crédito
+	bool excluido;
 };
 struct IndTransacaoById
 {
