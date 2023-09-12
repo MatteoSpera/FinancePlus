@@ -239,6 +239,7 @@ int excPessoaById(int id, Pessoa *pessoas, IndPessoaById *indice, int &quant)
     return 1;
 }
 
+
 struct Categoria_Gasto
 {
     // Categoria do Gasto realizado, como entretenimento, comida, locomoção, médico, etc
@@ -354,7 +355,66 @@ int bscCategoriaById(int id, Categoria_Gasto *categorias, IndCategoriaById *indi
     return 1;
 
 }
+int excCategoriaById(int id, Categoria_Gasto *categorias, IndCategoriaById *indice, int &quant)
+{
+	//retorna 0 se achar e excluir, 1 se não achar, 2 se achar mas estiver excluído, -1 se a exclusão for cancelada, 3 se o desenvolvedor for burro
 
+	int i = 0, f = quant;
+    int cursor = (i + f) / 2;
+
+	for 
+	(;
+	f >= i; 
+	cursor= (i + f) / 2)
+	{
+		if (indice[cursor].id == id)
+        {
+            while (indice[cursor].id == id) 
+            {
+                if (!categorias[indice[cursor].pos].excluido)
+                {
+                    int pos = indice[cursor].pos;
+                    Categoria_Gasto categoria = categorias[pos];
+
+                    std::cout << "\nCategoria Encontrada\n";
+					printCategoria(categoria);
+                    std::cout << "\nVocê Confirma a Exclusão deste Registro? \n (Insira [S] para confirmar)";
+
+                    char conf = 0;
+                    char *entrada;
+                    std::cin >> entrada;
+                    conf = entrada[0];
+                    if (toupper(conf) == 'S') 
+                    {
+                        categorias[pos].excluido = true;
+                        std::cout << "\nRegistro Excluído com sucesso.\n";
+                        quant--;
+                        return 0;
+                    }
+                    else {
+						std::cout << "\nExclusão Cancelada.\n";
+                    	return -1;
+					}
+                }
+                cursor++;
+            }
+            std::cout << "\nCategoria Não Encontrada.\n"; 
+            return 2;
+        }
+        else if(indice[cursor].id > id) f = cursor-1;
+        else if(indice[cursor].id < id) i = cursor+1;
+        
+		else {
+            std::cout << "\n excBin Tem bug nesse código: \n";
+            std::cout << std::endl << indice[cursor].id << " < " << id << "\ni : " << i << "; cursor: " << cursor << "; f: " << f;
+            return 3;
+        }
+		
+		
+	}
+	std::cout << "\nCategoria Não Encontrada.\n";
+    return 1;
+}
 
 struct Banco
 {
