@@ -278,10 +278,10 @@ void lExaustCategoriasById(Categoria_Gasto *categorias, IndCategoriaById *indice
             descricao.append(".");
         }
         else descricao.resize(8, ' ');
-        std::cout   << " | "<< categoria.id <<"\t | "<< descricao <<" | "<< status <<" |\n";
+        std::cout   << " | "<< categoria.id <<"\t | "<< descricao <<"  | "<< status <<" |\n";
      }
      std::cout  << " |-----------------------------|\n"
-                << " | " << quant << " Registros               |\n"
+                << " | " << quant << " Registros                 |\n"
                 << " |-----------------------------|\n";
      
 }
@@ -493,6 +493,39 @@ int main()
 	Transacao transacoes[MAX];
 	IndTransacaoById indTransacoes[MAX];
 	int quantTransacoes;
+
+	categorias[0] = Categoria_Gasto{1, "Alimentação", false};
+	categorias[1] = Categoria_Gasto{2, "Lazer", false};
+	categorias[2] = Categoria_Gasto{3, "Saúde", false};
+	categorias[3] = Categoria_Gasto{4, "Emergências", false};
+	quantCategorias = 4;
+
+	Categoria_Gasto cAdd1{8, "A", false};
+	Categoria_Gasto cAdd2{6, "B", true};
+	Categoria_Gasto cAdd3{9, "C", true};
+
+	inserirCategoria(categorias, quantCategorias, cAdd1, indCategorias);
+	inserirCategoria(categorias, quantCategorias, cAdd2, indCategorias);
+	inserirCategoria(categorias, quantCategorias, cAdd3, indCategorias);
+
+	criarIndiceCategorias(categorias, indCategorias, quantCategorias);
+	
+
+	for (int i = 1; i <= quantCategorias; i++) {
+		bscCategoriaById(i, categorias, indCategorias, quantCategorias);
+
+		};
+
+	organizarArquivoCategorias(categorias, indCategorias, quantCategorias);
+	lExaustCategoriasById(categorias, indCategorias, quantCategorias);
+
+
+	std::cout   << "\n\n--------------------------------------------------------\n\nTestando Exclusão de Categoria\n"
+                << "\nTentando Excluir id 8 (existe)\n";
+    excCategoriaById(8, categorias, indCategorias, quantCategorias);
+    std::cout   << "\nTentando Excluir id 8 de novo\n";
+    excCategoriaById(8, categorias, indCategorias, quantCategorias);
+
 	/*
 	pessoas[0] = Pessoa{8, "Marcolino", false};
     pessoas[1] = Pessoa{6, "Armando", true};
@@ -543,5 +576,5 @@ int main()
     excPessoaById(2, pessoas, indPessoas, quantPessoas);
 	*/
 	//*/
-	
+	return 0;
 }
