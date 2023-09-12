@@ -251,6 +251,10 @@ struct IndCategoriaById
 	int id;
 	int pos;
 };
+void printCategoria(Categoria_Gasto categoria)
+{
+	std::cout << std::endl << categoria.id << ", " << categoria.descricao << std::endl; 
+}
 void criarIndiceCategorias(Categoria_Gasto *categorias, IndCategoriaById *indice, int quant) 
 {
     for (int i = 0; i < quant; i++)
@@ -290,6 +294,65 @@ void organizarArquivoCategorias(Categoria_Gasto *categorias, IndCategoriaById *n
     quant = qAux;
     criarIndiceCategorias(categorias, novoIndice, quant);
    
+}
+int inserirCategoria(Categoria_Gasto *categorias, int &quant, Categoria_Gasto add, IndCategoriaById *indice)
+{
+	// retorna 0 se der certo, 1 se o id informado já estiver registrado e ativo 
+    const int q = quant;
+    int cursor = 0;
+    for (;add.id > indice[cursor].id && cursor < q; cursor++);
+
+    if((add.id == indice[cursor].id) && (categorias[indice[cursor].pos].excluido == false))
+    {
+        std::cout << "Operação inválida: Já existe um registro com este código";
+        return 1;
+    }
+
+    categorias[q] = add; // coloca o registro no fim da lista
+    IndCategoriaById ind = IndCategoriaById{add.id, q};
+
+    int reg = q;// reg = regressivo, contador que diminui
+    for (;reg > cursor; reg--) indice[reg] = indice[reg-1];
+    indice[cursor] = ind;
+    
+    quant++; //atualiza a quantidade de registros no fim
+}
+int bscCategoriaById(int id, Categoria_Gasto *categorias, IndCategoriaById *indice, int quant)
+//retorna 0 se achar, 1 se não, 2 se achar mas estiver excluído, 3 se o desenvolvedor for burro
+{
+	int i = 0, f = quant;
+	int cursor = (i + f) / 2;
+
+	for 
+        (;
+        f >= i; 
+        cursor= (i + f) / 2)
+    {
+		if (indice[cursor].id == id)
+        { 
+            
+            while (indice[cursor].id == id) 
+            {
+                if (!categorias[indice[cursor].pos].excluido)
+                {
+                    Categoria_Gasto categoria = categorias[indice[cursor].pos];
+                    std::cout << "\nCategoria Encontrada\n";
+                    printCategoria(categoria);
+                    return 0;
+                }
+                cursor++;
+            }
+            
+            std::cout << "\nCategoria Não Encontrada. (Apenas registros Excluídos)";
+            return 2;
+        }
+        else if(indice[cursor].id > id) f = cursor-1;
+        else if(indice[cursor].id < id) i = cursor+1;
+
+	}
+	std::cout << "\nCategoria Não Encontrada.\n";
+    return 1;
+
 }
 
 
