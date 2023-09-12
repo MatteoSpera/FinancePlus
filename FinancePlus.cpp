@@ -421,6 +421,12 @@ struct Banco
     int id;
     char descricao[40];
 };
+struct IndBancoById
+{
+	int id;
+	int pos;
+};
+
 
 struct Transacao
 {
@@ -431,6 +437,11 @@ struct Transacao
     float valor;
     char tipo; //Débito ou Crédito
 };
+struct IndTransacaoById
+{
+	int id;
+	int pos;
+};
 
 int main()
 {
@@ -439,9 +450,21 @@ int main()
 	const int MAX = 60;
 
     Pessoa pessoas[MAX];
-	IndPessoaById indPessoasId[MAX];
+	IndPessoaById indPessoas[MAX];
 	int quantPessoas; // quantia total de registros de Pessoas
 
+	Categoria_Gasto categorias[MAX];
+	IndCategoriaById indCategorias[MAX];
+	int quantCategorias;
+
+	Banco bancos[MAX];
+	IndBancoById indBancos[MAX];
+	int quantBancos;
+
+	Transacao transacoes[MAX];
+	IndTransacaoById indTransacoes[MAX];
+	int quantTransacoes;
+	/*
 	pessoas[0] = Pessoa{8, "Marcolino", false};
     pessoas[1] = Pessoa{6, "Armando", true};
     pessoas[2] = Pessoa{2, "João", false};
@@ -455,40 +478,41 @@ int main()
 	Pessoa pAdd3{10, "Tulio", false};
 
 
-	inserirPessoa(pessoas, quantPessoas, pAdd1, indPessoasId);
-	inserirPessoa(pessoas, quantPessoas, pAdd2, indPessoasId);
-	inserirPessoa(pessoas, quantPessoas, pAdd3, indPessoasId);
+	inserirPessoa(pessoas, quantPessoas, pAdd1, indPessoas);
+	inserirPessoa(pessoas, quantPessoas, pAdd2, indPessoas);
+	inserirPessoa(pessoas, quantPessoas, pAdd3, indPessoas);
 
-	criarIndicePessoas(pessoas, indPessoasId, quantPessoas);
-	printIndicePessoa(indPessoasId, quantPessoas);
+	criarIndicePessoas(pessoas, indPessoas, quantPessoas);
+	printIndicePessoa(indPessoas, quantPessoas);
 	
-	lExaustPessoasById(pessoas, indPessoasId, quantPessoas);
+	lExaustPessoasById(pessoas, indPessoas, quantPessoas);
 
 
 	for (int i = 1; i < quantPessoas; i++) {
-		bscPessoaById(i, pessoas, indPessoasId, quantPessoas);
+		bscPessoaById(i, pessoas, indPessoas, quantPessoas);
 
 		};
 
-	organizarArquivoPessoas(pessoas, indPessoasId, quantPessoas);
-	printIndicePessoa(indPessoasId, quantPessoas);
+	organizarArquivoPessoas(pessoas, indPessoas, quantPessoas);
+	printIndicePessoa(indPessoas, quantPessoas);
 
 
 	std::cout   << "\n\n--------------------------------------------------------\n\nTestando Exclusão\n"
                 << "\nTentando Excluir id 8 (existe)\n";
-    excPessoaById(8, pessoas, indPessoasId, quantPessoas);
+    excPessoaById(8, pessoas, indPessoas, quantPessoas);
     std::cout   << "\nTentando Excluir id 8 de novo\n";
-    excPessoaById(8, pessoas, indPessoasId, quantPessoas);
+    excPessoaById(8, pessoas, indPessoas, quantPessoas);
 
     /*
     std::cout   << "Tentando Excluir id 6 (existe mas já foi excluído)\n";
-    excPessoaById(6, pessoas, indPessoasId, quantPessoas);
+    excPessoaById(6, pessoas, indPessoas, quantPessoas);
     
     std::cout   << "Tentando Excluir id 8 (não existe)\n";
-    excPessoaById(8, pessoas, indPessoasId, quantPessoas);
+    excPessoaById(8, pessoas, indPessoas, quantPessoas);
     
     std::cout << "\nTentando Excluir id 2 (existe)\n";
-    excPessoaById(2, pessoas, indPessoasId, quantPessoas);
+    excPessoaById(2, pessoas, indPessoas, quantPessoas);
 	*/
+	//*/
 	
 }
