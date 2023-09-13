@@ -8,7 +8,7 @@ struct Data {
     int mes;
     int ano;
 };
-//TODO - criar mÈtodos para data
+//TODO - criar m√©todos para data
 
 struct Pessoa
 {
@@ -64,7 +64,7 @@ void lExaustPessoasById(Pessoa *pessoas, IndPessoaById *indice, int quant)
      
 }
 void criarIndicePessoas(Pessoa *pessoas, IndPessoaById *indice, int quant) 
-// cria indice, com todos os registros (incluindo os logicamente deletados, j· que o trabalho de filtrar ser· da funÁ„o de organizaÁ„o)
+// cria indice, com todos os registros (incluindo os logicamente deletados, j√° que o trabalho de filtrar ser√° da fun√ß√£o de organiza√ß√£o)
 {
     for (int i = 0; i < quant; i++)
     {
@@ -85,9 +85,9 @@ void criarIndicePessoas(Pessoa *pessoas, IndPessoaById *indice, int quant)
     }}
     
 }
-void organizarArquivoPessoas(Pessoa *pessoas, IndPessoaById *novoIndice, int &quant) // Apaga registros logicamente excluÌ≠dos e reorganiza Õndice
+void organizarArquivoPessoas(Pessoa *pessoas, IndPessoaById *novoIndice, int &quant) // Apaga registros logicamente exclu√≠¬≠dos e reorganiza √çndice
 {
-    // inclui apenas os que n„o est„o logicamente excluÌ≠dos
+    // inclui apenas os que n√£o est√£o logicamente exclu√≠¬≠dos
     int qAux; // variavel auxiliar para quant
 
     for (int i = 0, j = i; i < quant && j < quant; i++) 
@@ -107,14 +107,14 @@ void organizarArquivoPessoas(Pessoa *pessoas, IndPessoaById *novoIndice, int &qu
 }
 int inserirPessoa(Pessoa *pessoas, int &quant, Pessoa add, IndPessoaById *indice)
 {
-	// retorna 0 se der certo, 1 se o id informado j· estiver registrado e ativo 
+	// retorna 0 se der certo, 1 se o id informado j√° estiver registrado e ativo 
     const int q = quant;
     int cursor = 0;
     for (;add.id > indice[cursor].id && cursor < q; cursor++);
 
     if((add.id == indice[cursor].id) && (pessoas[indice[cursor].pos].excluido == false))
     {
-        std::cout << "OperaÁ„o inv·lida: J· existe um registro com este cÛdigo";
+        std::cout << "Opera√ß√£o inv√°lida: J√° existe um registro com este c√≥digo";
         return 1;
     }
 
@@ -128,7 +128,7 @@ int inserirPessoa(Pessoa *pessoas, int &quant, Pessoa add, IndPessoaById *indice
     quant++; //atualiza a quantidade de registros no fim
 }
 int bscPessoaById(int id, Pessoa *pessoas, IndPessoaById *indice, int quant)
-//retorna 0 se achar, 1 se n„o, 2 se achar mas estiver excluÌdo, 3 se o desenvolvedor for burro
+//retorna 0 se achar, 1 se n√£o, 2 se achar mas estiver exclu√≠do, 3 se o desenvolvedor for burro
 {
 	int i = 0, f = quant;
 	int cursor = (i + f) / 2;
@@ -141,11 +141,11 @@ int bscPessoaById(int id, Pessoa *pessoas, IndPessoaById *indice, int quant)
 		if (indice[cursor].id == id)
         { 
             /*
-            supondo que haja diversos usuarios com o mesmo id (Um ou mais excluÌdos, e um ativo)
-            no Ìndice, eles estar„o registrados um apÛs o outro, e o ativo ser· o ˙ltimo,
-            devido ‡ maneira como a inserÁ„o funciona.
-            Verifica todos os usu·rios com este id. Se o mais recente for v·lido, printa e retorna,
-            sen„o, fala q n„o encontrou e retorna
+            supondo que haja diversos usuarios com o mesmo id (Um ou mais exclu√≠dos, e um ativo)
+            no √≠ndice, eles estar√£o registrados um ap√≥s o outro, e o ativo ser√° o √∫ltimo,
+            devido √† maneira como a inser√ß√£o funciona.
+            Verifica todos os usu√°rios com este id. Se o mais recente for v√°lido, printa e retorna,
+            sen√£o, fala q n√£o encontrou e retorna
             */
             
             while (indice[cursor].id == id) 
@@ -160,27 +160,27 @@ int bscPessoaById(int id, Pessoa *pessoas, IndPessoaById *indice, int quant)
                 cursor++;
             }
             
-            std::cout << "\nPessoa N„o Encontrada. (Apenas registros ExcluÌdos)";
+            std::cout << "\nPessoa N√£o Encontrada. (Apenas registros Exclu√≠dos)";
             return 2;
         }
         else if(indice[cursor].id > id) f = cursor-1;
         else if(indice[cursor].id < id) i = cursor+1;
 		/*
         else {
-            std::cout << "\n bscBinTem bug nesse cÛdigo: \n";
+            std::cout << "\n bscBinTem bug nesse c√≥digo: \n";
             std::cout << std::endl << indice[cursor].id << " < " << id << "\ni : " << i << "; cursor: " << cursor << "; f: " << f;
             return 3;
         }
 		*/
 
 	}
-	std::cout << "\nPessoa N„o Encontrada.\n";
+	std::cout << "\nPessoa N√£o Encontrada.\n";
     return 1;
 
 }
 int excPessoaById(int id, Pessoa *pessoas, IndPessoaById *indice, int &quant)
 {
-	//retorna 0 se achar e excluir, 1 se n„o achar, 2 se achar mas estiver excluÌdo, -1 se a exclus„o for cancelada, 3 se o desenvolvedor for burro
+	//retorna 0 se achar e excluir, 1 se n√£o achar, 2 se achar mas estiver exclu√≠do, -1 se a exclus√£o for cancelada, 3 se o desenvolvedor for burro
 
 	int i = 0, f = quant;
     int cursor = (i + f) / 2; // calcula a media para ficar no meio, mas para inicializar poderia ser quant/2 tbm
@@ -201,7 +201,7 @@ int excPessoaById(int id, Pessoa *pessoas, IndPessoaById *indice, int &quant)
 
                     std::cout << "\nPessoa Encontrada\n"
                             << p.id << ", " << p.nome << std::endl;
-                    std::cout << "\nVocÍ Confirma a Exclus„o deste Registro? \n (Insira [S] para confirmar)";
+                    std::cout << "\nVoc√™ Confirma a Exclus√£o deste Registro? \n (Insira [S] para confirmar)";
 
                     char conf = 0;
                     char *entrada;
@@ -210,39 +210,39 @@ int excPessoaById(int id, Pessoa *pessoas, IndPessoaById *indice, int &quant)
                     if (toupper(conf) == 'S') 
                     {
                         pessoas[pos].excluido = true;
-                        std::cout << "\nRegistro ExcluÌdo com sucesso.\n";
+                        std::cout << "\nRegistro Exclu√≠do com sucesso.\n";
                         quant--;
                         return 0;
                     }
                     else {
-						std::cout << "\nExclus„o Cancelada.\n";
+						std::cout << "\nExclus√£o Cancelada.\n";
                     	return -1;
 					}
                 }
                 cursor++;
             }
-            std::cout << "\nPessoa N„o Encontrada.\n"; 
+            std::cout << "\nPessoa N√£o Encontrada.\n"; 
             return 2;
         }
         else if(indice[cursor].id > id) f = cursor-1;
         else if(indice[cursor].id < id) i = cursor+1;
         
 		else {
-            std::cout << "\n excBin Tem bug nesse cÛdigo: \n";
+            std::cout << "\n excBin Tem bug nesse c√≥digo: \n";
             std::cout << std::endl << indice[cursor].id << " < " << id << "\ni : " << i << "; cursor: " << cursor << "; f: " << f;
             return 3;
         }
 		
 		
 	}
-	std::cout << "\nPessoa N„o Encontrada.\n";
+	std::cout << "\nPessoa N√£o Encontrada.\n";
     return 1;
 }
 
 
 struct Categoria_Gasto
 {
-    // Categoria do Gasto realizado, como entretenimento, comida, locomoÁ„o, mÈdico, etc
+    // Categoria do Gasto realizado, como entretenimento, comida, locomo√ß√£o, m√©dico, etc
     int id;
     char descricao[40]; 
 	bool excluido;
@@ -261,7 +261,7 @@ void lExaustCategoriasById(Categoria_Gasto *categorias, IndCategoriaById *indice
     std::cout   << "\n |-----------------------------|"
     		   	<< "\n |  Categorias - ID crescente  |"
     		   	<< "\n |-----------------------------|"
-                << "\n |  ID   | DescriÁ„o | Status  |"
+                << "\n |  ID   | Descri√ß√£o | Status  |"
                 << "\n |-----------------------------|\n";
      for(int i = 0; i < quant; i++) 
      {
@@ -327,14 +327,14 @@ void organizarArquivoCategorias(Categoria_Gasto *categorias, IndCategoriaById *n
 }
 int inserirCategoria(Categoria_Gasto *categorias, int &quant, Categoria_Gasto add, IndCategoriaById *indice)
 {
-	// retorna 0 se der certo, 1 se o id informado j· estiver registrado e ativo 
+	// retorna 0 se der certo, 1 se o id informado j√° estiver registrado e ativo 
     const int q = quant;
     int cursor = 0;
     for (;add.id > indice[cursor].id && cursor < q; cursor++);
 
     if((add.id == indice[cursor].id) && (categorias[indice[cursor].pos].excluido == false))
     {
-        std::cout << "OperaÁ„o inv·lida: J· existe um registro com este cÛdigo";
+        std::cout << "Opera√ß√£o inv√°lida: J√° existe um registro com este c√≥digo";
         return 1;
     }
 
@@ -348,7 +348,7 @@ int inserirCategoria(Categoria_Gasto *categorias, int &quant, Categoria_Gasto ad
     quant++; //atualiza a quantidade de registros no fim
 }
 int bscCategoriaById(int id, Categoria_Gasto *categorias, IndCategoriaById *indice, int quant)
-//retorna 0 se achar, 1 se n„o, 2 se achar mas estiver excluÌdo, 3 se o desenvolvedor for burro
+//retorna 0 se achar, 1 se n√£o, 2 se achar mas estiver exclu√≠do, 3 se o desenvolvedor for burro
 {
 	int i = 0, f = quant;
 	int cursor = (i + f) / 2;
@@ -373,20 +373,20 @@ int bscCategoriaById(int id, Categoria_Gasto *categorias, IndCategoriaById *indi
                 cursor++;
             }
             
-            std::cout << "\nCategoria N„o Encontrada. (Apenas registros ExcluÌdos)";
+            std::cout << "\nCategoria N√£o Encontrada. (Apenas registros Exclu√≠dos)";
             return 2;
         }
         else if(indice[cursor].id > id) f = cursor-1;
         else if(indice[cursor].id < id) i = cursor+1;
 
 	}
-	std::cout << "\nCategoria N„o Encontrada.\n";
+	std::cout << "\nCategoria N√£o Encontrada.\n";
     return 1;
 
 }
 int excCategoriaById(int id, Categoria_Gasto *categorias, IndCategoriaById *indice, int &quant)
 {
-	//retorna 0 se achar e excluir, 1 se n„o achar, 2 se achar mas estiver excluÌdo, -1 se a exclus„o for cancelada, 3 se o desenvolvedor for burro
+	//retorna 0 se achar e excluir, 1 se n√£o achar, 2 se achar mas estiver exclu√≠do, -1 se a exclus√£o for cancelada, 3 se o desenvolvedor for burro
 
 	int i = 0, f = quant;
     int cursor = (i + f) / 2;
@@ -407,7 +407,7 @@ int excCategoriaById(int id, Categoria_Gasto *categorias, IndCategoriaById *indi
 
                     std::cout << "\nCategoria Encontrada\n";
 					printCategoria(categoria);
-                    std::cout << "\nVocÍ Confirma a Exclus„o deste Registro? \n (Insira [S] para confirmar)";
+                    std::cout << "\nVoc√™ Confirma a Exclus√£o deste Registro? \n (Insira [S] para confirmar)";
 
                     char conf = 0;
                     char *entrada;
@@ -416,32 +416,32 @@ int excCategoriaById(int id, Categoria_Gasto *categorias, IndCategoriaById *indi
                     if (toupper(conf) == 'S') 
                     {
                         categorias[pos].excluido = true;
-                        std::cout << "\nRegistro ExcluÌdo com sucesso.\n";
+                        std::cout << "\nRegistro Exclu√≠do com sucesso.\n";
                         quant--;
                         return 0;
                     }
                     else {
-						std::cout << "\nExclus„o Cancelada.\n";
+						std::cout << "\nExclus√£o Cancelada.\n";
                     	return -1;
 					}
                 }
                 cursor++;
             }
-            std::cout << "\nCategoria N„o Encontrada.\n"; 
+            std::cout << "\nCategoria N√£o Encontrada.\n"; 
             return 2;
         }
         else if(indice[cursor].id > id) f = cursor-1;
         else if(indice[cursor].id < id) i = cursor+1;
         
 		else {
-            std::cout << "\n excBin Tem bug nesse cÛdigo: \n";
+            std::cout << "\n excBin Tem bug nesse c√≥digo: \n";
             std::cout << std::endl << indice[cursor].id << " < " << id << "\ni : " << i << "; cursor: " << cursor << "; f: " << f;
             return 3;
         }
 		
 		
 	}
-	std::cout << "\nCategoria N„o Encontrada.\n";
+	std::cout << "\nCategoria N√£o Encontrada.\n";
     return 1;
 }
 
@@ -465,7 +465,7 @@ struct Transacao
     int idConta;
     Data data;
     float valor;
-    char tipo; //DÈbito ou CrÈdito
+    char tipo; //D√©bito ou Cr√©dito
 	bool excluido;
 };
 struct IndTransacaoById
@@ -483,55 +483,32 @@ int main()
     Pessoa pessoas[MAX];
 	IndPessoaById indPessoas[MAX];
 	int quantPessoas; // quantia total de registros de Pessoas
+	bool testPessoa = false;
 
 	Categoria_Gasto categorias[MAX];
 	IndCategoriaById indCategorias[MAX];
 	int quantCategorias;
+	bool testCategoria = false;
 
 	Banco bancos[MAX];
 	IndBancoById indBancos[MAX];
 	int quantBancos;
+	bool testBanco = false;
 
 	Transacao transacoes[MAX];
 	IndTransacaoById indTransacoes[MAX];
 	int quantTransacoes;
-
-	categorias[0] = Categoria_Gasto{1, "AlimentaÁ„o", false};
-	categorias[1] = Categoria_Gasto{2, "Lazer", false};
-	categorias[2] = Categoria_Gasto{3, "Sa˙de", false};
-	categorias[3] = Categoria_Gasto{4, "EmergÍncias", false};
-	quantCategorias = 4;
-
-	Categoria_Gasto cAdd1{8, "A", false};
-	Categoria_Gasto cAdd2{6, "B", true};
-	Categoria_Gasto cAdd3{9, "C", true};
-
-	inserirCategoria(categorias, quantCategorias, cAdd1, indCategorias);
-	inserirCategoria(categorias, quantCategorias, cAdd2, indCategorias);
-	inserirCategoria(categorias, quantCategorias, cAdd3, indCategorias);
-
-	criarIndiceCategorias(categorias, indCategorias, quantCategorias);
+	bool testTrans = false;
 	
 
-	for (int i = 1; i <= quantCategorias; i++) {
-		bscCategoriaById(i, categorias, indCategorias, quantCategorias);
-
-		};
-
-	organizarArquivoCategorias(categorias, indCategorias, quantCategorias);
-	lExaustCategoriasById(categorias, indCategorias, quantCategorias);
 
 
-	std::cout   << "\n\n--------------------------------------------------------\n\nTestando Exclus„o de Categoria\n"
-                << "\nTentando Excluir id 8 (existe)\n";
-    excCategoriaById(8, categorias, indCategorias, quantCategorias);
-    std::cout   << "\nTentando Excluir id 8 de novo\n";
-    excCategoriaById(8, categorias, indCategorias, quantCategorias);
+	if(testPessoa)
+	{
 
-	/*
 	pessoas[0] = Pessoa{8, "Marcolino", false};
     pessoas[1] = Pessoa{6, "Armando", true};
-    pessoas[2] = Pessoa{2, "Jo„o", false};
+    pessoas[2] = Pessoa{2, "Jo√£o", false};
     pessoas[3] = Pessoa{3, "Pedro", false};
 
 	quantPessoas = 4;
@@ -561,22 +538,49 @@ int main()
 	printIndicePessoa(indPessoas, quantPessoas);
 
 
-	std::cout   << "\n\n--------------------------------------------------------\n\nTestando Exclus„o\n"
+	std::cout   << "\n\n--------------------------------------------------------\n\nTestando Exclus√£o\n"
                 << "\nTentando Excluir id 8 (existe)\n";
     excPessoaById(8, pessoas, indPessoas, quantPessoas);
     std::cout   << "\nTentando Excluir id 8 de novo\n";
     excPessoaById(8, pessoas, indPessoas, quantPessoas);
 
-    /*
-    std::cout   << "Tentando Excluir id 6 (existe mas j· foi excluÌdo)\n";
-    excPessoaById(6, pessoas, indPessoas, quantPessoas);
+	}
+
+	if(testCategoria)
+	{
+
+		categorias[0] = Categoria_Gasto{1, "Alimenta√ß√£o", false};
+		categorias[1] = Categoria_Gasto{2, "Lazer", false};
+		categorias[2] = Categoria_Gasto{3, "Sa√∫de", false};
+		categorias[3] = Categoria_Gasto{4, "Emerg√™ncias", false};
+		quantCategorias = 4;
+
+		Categoria_Gasto cAdd1{8, "A", false};
+		Categoria_Gasto cAdd2{6, "B", true};
+		Categoria_Gasto cAdd3{9, "C", true};
+
+		inserirCategoria(categorias, quantCategorias, cAdd1, indCategorias);
+		inserirCategoria(categorias, quantCategorias, cAdd2, indCategorias);
+		inserirCategoria(categorias, quantCategorias, cAdd3, indCategorias);
+
+		criarIndiceCategorias(categorias, indCategorias, quantCategorias);
+		
+
+		for (int i = 1; i <= quantCategorias; i++) {
+			bscCategoriaById(i, categorias, indCategorias, quantCategorias);
+
+			};
+
+		organizarArquivoCategorias(categorias, indCategorias, quantCategorias);
+		lExaustCategoriasById(categorias, indCategorias, quantCategorias);
+
     
-    std::cout   << "Tentando Excluir id 8 (n„o existe)\n";
-    excPessoaById(8, pessoas, indPessoas, quantPessoas);
+		std::cout   << "\n\n--------------------------------------------------------\n\nTestando Exclus√£o de Categoria\n"
+					<< "\nTentando Excluir id 8 (existe)\n";
+		excCategoriaById(8, categorias, indCategorias, quantCategorias);
+		std::cout   << "\nTentando Excluir id 8 de novo\n";
+		excCategoriaById(8, categorias, indCategorias, quantCategorias);
+	}
     
-    std::cout << "\nTentando Excluir id 2 (existe)\n";
-    excPessoaById(2, pessoas, indPessoas, quantPessoas);
-	*/
-	//*/
 	return 0;
 }
