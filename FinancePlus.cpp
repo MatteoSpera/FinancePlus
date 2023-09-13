@@ -490,6 +490,27 @@ void lExaustBancosById(Banco *bancos, IndBancoById *indice, int quant)
                 << " |-----------------------------|\n";
      
 }
+void criarIndiceBancos(Banco *bancos, IndBancoById *indice, int quant) 
+{
+    for (int i = 0; i < quant; i++)
+    {
+        indice[i].id = bancos[i].id;
+        indice[i].pos = i;
+    }
+
+
+    for (int i = 0; i < quant; i++){
+    for (int j = i+1; j < quant; j++)
+    {
+        if (indice[j].id < indice[i].id) 
+        {
+            IndBancoById aux = indice[i];
+            indice[i] = indice[j];
+            indice[j] = aux;
+        }
+    }}
+    
+}
 
 
 struct Transacao
@@ -527,14 +548,27 @@ int main()
 	Banco bancos[MAX];
 	IndBancoById indBancos[MAX];
 	int quantBancos;
-	bool testBanco = false;
+	bool testBanco = true;
 
 	Transacao transacoes[MAX];
 	IndTransacaoById indTransacoes[MAX];
 	int quantTransacoes;
 	bool testTrans = false;
 
+	if(testBanco)
+	{
+		bancos[0] = Banco{8, "SantoAndré", false};
+		bancos[1] = Banco{6, "Banco do Paraguai", true};
+		bancos[2] = Banco{2, "Recipiente", false};
+		bancos[3] = Banco{3, "VestidoBank", false};
 
+		quantBancos = 4;
+
+		for (int i = 0; i < quantBancos; i++) printBanco(bancos[i]);
+		criarIndiceBancos(bancos, indBancos, quantBancos);
+		lExaustBancosById(bancos, indBancos, quantBancos);
+		
+	}
 	
 	
 	if(testPessoa)
@@ -615,6 +649,6 @@ int main()
 		std::cout   << "\nTentando Excluir id 8 de novo\n";
 		excCategoriaById(8, categorias, indCategorias, quantCategorias);
 	}
-	
+
 	return 0;
 }
