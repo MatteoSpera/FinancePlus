@@ -511,7 +511,25 @@ void criarIndiceBancos(Banco *bancos, IndBancoById *indice, int quant)
     }}
     
 }
+void organizarArquivoBancos(Banco *bancos, IndBancoById *novoIndice, int &quant) 
+{
+    int qAux; 
 
+    for (int i = 0, j = i; i < quant && j < quant; i++) 
+    { 
+
+        while(bancos[j].excluido == 1 && j < quant) j++;
+        if (j >= quant) break;
+        bancos[i] = bancos[j];
+        
+        if(bancos[i].excluido != 1) qAux = i+1;
+        j++;
+    }
+
+    quant = qAux;
+    criarIndiceBancos(bancos, novoIndice, quant);
+   
+}
 
 struct Transacao
 {
