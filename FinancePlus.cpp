@@ -338,14 +338,14 @@ int inserirCategoria(Categoria_Gasto *categorias, int &quant, Categoria_Gasto ad
         return 1;
     }
 
-    categorias[q] = add; // coloca o registro no fim da lista
+    categorias[q] = add; 
     IndCategoriaById ind = IndCategoriaById{add.id, q};
 
-    int reg = q;// reg = regressivo, contador que diminui
+    int reg = q;
     for (;reg > cursor; reg--) indice[reg] = indice[reg-1];
     indice[cursor] = ind;
     
-    quant++; //atualiza a quantidade de registros no fim
+    quant++; 
 }
 int bscCategoriaById(int id, Categoria_Gasto *categorias, IndCategoriaById *indice, int quant)
 //retorna 0 se achar, 1 se não, 2 se achar mas estiver excluído, 3 se o desenvolvedor for burro
@@ -530,6 +530,29 @@ void organizarArquivoBancos(Banco *bancos, IndBancoById *novoIndice, int &quant)
     criarIndiceBancos(bancos, novoIndice, quant);
    
 }
+int inserirBanco(Banco *bancos, int &quant, Banco add, IndBancoById *indice)
+{
+	// retorna 0 se der certo, 1 se o id informado já estiver registrado e ativo 
+    const int q = quant;
+    int cursor = 0;
+    for (;add.id > indice[cursor].id && cursor < q; cursor++);
+
+    if((add.id == indice[cursor].id) && (bancos[indice[cursor].pos].excluido == false))
+    {
+        std::cout << "Operação inválida: Já existe um registro com este código";
+        return 1;
+    }
+
+    bancos[q] = add; 
+    IndBancoById ind = IndBancoById{add.id, q};
+
+    int reg = q;
+    for (;reg > cursor; reg--) indice[reg] = indice[reg-1];
+    indice[cursor] = ind;
+    
+    quant++; 
+}
+
 
 struct Transacao
 {
@@ -584,6 +607,21 @@ int main()
 
 		for (int i = 0; i < quantBancos; i++) printBanco(bancos[i]);
 		criarIndiceBancos(bancos, indBancos, quantBancos);
+		lExaustBancosById(bancos, indBancos, quantBancos);
+		organizarArquivoBancos(bancos, indBancos, quantBancos);
+		lExaustBancosById(bancos, indBancos, quantBancos);
+
+		Banco bAdd1{1, "Bancao", true};
+		Banco bAdd2{4, "Bancao", false};
+		Banco bAdd3{5, "Bancao", false};
+
+		inserirBanco(bancos, quantBancos, bAdd1, indBancos);
+		lExaustBancosById(bancos, indBancos, quantBancos);
+		inserirBanco(bancos, quantBancos, bAdd2, indBancos);
+		lExaustBancosById(bancos, indBancos, quantBancos);
+		inserirBanco(bancos, quantBancos, bAdd2, indBancos); // adicionando um que ja existe
+		lExaustBancosById(bancos, indBancos, quantBancos);
+		inserirBanco(bancos, quantBancos, bAdd3, indBancos);
 		lExaustBancosById(bancos, indBancos, quantBancos);
 		
 	}
