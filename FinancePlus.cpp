@@ -463,11 +463,11 @@ void printBanco(Banco banco)
 }
 void lExaustBancosById(Banco *bancos, IndBancoById *indice, int quant)
 {
-    std::cout   << "\n |-----------------------------|"
-    		   	<< "\n |    Bancos - ID crescente    |"
-    		   	<< "\n |-----------------------------|"
-                << "\n |  ID   | Descrição | Status  |"
-                << "\n |-----------------------------|\n";
+    std::cout   << "\n |-----------------------------------|"
+    		   	<< "\n |       Bancos - ID crescente       |"
+    		   	<< "\n |-----------------------------------|"
+                << "\n |  ID   |    Descrição    | Status  |"
+                << "\n |-----------------------------------|\n";
      for(int i = 0; i < quant; i++) 
      {
         Banco banco = bancos[indice[i].pos];
@@ -477,17 +477,17 @@ void lExaustBancosById(Banco *bancos, IndBancoById *indice, int quant)
         if (banco.excluido == 1) status = "Inativo";
 
         std::string descricao = banco.descricao;
-        if(descricao.size() > 8) 
+        if(descricao.size() > 14) 
         {
-            descricao.resize(7, ' ');
+            descricao.resize(13, ' ');
             descricao.append(".");
         }
-        else descricao.resize(8, ' ');
+        else descricao.resize(14, ' ');
         std::cout   << " | "<< banco.id <<"\t | "<< descricao <<"  | "<< status <<" |\n";
      }
-     std::cout  << " |-----------------------------|\n"
-                << " | " << quant << " Registros                 |\n"
-                << " |-----------------------------|\n";
+     std::cout  << " |-----------------------------------|\n"
+                << " |            " << quant << " Registros            |\n"
+                << " |-----------------------------------|\n";
      
 }
 void criarIndiceBancos(Banco *bancos, IndBancoById *indice, int quant) 
@@ -606,8 +606,10 @@ int main()
 		quantBancos = 4;
 
 		for (int i = 0; i < quantBancos; i++) printBanco(bancos[i]);
+		std::cout << "\nCriando Indice\n";
 		criarIndiceBancos(bancos, indBancos, quantBancos);
 		lExaustBancosById(bancos, indBancos, quantBancos);
+		std::cout << "\nIndice Organizado\n";
 		organizarArquivoBancos(bancos, indBancos, quantBancos);
 		lExaustBancosById(bancos, indBancos, quantBancos);
 
@@ -615,14 +617,17 @@ int main()
 		Banco bAdd2{4, "Bancao", false};
 		Banco bAdd3{5, "Bancao", false};
 
+		std::cout << "\nInserindo Bancos\n";
 		inserirBanco(bancos, quantBancos, bAdd1, indBancos);
-		lExaustBancosById(bancos, indBancos, quantBancos);
 		inserirBanco(bancos, quantBancos, bAdd2, indBancos);
-		lExaustBancosById(bancos, indBancos, quantBancos);
 		inserirBanco(bancos, quantBancos, bAdd2, indBancos); // adicionando um que ja existe
-		lExaustBancosById(bancos, indBancos, quantBancos);
 		inserirBanco(bancos, quantBancos, bAdd3, indBancos);
 		lExaustBancosById(bancos, indBancos, quantBancos);
+
+		std::cout << "\nIndice Organizado Apos Inserção\n";
+		organizarArquivoBancos(bancos, indBancos, quantBancos);
+		lExaustBancosById(bancos, indBancos, quantBancos);
+
 		
 	}
 	
