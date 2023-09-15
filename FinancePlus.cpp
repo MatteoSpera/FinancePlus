@@ -16,6 +16,23 @@ void printData(Data data)
                 << data.ano;
 
 }
+int comparaDatas(Data dA, Data dB) //se a > b, retorna 1, se a < b, retorna -1, se a == b, retorna 0
+{
+    if (dA.ano > dB.ano) return 1;
+	else if (dA.ano < dB.ano) return -1;
+	else 
+	{
+		if (dA.mes > dB.mes) return 1;
+		else if (dA.mes < dB.mes) return -1;
+		else
+		{
+			if (dA.dia > dB.dia) return 1;
+			else if (dA.dia < dB.dia) return -1;
+			else return 0;
+		}
+	}
+    return NULL;
+}
 //TODO - criar métodos para data
 
 struct Pessoa
@@ -727,6 +744,20 @@ int main()
 
 	if(testTrans)
 	{
+		Data d1 = Data{1, 1, 2001};
+		Data d2 = Data{2, 1, 2001};
+		Data d3 = Data{1, 2, 2001};
+		Data d4 = Data{1, 1, 2002};
+		Data d5 = d1;
+
+		std::cout << comparaDatas(d1, d2) << "\n";
+		std::cout << comparaDatas(d1, d3) << "\n";
+		std::cout << comparaDatas(d1, d4) << "\n";
+		std::cout << comparaDatas(d1, d5) << "\n";
+		std::cout << comparaDatas(d1, d1) << "\n";
+		std::cout << comparaDatas(d2, d3) << "\n";
+		std::cout << comparaDatas(d3, d2) << "\n";
+
 		transacoes[0] = Transacao{1, 1, 1, Data{1, 1, 1}, 100.234, 'C', true};
 		printTransacao(transacoes[0]);
 	}
