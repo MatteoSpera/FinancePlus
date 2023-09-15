@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <iostream>
+#include <iomanip>
 #include <string>
 #include <locale>
 
@@ -8,6 +9,13 @@ struct Data {
     int mes;
     int ano;
 };
+void printData(Data data)
+{
+    std::cout   << data.dia / 10 << data.dia %10 << "/" // caso o dia ou mes sejam menores que 10, automaticamente concatena 0 logo antes (ex 01, 02, 03...)
+                << data.mes / 10 << data.mes %10 << "/"
+                << data.ano;
+
+}
 //TODO - criar métodos para data
 
 struct Pessoa
@@ -654,7 +662,7 @@ struct Transacao
     int idConta;
     Data data;
     float valor;
-    char tipo; //Débito ou Crédito
+    char tipo; //Débito = D ; Crédito = C
 	bool excluido;
 };
 struct IndTransacaoById
@@ -662,7 +670,34 @@ struct IndTransacaoById
 	int id;
 	int pos;
 };
+void printTransacao(Transacao transacao)
+{
+	std::cout << std::fixed;
+    std::cout << std::setprecision(2);
 
+	char sinal;
+	if(transacao.tipo == 'D') sinal = '-';
+	else if(transacao.tipo == 'C') sinal = '+';
+	else 
+	{
+		std::cout << "\n A transação tem um tipo Inválido\n";
+		return;
+	}	
+
+	std::string status;
+	if (transacao.excluido) status = "Estornada";
+	else status = "Efetivada";
+
+	std::cout 
+	<< "\n ID: " << transacao.id 
+	<< "\n Categoria Nº " << transacao.idCategoria
+	<< "\n Conta Nº " << transacao.idConta
+	<< "\n Data: "; printData(transacao.data);
+	std::cout 
+	<< "\n Valor: R$ " << sinal << transacao.valor
+	<< "\n Status: " << status << std::endl;
+	
+}
 int main()
 {
 	setlocale(LC_ALL, "");
@@ -682,12 +717,19 @@ int main()
 	Banco bancos[MAX];
 	IndBancoById indBancos[MAX];
 	int quantBancos;
-	bool testBanco = true;
+	bool testBanco = false;
 
-	Transacao transacoes[MAX];
+	const int MAXTRANSACOES = 200;
+	Transacao transacoes[MAXTRANSACOES];
 	IndTransacaoById indTransacoes[MAX];
 	int quantTransacoes;
-	bool testTrans = false;
+	bool testTrans = true;
+
+	if(testTrans)
+	{
+		transacoes[0] = Transacao{1, 1, 1, Data{1, 1, 1}, 100.234, 'C', true};
+		printTransacao(transacoes[0]);
+	}
 
 	if(testBanco)
 	{
