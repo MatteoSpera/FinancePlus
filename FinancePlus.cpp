@@ -665,9 +665,9 @@ struct Transacao
     char tipo; //Débito = D ; Crédito = C
 	bool excluido;
 };
-struct IndTransacaoById
+struct IndTransacaoByData
 {
-	int id;
+	Data data;
 	int pos;
 };
 void printTransacao(Transacao transacao)
@@ -721,7 +721,7 @@ int main()
 
 	const int MAXTRANSACOES = 200;
 	Transacao transacoes[MAXTRANSACOES];
-	IndTransacaoById indTransacoes[MAX];
+	IndTransacaoByData indTransacoes[MAX];
 	int quantTransacoes;
 	bool testTrans = true;
 
