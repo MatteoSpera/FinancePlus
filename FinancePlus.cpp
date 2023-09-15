@@ -151,6 +151,7 @@ int inserirPessoa(Pessoa *pessoas, int &quant, Pessoa add, IndPessoaById *indice
     indice[cursor] = ind;
     
     quant++; //atualiza a quantidade de registros no fim
+	return 0;
 }
 int bscPessoaById(int id, Pessoa *pessoas, IndPessoaById *indice, int quant)
 //retorna 0 se achar, 1 se não, 2 se achar mas estiver excluído, 3 se o desenvolvedor for burro
@@ -368,7 +369,8 @@ int inserirCategoria(Categoria_Gasto *categorias, int &quant, Categoria_Gasto ad
     for (;reg > cursor; reg--) indice[reg] = indice[reg-1];
     indice[cursor] = ind;
     
-    quant++; 
+    quant++;
+	return 0;
 }
 int bscCategoriaById(int id, Categoria_Gasto *categorias, IndCategoriaById *indice, int quant)
 //retorna 0 se achar, 1 se não, 2 se achar mas estiver excluído, 3 se o desenvolvedor for burro
@@ -571,7 +573,8 @@ int inserirBanco(Banco *bancos, int &quant, Banco add, IndBancoById *indice)
     for (;reg > cursor; reg--) indice[reg] = indice[reg-1];
     indice[cursor] = ind;
     
-    quant++; 
+    quant++;
+	return 0;
 }
 int bscBancoById(int id, Banco *bancos, IndBancoById *indice, int quant)
 //retorna 0 se achar, 1 se não, 2 se achar mas estiver excluído, 3 se o desenvolvedor for burro
