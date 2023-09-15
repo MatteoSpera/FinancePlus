@@ -204,9 +204,7 @@ int excPessoaById(int id, Pessoa *pessoas, IndPessoaById *indice, int &quant)
                     std::cout << "\nVocê Confirma a Exclusão deste Registro? \n (Insira [S] para confirmar)";
 
                     char conf = 0;
-                    char *entrada;
-                    std::cin >> entrada;
-                    conf = entrada[0];
+                    std::cin >> conf;
                     if (toupper(conf) == 'S') 
                     {
                         pessoas[pos].excluido = true;
@@ -410,9 +408,7 @@ int excCategoriaById(int id, Categoria_Gasto *categorias, IndCategoriaById *indi
                     std::cout << "\nVocê Confirma a Exclusão deste Registro? \n (Insira [S] para confirmar)";
 
                     char conf = 0;
-                    char *entrada;
-                    std::cin >> entrada;
-                    conf = entrada[0];
+                    std::cin >> conf;
                     if (toupper(conf) == 'S') 
                     {
                         categorias[pos].excluido = true;
@@ -552,7 +548,104 @@ int inserirBanco(Banco *bancos, int &quant, Banco add, IndBancoById *indice)
     
     quant++; 
 }
+int bscBancoById(int id, Banco *bancos, IndBancoById *indice, int quant)
+//retorna 0 se achar, 1 se não, 2 se achar mas estiver excluído, 3 se o desenvolvedor for burro
+{
+	int i = 0, f = quant;
+	int cursor = (i + f) / 2;
 
+	for 
+        (;
+        f >= i; 
+        cursor= (i + f) / 2)
+    {
+		if (indice[cursor].id == id)
+        { 
+            
+            
+            while (indice[cursor].id == id) 
+            {
+                if (!bancos[indice[cursor].pos].excluido)
+                {
+                    Banco banco = bancos[indice[cursor].pos];
+                    std::cout << "\nBanco Encontrado\n"
+                            << banco.id << ", " << banco.descricao << std::endl;
+                            return 0;
+                }
+                cursor++;
+            }
+            
+            std::cout << "\nBanco Não Encontrado. (Apenas registros Excluídos)";
+            return 2;
+        }
+        else if(indice[cursor].id > id) f = cursor-1;
+        else if(indice[cursor].id < id) i = cursor+1;
+		
+
+	}
+	std::cout << "\nBanco Não Encontrado.\n";
+    return 1;
+
+}
+int excBancoById(int id, Banco *bancos, IndBancoById *indice, int &quant)
+{
+	//retorna 0 se achar e excluir, 1 se não achar, 2 se achar mas estiver excluído, -1 se a exclusão for cancelada, 3 se o desenvolvedor for burro
+
+	int i = 0, f = quant;
+    int cursor = (i + f) / 2; 
+
+	for 
+	(;
+	f >= i; 
+	cursor= (i + f) / 2)
+	{
+		if (indice[cursor].id == id)
+        {
+            while (indice[cursor].id == id) 
+            {
+                if (!bancos[indice[cursor].pos].excluido)
+                {
+                    int pos = indice[cursor].pos;
+                    Banco banco = bancos[pos];
+
+                    std::cout << "\nBanco Encontrado\n"
+                            << banco.id << ", " << banco.descricao << std::endl;
+                    std::cout << "\nVocê Confirma a Exclusão deste Registro? \n (Insira [S] para confirmar)";
+
+                    char conf = 0;
+                    std::cin >> conf;
+                    if (toupper(conf) == 'S') 
+                    {
+
+                        bancos[pos].excluido = true;
+                        std::cout << "\nRegistro Excluído com sucesso.\n";
+                        quant--;
+                        return 0;
+                    }
+                    else {
+						std::cout << "\nExclusão Cancelada.\n";
+                    	return -1;
+					}
+                }
+                cursor++;
+            }
+            std::cout << "\nBanco Não Encontrado.\n"; 
+            return 2;
+        }
+        else if(indice[cursor].id > id) f = cursor-1;
+        else if(indice[cursor].id < id) i = cursor+1;
+        
+		else {
+            std::cout << "\n excBin Tem bug nesse código: \n";
+            std::cout << std::endl << indice[cursor].id << " < " << id << "\ni : " << i << "; cursor: " << cursor << "; f: " << f;
+            return 3;
+        }
+		
+		
+	}
+	std::cout << "\nBanco Não Encontrado.\n";
+    return 1;
+}
 
 struct Transacao
 {
@@ -627,6 +720,14 @@ int main()
 		std::cout << "\nIndice Organizado Apos Inserção\n";
 		organizarArquivoBancos(bancos, indBancos, quantBancos);
 		lExaustBancosById(bancos, indBancos, quantBancos);
+
+		inserirBanco(bancos, quantBancos, bAdd1, indBancos);
+		bscBancoById(bAdd1.id, bancos, indBancos, quantBancos); // tentando achar um banco logicamente excluido
+		bscBancoById(7, bancos, indBancos, quantBancos);
+
+		bscBancoById(2, bancos, indBancos, quantBancos);
+		excBancoById(2, bancos, indBancos, quantBancos);
+		bscBancoById(2, bancos, indBancos, quantBancos);
 
 		
 	}
