@@ -263,6 +263,18 @@ int excPessoaById(int id, Pessoa *pessoas, IndPessoaById *indice, int &quant)
     return 1;
 }
 
+struct Conta_Bancaria
+{
+	int id;
+	int idBanco;
+	char descricao[40];
+	double saldo;
+};
+struct IndContaById
+{
+	int id;
+	int pos;
+};
 
 struct Categoria_Gasto
 {
