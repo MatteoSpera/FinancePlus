@@ -1,0 +1,39 @@
+Trabalho 2 BCC - T2 - Data de entrega: 02/10/2023
+
+Descrição:
+
+Neste trabalho, você deve desenvolver um sistema de Gerenciamento de Finanças Pessoais em C++ utilizando uma estrutura de arquivos indexados. O objetivo é ajudar as pessoas a gerenciar suas finanças pessoais. 
+
+Cenário:
+
+Imagine que você foi contratado para criar um sistema de gestão de finanças pessoais chamado "FinancePlus". Para simular a estrutura de arquivos indexados, utilizaremos struct. Sendo assim, você deve:
+
+Criar uma struct chamada Pessoas com as seguintes informações: Codigo, nome
+
+Criar uma struct chamada Categoria_Gastos com as seguintes informações: Codigo_Cat, descricao
+
+Criar uma struct chamada Bancos com as seguintes informações: Cod_Banco, Descricao
+
+Criar uma struct chamada Contas_Bancarias com as seguintes informações: Cod_Conta, Cod_Banco, Descricao, Saldo
+
+Criar uma struct chamada Transacoes com as seguintes informações: Codigo_Trans, Cod_Cat, Cod_Conta, Data, Valor, Debito_Credito
+
+1) O programa deverá possuir funções específicas para a inclusão de novos dados nas tabelas, exclusão de dados, leitura exaustiva e reorganização das tabelas.
+
+2) Ao manipular os dados da tabela Contas_Bancarias:
+
+2.1) Ao informar/mostrar Cod_Banco, o programa deverá exibir o nome do Banco
+
+3) Permitir que o usuário realize lançamentos das transações financeiras realizadas. Ao manipular os dados da tabela Transacoes:
+
+3.1) Ao informar/mostrar Cod_Cat, o programa deverá exibir a descrição da Categoria do Gasto
+
+3.2) Ao informar/mostrar Cod_Conta, o programa deverá exibir o nome do Banco
+
+3.3) Se a operação da transação for Crédito: adicionar o Valor da transação ao Saldo da Conta; 
+
+     Se a operação da transação for Débito: subtrair o Valor da transação ao Saldo da Conta.
+
+4) Criar uma função para mostrar todas as transações realizadas em um período de datas (data inicial até data final), ao final exibir o saldo das transações
+
+5) Criar uma função para mostrar os saldos de todas as contas, ao final exibir o saldo geral (somatório de todos os saldos)
