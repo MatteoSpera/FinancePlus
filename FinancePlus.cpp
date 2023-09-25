@@ -1004,6 +1004,34 @@ void printTransacao(Transacao transacao)
 	<< "\n Status: " << status << std::endl;
 	
 }
+void printTransacaoCompleta(Transacao transacao, Categoria_Gasto categoria, Conta_Bancaria conta)
+{
+	std::cout << std::fixed;
+    std::cout << std::setprecision(2);
+
+	char sinal;
+	if(transacao.tipo == 'D') sinal = '-';
+	else if(transacao.tipo == 'C') sinal = '+';
+	else 
+	{
+		std::cout << "\n A transação tem um tipo Inválido\n";
+		return;
+	}	
+
+	std::string status;
+	if (transacao.excluido) status = "Estornada";
+	else status = "Efetivada";
+
+	std::cout 
+	<< "\n ID: " << transacao.id 
+	<< "\n Categoria: " << categoria.id << " - " << categoria.descricao
+	<< "\n Conta: " << conta.id << " - " << conta.descricao
+	<< "\n Data: "; printData(transacao.data);
+	std::cout 
+	<< "\n Valor: R$ " << sinal << transacao.valor
+	<< "\n Status: " << status << std::endl;
+	
+}
 int main()
 {
 	setlocale(LC_ALL, "");
@@ -1035,6 +1063,45 @@ int main()
 	IndTransacaoByData indTransacoes[MAX];
 	int quantTransacoes;
 	bool testTrans = false;
+
+	bool criarInicial = true;
+	if (criarInicial)
+	{
+		categorias[0] = Categoria_Gasto{1, "Alimentação", false};
+		categorias[1] = Categoria_Gasto{2, "Lazer", false};
+		categorias[2] = Categoria_Gasto{3, "Saúde", false};
+		categorias[3] = Categoria_Gasto{4, "Emergências", false};
+		
+		quantCategorias = 4;
+		criarIndiceCategorias(categorias, indCategorias, quantCategorias);
+		organizarArquivoCategorias(categorias, indCategorias, quantCategorias);
+
+
+		bancos[0] = Banco{8, "SantoAndré", false};
+		bancos[1] = Banco{6, "Banco do Paraguai", true};
+		bancos[2] = Banco{2, "Recipiente", false};
+		bancos[3] = Banco{3, "VestidoBank", false};
+
+		quantBancos = 4;
+		criarIndiceBancos(bancos, indBancos, quantBancos);
+		organizarArquivoBancos(bancos, indBancos, quantBancos);
+
+
+		contas[0] = Conta_Bancaria {5, 2, "Poupança do Seu Zé", 20000.0, false};
+		contas[1] = Conta_Bancaria {3, 2, "Laranja", 300000.0, true};
+		contas[2] = Conta_Bancaria {6, 1, "Bugada", 0.0, false};
+		quantContas = 3;
+		criarIndiceContas(contas, indContas, quantContas);
+
+		Conta_Bancaria c1 = Conta_Bancaria{1, 8, "Conta do Marcão", 1800.0, false};
+		Conta_Bancaria c2 = Conta_Bancaria{2, 2, "Conta do João", 1800.0, false};
+
+		inserirConta(contas, quantContas, c1, indContas);
+		inserirConta(contas, quantContas, c2, indContas);
+		organizarArquivoContas(contas, indContas, quantContas);
+
+	}
+
 
 	if (testConta)
 	{
@@ -1073,6 +1140,7 @@ int main()
 
 	if(testTrans)
 	{
+		/*
 		Data d1 = Data{1, 1, 2001};
 		Data d2 = Data{2, 1, 2001};
 		Data d3 = Data{1, 2, 2001};
@@ -1086,9 +1154,26 @@ int main()
 		std::cout << comparaDatas(d1, d1) << "\n";
 		std::cout << comparaDatas(d2, d3) << "\n";
 		std::cout << comparaDatas(d3, d2) << "\n";
+		*/
+
+		/*
+		struct Transacao
+		{
+			int id;
+			int idCategoria;
+			int idConta;
+			Data data;
+			float valor;
+			char tipo; //Débito = D ; Crédito = C
+			bool excluido;
+		};
+		*/
 
 		transacoes[0] = Transacao{1, 1, 1, Data{1, 1, 1}, 100.234, 'C', true};
-		printTransacao(transacoes[0]);
+		transacoes[1] = Transacao{2, 2, 8, Data{25, 9, 2023}, 50.50, 'D', false};
+		//printTransacaoCompleta(transacoes[1]);
+
+
 	}
 
 	if(testBanco)
