@@ -263,223 +263,6 @@ int excPessoaById(int id, Pessoa *pessoas, IndPessoaById *indice, int &quant)
     return 1;
 }
 
-struct Conta_Bancaria
-{
-	int id;
-	int idBanco;
-	char descricao[40];
-	double saldo;
-	bool excluido;
-};
-struct IndContaById
-{
-	int id;
-	int pos;
-};
-void printConta(Conta_Bancaria conta)
-{
-	std::string status;
-	if (conta.excluido) status = "Suspensa";
-	else status = "Ativa";
-
-	std::cout 	<< "\nID: " << conta.id 
-				<< "\nCód Banco:" << conta.idBanco
-				<< "\nDescrição: " << conta.descricao
-				<< "\nSaldo: " << conta.saldo
-				<< "\nStatus: " << status
-				<< std::endl; 
-}
-void printContacomBanco(Conta_Bancaria conta, Banco banco)
-{
-	std::string status;
-	if (conta.excluido) status = "Suspensa";
-	else status = "Ativa";
-
-	std::cout 	<< "\nID: " << conta.id 
-				<< "\nBanco:" << banco.descricao
-				<< "\nDescrição: " << conta.descricao
-				<< "\nSaldo: " << conta.saldo
-				<< "\nStatus: " << status
-				<< std::endl; 
-}
-void criarIndiceContas(Conta_Bancaria *contas, IndContaById *indice, int quant) 
-{
-    for (int i = 0; i < quant; i++)
-    {
-        indice[i].id = contas[i].id;
-        indice[i].pos = i;
-    }
-
-
-    for (int i = 0; i < quant; i++){
-    for (int j = i+1; j < quant; j++)
-    {
-        if (indice[j].id < indice[i].id) 
-        {
-            IndContaById aux = indice[i];
-            indice[i] = indice[j];
-            indice[j] = aux;
-        }
-    }}
-    
-}
-void printIndiceConta(IndContaById *indice, int quant)
-{
-    std::cout   << "\n |---------------|"
-				<< "\n |  indice. Contas  |"
-				<< "\n |---------------|"
-                << "\n | ID\t | POS.\t |"
-                << "\n |---------------|\n";
-    //if(printPes) std::cout << "\t";
-    for(int i = 0; i < quant; i++) std::cout << " | "<< indice[i].id <<"\t | "<< indice[i].pos <<"\t |\n";
-    std::cout   << " |---------------|\n"
-                << " | " << quant << " Registros\t |"
-                << "\n |---------------|\n";
-}
-void organizarArquivoContas(Conta_Bancaria *contas, IndContaById *novoIndice, int &quant) 
-{
-    int qAux; 
-
-    for (int i = 0, j = i; i < quant && j < quant; i++) 
-    { 
-
-        while(contas[j].excluido == 1 && j < quant) j++;
-        if (j >= quant) break;
-        contas[i] = contas[j];
-        
-        if(contas[i].excluido != 1) qAux = i+1;
-        j++;
-    }
-
-    quant = qAux;
-    criarIndiceContas(contas, novoIndice, quant);
-   
-}
-int inserirConta(Conta_Bancaria *contas, int &quant, Conta_Bancaria add, IndContaById *indice)
-{
-	// retorna 0 se der certo, 1 se o id informado já estiver registrado e ativo 
-    const int q = quant;
-    int cursor = 0;
-    for (;add.id > indice[cursor].id && cursor < q; cursor++);
-
-    if((add.id == indice[cursor].id) && (contas[indice[cursor].pos].excluido == false))
-    {
-        std::cout << "Operação inválida: Já existe um registro com este código";
-        return 1;
-    }
-
-    contas[q] = add; // coloca o registro no fim da lista
-    IndContaById ind = IndContaById{add.id, q};
-
-    int reg = q;// reg = regressivo, contador que diminui
-    for (;reg > cursor; reg--) indice[reg] = indice[reg-1];
-    indice[cursor] = ind;
-    
-    quant++; //atualiza a quantidade de registros no fim
-	return 0;
-}
-int bscContaById(int id, Conta_Bancaria *contas, IndContaById *indice, int quant)
-//retorna 0 se achar, 1 se não, 2 se achar mas estiver excluído, 3 se o desenvolvedor for burro
-{
-	int i = 0, f = quant;
-	int cursor = (i + f) / 2;
-
-	for 
-        (;
-        f >= i; 
-        cursor= (i + f) / 2)
-    {
-		if (indice[cursor].id == id)
-        { 
-            
-            while (indice[cursor].id == id) 
-            {
-                if (!contas[indice[cursor].pos].excluido)
-                {
-                    Conta_Bancaria conta = contas[indice[cursor].pos];
-                    std::cout << "\nConta Encontrada\n"
-                            << conta.id << ", " << conta.descricao << std::endl;
-                            return 0;
-                }
-                cursor++;
-            }
-            
-            std::cout << "\nConta Não Encontrada. (Apenas registros Excluídos)";
-            return 2;
-        }
-        else if(indice[cursor].id > id) f = cursor-1;
-        else if(indice[cursor].id < id) i = cursor+1;
-		/*
-        else {
-            std::cout << "\n bscBinTem bug nesse código: \n";
-            std::cout << std::endl << indice[cursor].id << " < " << id << "\ni : " << i << "; cursor: " << cursor << "; f: " << f;
-            return 3;
-        }
-		*/
-
-	}
-	std::cout << "\nConta Não Encontrada.\n";
-    return 1;
-
-}
-int excContaById(int id, Conta_Bancaria *contas, IndContaById *indice, int &quant)
-{
-	//retorna 0 se achar e excluir, 1 se não achar, 2 se achar mas estiver excluído, -1 se a exclusão for cancelada, 3 se o desenvolvedor for burro
-
-	int i = 0, f = quant;
-    int cursor = (i + f) / 2; // calcula a media para ficar no meio, mas para inicializar poderia ser quant/2 tbm
-
-	for 
-	(;
-	f >= i; 
-	cursor= (i + f) / 2)
-	{
-		if (indice[cursor].id == id)
-        {
-            while (indice[cursor].id == id) 
-            {
-                if (!contas[indice[cursor].pos].excluido)
-                {
-                    int pos = indice[cursor].pos;
-                    Conta_Bancaria conta = contas[pos];
-
-                    std::cout << "\nConta Encontrada\n"
-                            << conta.id << ", " << conta.descricao << std::endl;
-                    std::cout << "\nVocê Confirma a Exclusão deste Registro? \n (Insira [S] para confirmar)";
-
-                    char conf = 0;
-                    std::cin >> conf;
-                    if (toupper(conf) == 'S') 
-                    {
-                        contas[pos].excluido = true;
-                        std::cout << "\nRegistro Excluído com sucesso.\n";
-                        quant--;
-                        return 0;
-                    }
-                    else {
-						std::cout << "\nExclusão Cancelada.\n";
-                    	return -1;
-					}
-                }
-                cursor++;
-            }
-            std::cout << "\nConta Não Encontrada.\n"; 
-            return 2;
-        }
-        else if(indice[cursor].id > id) f = cursor-1;
-        else if(indice[cursor].id < id) i = cursor+1;
-        
-		else {
-            std::cout << "\n excBin Tem bug nesse código: \n";
-            std::cout << std::endl << indice[cursor].id << " < " << id << "\ni : " << i << "; cursor: " << cursor << "; f: " << f;
-            return 3;
-        }
-		
-		
-	}
-	std::cout << "\nConta Não Encontrada.\n";
-    return 1;
-}
 
 
 
@@ -948,8 +731,8 @@ int main()
 	int quantPessoas; // quantia total de registros de Pessoas
 	bool testPessoa = false;
 
-	Conta_Bancaria contas[MAX];
-	IndContaById indContas[MAX];
+	//Conta_Bancaria contas[MAX];
+	//IndContaById indContas[MAX];
 	int quantContas;
 	bool testConta = true;
 
@@ -981,8 +764,8 @@ int main()
 		criarIndiceBancos(bancos, indBancos, quantBancos);
 		organizarArquivoBancos(bancos, indBancos, quantBancos);
 
-		Conta_Bancaria c1 = Conta_Bancaria{1, 6, "Conta do Marcão", 1800.0, false};
-		printContacomBanco(c1, bancos[0]);
+		//Conta_Bancaria c1 = Conta_Bancaria{1, 6, "Conta do Marcão", 1800.0, false};
+		//printContacomBanco(c1, bancos[0]);
 	}
 
 	if(testTrans)
