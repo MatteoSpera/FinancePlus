@@ -411,6 +411,32 @@ int bscCategoriaById(int id, Categoria_Gasto *categorias, IndCategoriaById *indi
     return 1;
 
 }
+int posCategoriaById(int id, Categoria_Gasto *categorias, IndCategoriaById *indice, int quant) //retorna a posição da categoria na lista, retorna -1 se não achar.
+{
+	int i = 0, f = quant;
+	int cursor = (i + f) / 2;
+
+	for 
+        (;
+        f >= i; 
+        cursor= (i + f) / 2)
+    {
+		if (indice[cursor].id == id)
+        { 
+            while (indice[cursor].id == id) 
+            {
+                if (!categorias[indice[cursor].pos].excluido) return indice[cursor].pos;
+                cursor++;
+            }
+            return -1;
+        }
+        else if(indice[cursor].id > id) f = cursor-1;
+        else if(indice[cursor].id < id) i = cursor+1;
+		
+
+	}
+    return -1;
+}
 int excCategoriaById(int id, Categoria_Gasto *categorias, IndCategoriaById *indice, int &quant)
 {
 	//retorna 0 se achar e excluir, 1 se não achar, 2 se achar mas estiver excluído, -1 se a exclusão for cancelada, 3 se o desenvolvedor for burro
@@ -901,6 +927,32 @@ int bscContaById(int id, Conta_Bancaria *contas, IndContaById *indice, int quant
     return 1;
 
 }
+int posContaById(int id, Conta_Bancaria *contas, IndContaById *indice, int quant) //retorna a posição da conta na lista, retorna -1 se não achar.
+{
+	int i = 0, f = quant;
+	int cursor = (i + f) / 2;
+
+	for 
+        (;
+        f >= i; 
+        cursor= (i + f) / 2)
+    {
+		if (indice[cursor].id == id)
+        { 
+            while (indice[cursor].id == id) 
+            {
+                if (!contas[indice[cursor].pos].excluido) return indice[cursor].pos;
+                cursor++;
+            }
+            return -1;
+        }
+        else if(indice[cursor].id > id) f = cursor-1;
+        else if(indice[cursor].id < id) i = cursor+1;
+		
+
+	}
+    return -1;
+}
 int excContaById(int id, Conta_Bancaria *contas, IndContaById *indice, int &quant)
 {
 	//retorna 0 se achar e excluir, 1 se não achar, 2 se achar mas estiver excluído, -1 se a exclusão for cancelada, 3 se o desenvolvedor for burro
@@ -1004,7 +1056,7 @@ void printTransacao(Transacao transacao)
 	<< "\n Status: " << status << std::endl;
 	
 }
-void printTransacaoCompleta(Transacao transacao, Categoria_Gasto categoria, Conta_Bancaria conta)
+void printTransacaoCompleta(Transacao transacao, Categoria_Gasto categoria, Conta_Bancaria conta, Banco banco)
 {
 	std::cout << std::fixed;
     std::cout << std::setprecision(2);
@@ -1025,7 +1077,7 @@ void printTransacaoCompleta(Transacao transacao, Categoria_Gasto categoria, Cont
 	std::cout 
 	<< "\n ID: " << transacao.id 
 	<< "\n Categoria: " << categoria.id << " - " << categoria.descricao
-	<< "\n Conta: " << conta.id << " - " << conta.descricao
+	<< "\n Conta " << conta.id << " no Banco " << banco.descricao
 	<< "\n Data: "; printData(transacao.data);
 	std::cout 
 	<< "\n Valor: R$ " << sinal << transacao.valor
@@ -1046,7 +1098,7 @@ int main()
 	Conta_Bancaria contas[MAX];
 	IndContaById indContas[MAX];
 	int quantContas;
-	bool testConta = true;
+	bool testConta = false;
 
 	Categoria_Gasto categorias[MAX];
 	IndCategoriaById indCategorias[MAX];
@@ -1062,7 +1114,7 @@ int main()
 	Transacao transacoes[MAXTRANSACOES];
 	IndTransacaoByData indTransacoes[MAX];
 	int quantTransacoes;
-	bool testTrans = false;
+	bool testTrans = true;
 
 	bool criarInicial = true;
 	if (criarInicial)
@@ -1154,6 +1206,7 @@ int main()
 		std::cout << comparaDatas(d1, d1) << "\n";
 		std::cout << comparaDatas(d2, d3) << "\n";
 		std::cout << comparaDatas(d3, d2) << "\n";
+		transacoes[0] = Transacao{1, 1, 1, Data{1, 1, 1}, 100.234, 'C', true};
 		*/
 
 		/*
@@ -1169,9 +1222,11 @@ int main()
 		};
 		*/
 
-		transacoes[0] = Transacao{1, 1, 1, Data{1, 1, 1}, 100.234, 'C', true};
-		transacoes[1] = Transacao{2, 2, 8, Data{25, 9, 2023}, 50.50, 'D', false};
-		//printTransacaoCompleta(transacoes[1]);
+		Transacao t1{2, 2, 1, Data{25, 9, 2023}, 50.50, 'D', false};
+		Categoria_Gasto cat1 = categorias[posCategoriaById(t1.idCategoria, categorias, indCategorias, quantCategorias)];
+		Conta_Bancaria conta1 = contas[posContaById(t1.idConta, contas, indContas, quantContas)];
+		Banco banco1 = bancos[posBancoById(conta1.idBanco, bancos, indBancos, quantBancos)];
+		printTransacaoCompleta(t1, cat1, conta1, banco1);
 
 
 	}
