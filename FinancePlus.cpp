@@ -4,6 +4,8 @@
 #include <string>
 #include <locale>
 
+#include <sstream>
+
 struct Data {
     int dia;
     int mes;
@@ -15,6 +17,16 @@ void printData(Data data)
                 << data.mes / 10 << data.mes %10 << "/"
                 << data.ano;
 
+}
+
+std::string dataToString(Data data)
+{
+	std::string txt = "";
+	txt += std::to_string(data.dia / 10) + std::to_string(data.dia % 10) + "/";
+	txt += std::to_string(data.mes / 10) + std::to_string(data.mes % 10) + "/";
+	txt += std::to_string(data.ano);
+
+	return txt;
 }
 int comparaDatas(Data dA, Data dB) //se a > b, retorna 1, se a < b, retorna -1, se a == b, retorna 0
 {
@@ -1084,10 +1096,162 @@ void printTransacaoCompleta(Transacao transacao, Categoria_Gasto categoria, Cont
 	<< "\n Status: " << status << std::endl;
 	
 }
+/*
+		struct Transacao
+		{
+			int id;
+			int idCategoria;
+			int idConta;
+			Data data;
+			float valor;
+			char tipo; //Débito = D ; Crédito = C
+			bool excluido;
+		};
+		*/
+void lExaustTransacoesPeriodo(Transacao *transacoes, IndTransacaoByData *indice, int quant, Data dataInicio, Data dataFim)
+{
+	float saldoTotal = 0;
+
+    std::cout   << "\n |-------------------------------------------|"
+    		   	<< "\n |   Transacoes de "<< dataToString(dataInicio) << " a " << dataToString(dataFim) << "   |"
+    		   	<< "\n |-------------------------------------------|"
+                << "\n |   ID   | Conta |    Data    |    Valor    |"
+				//		 000000 |  000  | xx/xx/xxxx | 99999999.99
+                << "\n |-------------------------------------------|\n";
+     for(int i = 0; i < quant; i++) 
+     {
+		Transacao transacao = transacoes[indice[i].pos];
+		if(comparaDatas(dataInicio, transacao.data) < 0 && comparaDatas(transacao.data, dataFim) < 0 && !transacao.excluido)
+		{
+			std::cout << std::fixed;
+			std::cout << std::setprecision(2);
+
+			
+			
+			int contZero;
+			int digitos;
+
+			std::string id = "";
+			digitos = 0;
+			int auxId = transacao.id;
+			while (auxId > 0)
+			{
+				digitos++;
+				auxId/=10;
+			}
+			contZero = 6 - digitos;
+			while (contZero > 0)
+			{
+				id += "0";
+				contZero--;
+			}
+			id += std::to_string(transacao.id);
+			
+			std::string conta = "";
+			digitos = 0;
+			int auxConta = transacao.idConta;
+			while (auxConta > 0)
+			{
+				digitos++;
+				auxConta/=10;
+			}
+			contZero = 3 - digitos;
+			while (contZero > 0)
+			{
+				conta.append("0");
+				contZero--;
+			}
+			conta += (std::to_string(transacao.idConta));
+			
+			std::string data = dataToString(transacao.data);
+
+
+			std::ostringstream streamValor; //ostringstream = output string stream
+			streamValor << std::fixed << std::setprecision(2) << transacao.valor;
+			std::string valor = "";
+			if(transacao.tipo == 'D') valor += '-';
+			else if(transacao.tipo == 'C') valor += '+';
+			else valor += '?';
+			digitos = 0;
+			int auxValor = (int)transacao.valor;
+			while (auxValor > 0)
+			{
+				digitos++;
+				auxValor/=10;
+			}
+			contZero = 7 - digitos;
+			
+			valor += streamValor.str();
+			while (contZero >= 1)
+			{
+				valor.append(" ");
+				contZero--;
+			}
+
+			std::cout   << " | " << id << " |  " << conta << "  | " << data  << " | " << valor << " |\n";
+
+			if(transacao.tipo == 'D') saldoTotal -= transacao.valor;
+			else if(transacao.tipo == 'C') saldoTotal += transacao.valor;
+
+		}
+     }
+     std::cout  << " |-------------------------------------------|\n"
+                << " |                " << quant << " Registros                |\n"
+                << " |-------------------------------------------|\n"
+				<< " | Saldo Final: " << saldoTotal << std::endl;
+
+     
+}
+
+void criarIndiceTransacoes(Transacao *transacoes, IndTransacaoByData *indice, int quant) 
+{
+    for (int i = 0; i < quant; i++)
+    {
+        indice[i].data = transacoes[i].data;
+        indice[i].pos = i;
+    }
+
+
+    for (int i = 0; i < quant; i++){
+    for (int j = i+1; j < quant; j++)
+    {
+        if (comparaDatas(indice[j].data, indice[i].data) < 0) 
+        {
+            IndTransacaoByData aux = indice[i];
+            indice[i] = indice[j];
+            indice[j] = aux;
+        }
+    }}
+    
+}
+void organizarArquivoTransacoes(Transacao *transacoes, IndTransacaoByData *novoIndice, int &quant) 
+{
+    int qAux; 
+
+    for (int i = 0, j = i; i < quant && j < quant; i++) 
+    { 
+
+        while(transacoes[j].excluido && j < quant) j++;
+        if (j >= quant) break;
+        transacoes[i] = transacoes[j];
+        
+        if(!transacoes[i].excluido) qAux = i+1;
+        j++;
+    }
+
+    quant = qAux;
+    criarIndiceTransacoes(transacoes, novoIndice, quant);
+   
+}
+
+
+
 int main()
 {
 	setlocale(LC_ALL, "");
 
+
+	
 	const int MAX = 60;
 
     Pessoa pessoas[MAX];
@@ -1222,11 +1386,20 @@ int main()
 		};
 		*/
 
-		Transacao t1{2, 2, 1, Data{25, 9, 2023}, 50.50, 'D', false};
+		Transacao t1{2, 2, 1, Data{25, 9, 2023}, 50.50, 'D', true};
+		Transacao t2{20, 2, 10, Data{26, 9, 2023}, 500.50, 'C', false};
+		Transacao t3{200, 2, 100, Data{29, 10, 2023}, 5000.50, 'D', false};
 		Categoria_Gasto cat1 = categorias[posCategoriaById(t1.idCategoria, categorias, indCategorias, quantCategorias)];
 		Conta_Bancaria conta1 = contas[posContaById(t1.idConta, contas, indContas, quantContas)];
 		Banco banco1 = bancos[posBancoById(conta1.idBanco, bancos, indBancos, quantBancos)];
 		printTransacaoCompleta(t1, cat1, conta1, banco1);
+		transacoes[0] = t1;
+		transacoes[1] = t2;
+		transacoes[2] = t3;
+		quantTransacoes = 3;
+		criarIndiceTransacoes(transacoes, indTransacoes, quantTransacoes);
+		organizarArquivoTransacoes(transacoes, indTransacoes, quantTransacoes);
+		lExaustTransacoesPeriodo(transacoes, indTransacoes, quantTransacoes, Data{24,9,2023}, Data{24,10,2023});
 
 
 	}
