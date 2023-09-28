@@ -3,6 +3,7 @@
 #include <iomanip>
 #include <string>
 #include <locale>
+#include <ctime>
 
 #include <sstream>
 
@@ -45,7 +46,6 @@ int comparaDatas(Data dA, Data dB) //se a > b, retorna 1, se a < b, retorna -1, 
 	}
     return NULL;
 }
-//TODO - criar métodos para data
 
 struct Pessoa
 {
@@ -757,7 +757,7 @@ struct IndContaById
 void printConta(Conta_Bancaria conta)
 {
 	std::string status;
-	if (conta.excluido) status = "Suspensa";
+	if (conta.excluido) status = "Cancelada";
 	else status = "Ativa";
 
 	std::cout 	<< "\n  ID: " << conta.id 
@@ -770,7 +770,7 @@ void printConta(Conta_Bancaria conta)
 void printContacomBanco(Conta_Bancaria conta, Banco banco)
 {
 	std::string status;
-	if (conta.excluido) status = "Suspensa";
+	if (conta.excluido) status = "Cancelada";
 	else status = "Ativa";
 
 	std::cout 	<< "\n  ID: " << conta.id 
@@ -1257,6 +1257,46 @@ struct IndTransacaoById
 	int id;
 	int pos;
 };
+void criarIndiceTransacoesById(Transacao *transacoes, IndTransacaoById *indice, int quant) 
+{
+    for (int i = 0; i < quant; i++)
+    {
+        indice[i].id = transacoes[i].id;
+        indice[i].pos = i;
+    }
+
+
+    for (int i = 0; i < quant; i++){
+    for (int j = i+1; j < quant; j++)
+    {
+        if (indice[j].id < indice[i].id) 
+        {
+            IndTransacaoById aux = indice[i];
+            indice[i] = indice[j];
+            indice[j] = aux;
+        }
+    }}
+    
+}
+void organizarArquivoTransacoesById(Transacao *transacoes, IndTransacaoById *novoIndice, int &quant) 
+{
+    int qAux; 
+
+    for (int i = 0, j = i; i < quant && j < quant; i++) 
+    { 
+
+        while(transacoes[j].excluido && j < quant) j++;
+        if (j >= quant) break;
+        transacoes[i] = transacoes[j];
+        
+        if(!transacoes[i].excluido) qAux = i+1;
+        j++;
+    }
+
+    quant = qAux;
+    criarIndiceTransacoesById(transacoes, novoIndice, quant);
+   
+}
 
 int inserirTransacao(Transacao *transacoes, int &quant, Transacao add, IndTransacaoById *indice)
 {
@@ -1440,7 +1480,6 @@ int main()
 	Transacao transacoes[MAXTRANSACOES];
 	IndTransacaoByData indTransData[MAX];
 	IndTransacaoById indTransId[MAX];
-
 	int quantTransacoes;
 	bool testTrans = true;
 
@@ -1450,37 +1489,92 @@ int main()
 		categorias[0] = Categoria_Gasto{1, "Alimentação", false};
 		categorias[1] = Categoria_Gasto{2, "Lazer", false};
 		categorias[2] = Categoria_Gasto{3, "Saúde", false};
-		categorias[3] = Categoria_Gasto{4, "Emergências", false};
+		categorias[3] = Categoria_Gasto{4, "Caridade", false};
+		categorias[4] = Categoria_Gasto{5, "Emergências", false};
+		categorias[5] = Categoria_Gasto{6, "Trabalho", false};
 		
-		quantCategorias = 4;
+		quantCategorias = 6;
 		criarIndiceCategorias(categorias, indCategorias, quantCategorias);
 		organizarArquivoCategorias(categorias, indCategorias, quantCategorias);
 
 
-		bancos[0] = Banco{8, "SantoAndré", false};
-		bancos[1] = Banco{6, "Banco do Paraguai", true};
-		bancos[2] = Banco{2, "Recipiente", false};
-		bancos[3] = Banco{3, "VestidoBank", false};
+		bancos[0] = Banco{1, "SantoAndré", false};
+		bancos[1] = Banco{2, "Banco do Paraguai", true};
+		bancos[2] = Banco{3, "Recipiente", false};
+		bancos[3] = Banco{4, "VestidoBank", false};
+		bancos[4] = Banco{5, "Brolesco", false};
 
-		quantBancos = 4;
+		quantBancos = 5;
 		criarIndiceBancos(bancos, indBancos, quantBancos);
 		organizarArquivoBancos(bancos, indBancos, quantBancos);
 
 
-		contas[0] = Conta_Bancaria {5, 2, "Poupança do Seu Zé", 20000.0, false};
-		contas[1] = Conta_Bancaria {3, 2, "Laranja", 300000.0, true};
-		contas[2] = Conta_Bancaria {6, 1, "Bugada", 0.0, false};
-		quantContas = 3;
+		contas[0] = Conta_Bancaria {1, 3, "Poupança do Seu Zé", 20000.0, false};
+		contas[1] = Conta_Bancaria{2, 3, "Conta do Marcão", 1800.0, false};
+		contas[2] = Conta_Bancaria{3, 3, "Conta do João", -1800.0, false};
+		contas[3] = Conta_Bancaria{4, 5, "Fundos da ONG IBP"};
+
+		quantContas = 4;
 		criarIndiceContas(contas, indContas, quantContas);
-
-		Conta_Bancaria c1 = Conta_Bancaria{1, 8, "Conta do Marcão", 1800.0, false};
-		Conta_Bancaria c2 = Conta_Bancaria{2, 2, "Conta do João", 1800.0, false};
-
-		inserirConta(contas, quantContas, c1, indContas);
-		inserirConta(contas, quantContas, c2, indContas);
 		organizarArquivoContas(contas, indContas, quantContas);
+		
+		transacoes[0] = Transacao{1, 2, 1, Data{25, 9, 2023}, 50.50, 'D', false};
+		transacoes[1] = Transacao{2, 6, 2, Data{26, 9, 2023}, 2000, 'C', false};
+		transacoes[2] = Transacao{3, 4, 4, Data{29, 10, 2023}, 5000.00, 'C', false};
+
+		quantTransacoes = 3;
+		criarIndiceTransacoesById(transacoes, indTransId, quantTransacoes);
+		criarIndiceTransacoesData(transacoes, indTransData, quantTransacoes);
+		organizarArquivoTransacoesById(transacoes, indTransId, quantTransacoes);
+		organizarArquivoTransacoesData(transacoes, indTransData, quantTransacoes);
+		lExaustTransacoesPeriodo(transacoes, quantTransacoes, Data{1,1,1000}, Data{30,30,3000});
+	}
+	
+	time_t now = time(0);
+    tm *agora = localtime(&now);
+    Data hoje = Data{agora->tm_mday, 1+agora->tm_mon, 1900+agora->tm_year};
+
+	bool run = true;
+	bool constClear = false;
+	char op;
+
+	
+	while(run)
+	{
+		std::cout   << "\n\n|------------------------------------------|\n"
+					<< "|                "; printData(hoje); std::cout	<< "                |\n";
+        std::cout   << "|------------------------------------------|\n"
+					<< "|               Finance Plus               |\n"
+					<< "|------------------------------------------|\n"
+                    << "INFORME A OPERAÇÃO QUE DESEJA FAZER: \n"
+                    
+                    << "X para sair do programa\n\n";
+
+		std::cin >> op;
+        std::cin.ignore();
+        std::cout << "\nVocê escolheu ";
+
+		switch(toupper(op))
+        {
+            case 'X':
+                std::cout << "Sair do Programa. Encerrando...\n\n";
+                run = false;
+                break;
+			default:
+            {
+                std::cout << "Uma Opção Inválida, Tente Novamente";
+                break;
+            }
+		}
+
+
 
 	}
+
+	bool teste = false;
+	if(teste)
+	{
+	
 
 
 	if (testConta)
@@ -1692,4 +1786,5 @@ int main()
 	}
 
 	return 0;
+	}
 }
