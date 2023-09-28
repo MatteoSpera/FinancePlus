@@ -1040,6 +1040,7 @@ struct IndTransacaoByData
 	Data data;
 	int pos;
 };
+
 void printTransacao(Transacao transacao)
 {
 	std::cout << std::fixed;
@@ -1251,6 +1252,161 @@ void lExaustTransacoesPeriodo(Transacao *transacoes, int quant, Data dataInicio,
 }
 
 
+struct IndTransacaoById
+{
+	int id;
+	int pos;
+};
+
+int inserirTransacao(Transacao *transacoes, int &quant, Transacao add, IndTransacaoById *indice)
+{
+	// retorna 0 se der certo, 1 se o id informado já estiver registrado e ativo 
+    const int q = quant;
+    int cursor = 0;
+    for (;add.id > indice[cursor].id && cursor < q; cursor++);
+
+    if((add.id == indice[cursor].id) && (transacoes[indice[cursor].pos].excluido == false))
+    {
+        std::cout << "Operação inválida: Já existe um registro com este código";
+        return 1;
+    }
+
+    transacoes[q] = add; 
+    IndTransacaoById ind = IndTransacaoById{add.id, q};
+
+    int reg = q;
+    for (;reg > cursor; reg--) indice[reg] = indice[reg-1];
+    indice[cursor] = ind;
+    
+    quant++;
+	return 0;
+}
+
+int bscTransacaoById(int id, Transacao *transacoes, IndTransacaoById *indice, int quant)
+//retorna 0 se achar, 1 se não, 2 se achar mas estiver excluído, 3 se o desenvolvedor for burro
+{
+	int i = 0, f = quant;
+	int cursor = (i + f) / 2;
+
+	for 
+        (;
+        f >= i; 
+        cursor= (i + f) / 2)
+    {
+		if (indice[cursor].id == id)
+        { 
+            
+            
+            while (indice[cursor].id == id) 
+            {
+                if (!transacoes[indice[cursor].pos].excluido)
+                {
+                    Transacao transacao = transacoes[indice[cursor].pos];
+                    std::cout << "\nTransação Encontrada\n";
+                    printTransacao(transacao);
+                    return 0;
+                }
+                cursor++;
+            }
+            
+            std::cout << "\nTransação Não Encontrada. (Apenas registros Excluídos)";
+            return 2;
+        }
+        else if(indice[cursor].id > id) f = cursor-1;
+        else if(indice[cursor].id < id) i = cursor+1;
+		
+
+	}
+	std::cout << "\nTransação Não Encontrada.\n";
+    return 1;
+
+}
+int posTransacaoById(int id, Transacao *transacoes, IndTransacaoById *indice, int quant) //retorna a posição da transação na lista, retorna -1 se não achar.
+{
+	int i = 0, f = quant;
+	int cursor = (i + f) / 2;
+
+	for 
+        (;
+        f >= i; 
+        cursor= (i + f) / 2)
+    {
+		if (indice[cursor].id == id)
+        { 
+            while (indice[cursor].id == id) 
+            {
+                if (!transacoes[indice[cursor].pos].excluido) return indice[cursor].pos;
+                cursor++;
+            }
+            return -1;
+        }
+        else if(indice[cursor].id > id) f = cursor-1;
+        else if(indice[cursor].id < id) i = cursor+1;
+		
+
+	}
+    return -1;
+}
+int excTransacaoById(int id, Transacao *transacoes, IndTransacaoById *indice, int &quant)
+{
+	//retorna 0 se achar e excluir, 1 se não achar, 2 se achar mas estiver excluído, -1 se a exclusão for cancelada, 3 se o desenvolvedor for burro
+
+	int i = 0, f = quant;
+    int cursor = (i + f) / 2; 
+
+	for 
+	(;
+	f >= i; 
+	cursor= (i + f) / 2)
+	{
+		if (indice[cursor].id == id)
+        {
+            while (indice[cursor].id == id) 
+            {
+                if (!transacoes[indice[cursor].pos].excluido)
+                {
+                    int pos = indice[cursor].pos;
+                    Transacao transacao = transacoes[pos];
+
+                    std::cout << "\nTransação Encontrada\n";
+                    printTransacao(transacao);
+                    std::cout << "\nVocê Confirma a Exclusão deste Registro? \n (Insira [S] para confirmar)";
+
+                    char conf = 0;
+                    std::cin >> conf;
+                    if (toupper(conf) == 'S') 
+                    {
+
+                        transacoes[pos].excluido = true;
+                        std::cout << "\nRegistro Excluído com sucesso.\n";
+                        quant--;
+                        return 0;
+                    }
+                    else {
+						std::cout << "\nExclusão Cancelada.\n";
+                    	return -1;
+					}
+                }
+                cursor++;
+            }
+            std::cout << "\nTransação Não Encontrada.\n"; 
+            return 2;
+        }
+        else if(indice[cursor].id > id) f = cursor-1;
+        else if(indice[cursor].id < id) i = cursor+1;
+        
+		else {
+            std::cout << "\n excBin Tem bug nesse código: \n";
+            std::cout << std::endl << indice[cursor].id << " < " << id << "\ni : " << i << "; cursor: " << cursor << "; f: " << f;
+            return 3;
+        }
+		
+		
+	}
+	std::cout << "\nTransação Não Encontrada.\n";
+    return 1;
+}
+
 
 
 
@@ -1282,7 +1438,9 @@ int main()
 
 	const int MAXTRANSACOES = 200;
 	Transacao transacoes[MAXTRANSACOES];
-	IndTransacaoByData indTransacoes[MAX];
+	IndTransacaoByData indTransData[MAX];
+	IndTransacaoById indTransId[MAX];
+
 	int quantTransacoes;
 	bool testTrans = true;
 
@@ -1403,8 +1561,8 @@ int main()
 		transacoes[1] = t2;
 		transacoes[2] = t3;
 		quantTransacoes = 3;
-		criarIndiceTransacoesData(transacoes, indTransacoes, quantTransacoes);
-		organizarArquivoTransacoesData(transacoes, indTransacoes, quantTransacoes);
+		criarIndiceTransacoesData(transacoes, indTransData, quantTransacoes);
+		organizarArquivoTransacoesData(transacoes, indTransData, quantTransacoes);
 		lExaustTransacoesPeriodo(transacoes, quantTransacoes, Data{24,9,2023}, Data{24,10,2023});
 
 
