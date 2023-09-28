@@ -1198,7 +1198,8 @@ void lExaustTransacoesPeriodo(Transacao *transacoes, IndTransacaoByData *indice,
      std::cout  << " |-------------------------------------------|\n"
                 << " |                " << quant << " Registros                |\n"
                 << " |-------------------------------------------|\n"
-				<< " | Saldo Final: " << saldoTotal << std::endl;
+				<< " | Saldo Final: " << saldoTotal << std::endl
+				<< " |-------------------------------------------|\n";
 
      
 }
@@ -1386,7 +1387,7 @@ int main()
 		};
 		*/
 
-		Transacao t1{2, 2, 1, Data{25, 9, 2023}, 50.50, 'D', true};
+		Transacao t1{2, 2, 1, Data{25, 9, 2023}, 50.50, 'D', false};
 		Transacao t2{20, 2, 10, Data{26, 9, 2023}, 500.50, 'C', false};
 		Transacao t3{200, 2, 100, Data{29, 10, 2023}, 5000.50, 'D', false};
 		Categoria_Gasto cat1 = categorias[posCategoriaById(t1.idCategoria, categorias, indCategorias, quantCategorias)];
