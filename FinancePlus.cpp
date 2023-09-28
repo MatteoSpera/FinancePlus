@@ -1108,8 +1108,54 @@ void printTransacaoCompleta(Transacao transacao, Categoria_Gasto categoria, Cont
 			bool excluido;
 		};
 		*/
-void lExaustTransacoesPeriodo(Transacao *transacoes, IndTransacaoByData *indice, int quant, Data dataInicio, Data dataFim)
+
+void criarIndiceTransacoesData(Transacao *transacoes, IndTransacaoByData *indice, int quant) 
 {
+    for (int i = 0; i < quant; i++)
+    {
+        indice[i].data = transacoes[i].data;
+        indice[i].pos = i;
+    }
+
+
+    for (int i = 0; i < quant; i++){
+    for (int j = i+1; j < quant; j++)
+    {
+        if (comparaDatas(indice[j].data, indice[i].data) < 0) 
+        {
+            IndTransacaoByData aux = indice[i];
+            indice[i] = indice[j];
+            indice[j] = aux;
+        }
+    }}
+    
+}
+void organizarArquivoTransacoesData(Transacao *transacoes, IndTransacaoByData *novoIndice, int &quant) 
+{
+    int qAux; 
+
+    for (int i = 0, j = i; i < quant && j < quant; i++) 
+    { 
+
+        while(transacoes[j].excluido && j < quant) j++;
+        if (j >= quant) break;
+        transacoes[i] = transacoes[j];
+        
+        if(!transacoes[i].excluido) qAux = i+1;
+        j++;
+    }
+
+    quant = qAux;
+    criarIndiceTransacoesData(transacoes, novoIndice, quant);
+   
+}
+void lExaustTransacoesPeriodo(Transacao *transacoes, int quant, Data dataInicio, Data dataFim)
+{
+	std::cout << 0;
+	IndTransacaoByData indice[quant];
+	criarIndiceTransacoesData(transacoes, indice, quant);
+	std::cout << 1;
+	organizarArquivoTransacoesData(transacoes, indice, quant);
 	float saldoTotal = 0;
 
     std::cout   << "\n |-------------------------------------------|"
@@ -1204,46 +1250,7 @@ void lExaustTransacoesPeriodo(Transacao *transacoes, IndTransacaoByData *indice,
      
 }
 
-void criarIndiceTransacoes(Transacao *transacoes, IndTransacaoByData *indice, int quant) 
-{
-    for (int i = 0; i < quant; i++)
-    {
-        indice[i].data = transacoes[i].data;
-        indice[i].pos = i;
-    }
 
-
-    for (int i = 0; i < quant; i++){
-    for (int j = i+1; j < quant; j++)
-    {
-        if (comparaDatas(indice[j].data, indice[i].data) < 0) 
-        {
-            IndTransacaoByData aux = indice[i];
-            indice[i] = indice[j];
-            indice[j] = aux;
-        }
-    }}
-    
-}
-void organizarArquivoTransacoes(Transacao *transacoes, IndTransacaoByData *novoIndice, int &quant) 
-{
-    int qAux; 
-
-    for (int i = 0, j = i; i < quant && j < quant; i++) 
-    { 
-
-        while(transacoes[j].excluido && j < quant) j++;
-        if (j >= quant) break;
-        transacoes[i] = transacoes[j];
-        
-        if(!transacoes[i].excluido) qAux = i+1;
-        j++;
-    }
-
-    quant = qAux;
-    criarIndiceTransacoes(transacoes, novoIndice, quant);
-   
-}
 
 
 
@@ -1251,8 +1258,6 @@ int main()
 {
 	setlocale(LC_ALL, "");
 
-
-	
 	const int MAX = 60;
 
     Pessoa pessoas[MAX];
@@ -1398,9 +1403,9 @@ int main()
 		transacoes[1] = t2;
 		transacoes[2] = t3;
 		quantTransacoes = 3;
-		criarIndiceTransacoes(transacoes, indTransacoes, quantTransacoes);
-		organizarArquivoTransacoes(transacoes, indTransacoes, quantTransacoes);
-		lExaustTransacoesPeriodo(transacoes, indTransacoes, quantTransacoes, Data{24,9,2023}, Data{24,10,2023});
+		criarIndiceTransacoesData(transacoes, indTransacoes, quantTransacoes);
+		organizarArquivoTransacoesData(transacoes, indTransacoes, quantTransacoes);
+		lExaustTransacoesPeriodo(transacoes, quantTransacoes, Data{24,9,2023}, Data{24,10,2023});
 
 
 	}
