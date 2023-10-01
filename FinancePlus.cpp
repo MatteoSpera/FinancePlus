@@ -625,6 +625,16 @@ void organizarArquivoBancos(Banco *bancos, IndBancoById *novoIndice, int &quant)
     criarIndiceBancos(bancos, novoIndice, quant);
    
 }
+Banco lerBanco(Banco banco)
+{
+	char descricao[40];
+	std::cout << "\nInsira a Descrição da Banco: ";
+	std::cin >> banco.descricao;
+	std::cin.ignore();
+
+	return banco;
+
+}
 int inserirBanco(Banco *bancos, int &quant, Banco add, IndBancoById *indice)
 {
 	// retorna 0 se der certo, 1 se o id informado já estiver registrado e ativo 
@@ -1610,6 +1620,17 @@ int main()
 						Categoria_Gasto categoria{newId, "", false};
 						categoria = lerCategoria(categoria);
 						if(inserirCategoria(categorias, quantCategorias, categoria, indCategorias) == 0)
+						std::cout << "\nInserção feita com Sucesso! \n";
+						break;
+					}
+					case '2':
+					{
+						std::cout << "um Banco";
+						int newId = 1;
+						while(posBancoById(newId, bancos, indBancos, quantBancos) != -1) newId++;
+						Banco banco{newId, "", false};
+						banco = lerBanco(banco);
+						inserirBanco(bancos, quantBancos, banco, indBancos);
 						std::cout << "\nInserção feita com Sucesso! \n";
 						break;
 					}
