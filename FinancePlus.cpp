@@ -1592,9 +1592,9 @@ int main()
 				char opIns;
 				std::cout << "Inserir novos Itens\n";
 				std::cout << "Que Tipo de Item você gostaria de Inserir?\n"
-				<< "1 - Categorias\n"
-				<< "2 - Bancos\n"
-				<< "3 - Contas\n";
+				<< "1 - Categoria\n"
+				<< "2 - Banco\n"
+				<< "3 - Conta\n";
 
 				std::cin >> opIns;
 				std::cin.ignore();
@@ -1603,14 +1603,14 @@ int main()
         		{
 					case '1':
 					{	
-						std::cout << "Categorias";
+						std::cout << "uma Categoria";
 						int newId = 1;
 						// procura um Id que esteja Livre para inserir nova Categoria
 						while(posCategoriaById(newId, categorias, indCategorias, quantCategorias) != -1) newId++;
 						Categoria_Gasto categoria{newId, "", false};
 						categoria = lerCategoria(categoria);
-						inserirCategoria(categorias, quantCategorias, categoria, indCategorias);
-						lExaustCategoriasById(categorias, indCategorias, quantCategorias);
+						if(inserirCategoria(categorias, quantCategorias, categoria, indCategorias) == 0)
+						std::cout << "\nInserção feita com Sucesso! \n";
 						break;
 					}
 					default:
