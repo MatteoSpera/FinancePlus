@@ -914,6 +914,17 @@ void organizarArquivoContas(Conta_Bancaria *contas, IndContaById *novoIndice, in
     criarIndiceContas(contas, novoIndice, quant);
    
 }
+Conta_Bancaria lerConta(Conta_Bancaria conta)
+{
+	char descricao[40];
+	std::cout << "\nInsira a Descrição da Conta: ";
+	std::cin >> conta.descricao;
+	std::cout << "\nInsira o Saldo da Conta: ";
+	std::cin >> conta.saldo;
+
+	return conta;
+
+}
 int inserirConta(Conta_Bancaria *contas, int &quant, Conta_Bancaria add, IndContaById *indice)
 {
 	// retorna 0 se der certo, 1 se o id informado já estiver registrado e ativo 
@@ -1633,6 +1644,40 @@ int main()
 						std::cout << "\nInserção feita com Sucesso! \n";
 						break;
 					}
+					case '3':
+					{
+						std::cout << "uma Conta";
+						int newId = 1;
+						while(posContaById(newId, contas, indContas, quantContas) != -1) newId++;
+						
+						int codBanco = 0;
+						std::cout << "\nInsira o Código do Banco: ";
+						std::cin >> codBanco;
+						while(posBancoById(codBanco, bancos, indBancos, quantBancos) == -1)
+						{
+							std::cout << "\nCódigo Inválido, Insira Outro: ";
+							std::cin >> codBanco;
+						}
+						Conta_Bancaria conta{newId, codBanco, "", 0, false};
+						conta = lerConta(conta);
+
+						printContacomBanco(conta, bancos[posBancoById(codBanco, bancos, indBancos, quantBancos)]);
+						std::cout << "\nVocê Confirma a Inserção desta conta? \n (Insira [S] para confirmar)";
+						char conf = 0;
+						std::cin >> conf;
+						if (toupper(conf) == 'S') 
+						{
+							if(inserirConta(contas, quantContas, conta, indContas) == 0)
+							std::cout << "\nInserção feita com Sucesso! \n";
+							break;
+						}
+						else {
+							std::cout << "\nInserção Cancelada.\n";
+							return -1;
+						}
+						
+					}
+					
 					default:
 					{
 						std::cout << "Uma Opção Inválida";
