@@ -19,6 +19,28 @@ void printData(Data data)
                 << data.ano;
 
 }
+Data lerData()
+{
+	Data data;
+	int n;
+
+	std::cout << "\nInsira Dia: ";
+	std::cin >> n;
+	std::cin.ignore();
+	data.dia = n;
+
+	std::cout << "Insira Mês: ";
+	std::cin >> n;
+	std::cin.ignore();
+	data.mes = n;
+
+	std::cout << "Insira Ano: ";
+	std::cin >> n;
+	std::cin.ignore();
+	data.ano = n;
+
+	return data;
+}
 
 std::string dataToString(Data data)
 {
@@ -362,6 +384,16 @@ void organizarArquivoCategorias(Categoria_Gasto *categorias, IndCategoriaById *n
     quant = qAux;
     criarIndiceCategorias(categorias, novoIndice, quant);
    
+}
+Categoria_Gasto lerCategoria(Categoria_Gasto categoria)
+{
+	char descricao[40];
+	std::cout << "\nInsira a Descrição da Categoria: ";
+	std::cin >> categoria.descricao;
+	std::cin.ignore();
+
+	return categoria;
+
 }
 int inserirCategoria(Categoria_Gasto *categorias, int &quant, Categoria_Gasto add, IndCategoriaById *indice)
 {
@@ -1152,10 +1184,8 @@ void organizarArquivoTransacoesData(Transacao *transacoes, IndTransacaoByData *n
 }
 void lExaustTransacoesPeriodo(Transacao *transacoes, int quant, Data dataInicio, Data dataFim)
 {
-	std::cout << 0;
 	IndTransacaoByData indice[quant];
 	criarIndiceTransacoesData(transacoes, indice, quant);
-	std::cout << 1;
 	organizarArquivoTransacoesData(transacoes, indice, quant);
 	float saldoTotal = 0;
 
@@ -1547,7 +1577,8 @@ int main()
 					<< "|               Finance Plus               |\n"
 					<< "|------------------------------------------|\n"
                     << "INFORME A OPERAÇÃO QUE DESEJA FAZER: \n"
-                    
+                    << "A - Inserir novos Itens\n"
+                    << "J - Listar Transações dentro de um período\n"
                     << "X para sair do programa\n\n";
 
 		std::cin >> op;
@@ -1555,11 +1586,55 @@ int main()
         std::cout << "\nVocê escolheu ";
 
 		switch(toupper(op))
-        {
+        {	
+			case 'A':
+			{
+				char opIns;
+				std::cout << "Inserir novos Itens\n";
+				std::cout << "Que Tipo de Item você gostaria de Inserir?\n"
+				<< "1 - Categorias\n"
+				<< "2 - Bancos\n"
+				<< "3 - Contas\n";
+
+				std::cin >> opIns;
+				std::cin.ignore();
+				std::cout << "\nVocê escolheu Inserir ";
+				switch(toupper(opIns))
+        		{
+					case '1':
+					{	
+						std::cout << "Categorias";
+						//Categoria_Gasto categoria = lerCategoria();
+						break;
+					}
+					default:
+					{
+						std::cout << "Uma Opção Inválida, Tente Novamente";
+						break;
+					}
+				}
+				
+				break;
+			}
+			case 'J':
+			{
+				std::cout << "Listar Transações dentro de um período\n";
+				std::cout << "\nInsira a Data de Início:\n";
+				Data dA = lerData();
+
+				std::cout << "\n\nInsira a Data Final:\n";
+				Data dB = lerData();
+
+				lExaustTransacoesPeriodo(transacoes, quantTransacoes, dA, dB);
+				
+				break;
+			}
             case 'X':
-                std::cout << "Sair do Programa. Encerrando...\n\n";
-                run = false;
-                break;
+			{
+				std::cout << "Sair do Programa. Encerrando...\n\n";
+				run = false;
+				break;
+			}
 			default:
             {
                 std::cout << "Uma Opção Inválida, Tente Novamente";
