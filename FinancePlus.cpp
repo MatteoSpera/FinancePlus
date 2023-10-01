@@ -1567,7 +1567,6 @@ int main()
 		criarIndiceTransacoesData(transacoes, indTransData, quantTransacoes);
 		organizarArquivoTransacoesById(transacoes, indTransId, quantTransacoes);
 		organizarArquivoTransacoesData(transacoes, indTransData, quantTransacoes);
-		lExaustTransacoesPeriodo(transacoes, quantTransacoes, Data{1,1,1000}, Data{30,30,3000});
 	}
 	
 	time_t now = time(0);
