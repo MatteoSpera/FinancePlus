@@ -1519,9 +1519,9 @@ int main()
 		categorias[0] = Categoria_Gasto{1, "Alimentação", false};
 		categorias[1] = Categoria_Gasto{2, "Lazer", false};
 		categorias[2] = Categoria_Gasto{3, "Saúde", false};
-		categorias[3] = Categoria_Gasto{4, "Caridade", false};
-		categorias[4] = Categoria_Gasto{5, "Emergências", false};
-		categorias[5] = Categoria_Gasto{6, "Trabalho", false};
+		categorias[3] = Categoria_Gasto{5, "Caridade", false};
+		categorias[4] = Categoria_Gasto{6, "Emergências", false};
+		categorias[5] = Categoria_Gasto{7, "Trabalho", false};
 		
 		quantCategorias = 6;
 		criarIndiceCategorias(categorias, indCategorias, quantCategorias);
@@ -1604,12 +1604,18 @@ int main()
 					case '1':
 					{	
 						std::cout << "Categorias";
-						//Categoria_Gasto categoria = lerCategoria();
+						int newId = 1;
+						// procura um Id que esteja Livre para inserir nova Categoria
+						while(posCategoriaById(newId, categorias, indCategorias, quantCategorias) != -1) newId++;
+						Categoria_Gasto categoria{newId, "", false};
+						categoria = lerCategoria(categoria);
+						inserirCategoria(categorias, quantCategorias, categoria, indCategorias);
+						lExaustCategoriasById(categorias, indCategorias, quantCategorias);
 						break;
 					}
 					default:
 					{
-						std::cout << "Uma Opção Inválida, Tente Novamente";
+						std::cout << "Uma Opção Inválida";
 						break;
 					}
 				}
