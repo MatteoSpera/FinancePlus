@@ -387,10 +387,9 @@ void organizarArquivoCategorias(Categoria_Gasto *categorias, IndCategoriaById *n
 }
 Categoria_Gasto lerCategoria(Categoria_Gasto categoria)
 {
-	char descricao[40];
 	std::cout << "\nInsira a Descrição da Categoria: ";
-	std::cin >> categoria.descricao;
 	std::cin.ignore();
+	gets(categoria.descricao);
 
 	return categoria;
 
@@ -629,8 +628,8 @@ Banco lerBanco(Banco banco)
 {
 	char descricao[40];
 	std::cout << "\nInsira a Descrição da Banco: ";
-	std::cin >> banco.descricao;
 	std::cin.ignore();
+	gets(banco.descricao);
 
 	return banco;
 
@@ -916,9 +915,9 @@ void organizarArquivoContas(Conta_Bancaria *contas, IndContaById *novoIndice, in
 }
 Conta_Bancaria lerConta(Conta_Bancaria conta)
 {
-	char descricao[40];
 	std::cout << "\nInsira a Descrição da Conta: ";
-	std::cin >> conta.descricao;
+	std::cin.ignore();
+	gets(conta.descricao);
 	std::cout << "\nInsira o Saldo da Conta: ";
 	std::cin >> conta.saldo;
 
