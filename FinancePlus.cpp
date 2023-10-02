@@ -1598,7 +1598,8 @@ int main()
 					<< "|------------------------------------------|\n"
                     << "INFORME A OPERAÇÃO QUE DESEJA FAZER: \n"
                     << "A - Consultar Itens\n"
-                    << "B - Inserir novos Itens\n"
+                    << "B - Listar Itens\n"
+                    << "C - Inserir novos Itens\n"
                     << "J - Consultar Transações dentro de um período\n"
                     << "X para sair do programa\n\n";
 
@@ -1632,6 +1633,26 @@ int main()
 						bscCategoriaById(id, categorias, indCategorias, quantCategorias);
 						break;
 					}
+					case '2':
+					{	
+						std::cout << "um Banco\n";
+						std::cout << "Insira o ID do Banco que deseja procurar: ";
+						int id;
+						std::cin >> id;
+						std::cin.ignore();
+						bscBancoById(id, bancos, indBancos, quantBancos);
+						break;
+					}
+					case '3':
+					{	
+						std::cout << "uma Conta\n";
+						std::cout << "Insira o ID da Conta que deseja procurar: ";
+						int id;
+						std::cin >> id;
+						std::cin.ignore();
+						bscContaById(id, contas, indContas, quantContas);
+						break;
+					}
 					default:
 					{
 						std::cout << "Uma Opção Inválida\n";
@@ -1640,7 +1661,7 @@ int main()
 				}
 				break;
 			}
-			case 'B':
+			case 'C':
 			{
 				char opIns;
 				std::cout << "Inserir novos Itens\n";
