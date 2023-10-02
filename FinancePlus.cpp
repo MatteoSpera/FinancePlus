@@ -220,7 +220,7 @@ int bscPessoaById(int id, Pessoa *pessoas, IndPessoaById *indice, int quant)
                 cursor++;
             }
             
-            std::cout << "\nPessoa Não Encontrada. (Apenas registros Excluídos)";
+            std::cout << "\nPessoa Não Encontrada. (Apenas registros Excluídos)\n\n";
             return 2;
         }
         else if(indice[cursor].id > id) f = cursor-1;
@@ -234,7 +234,7 @@ int bscPessoaById(int id, Pessoa *pessoas, IndPessoaById *indice, int quant)
 		*/
 
 	}
-	std::cout << "\nPessoa Não Encontrada.\n";
+	std::cout << "\nPessoa Não Encontrada.\n\n";
     return 1;
 
 }
@@ -314,7 +314,7 @@ struct IndCategoriaById
 };
 void printCategoria(Categoria_Gasto categoria)
 {
-	std::cout << std::endl << categoria.id << ", " << categoria.descricao << std::endl; 
+	std::cout << std::endl << categoria.id << ", " << categoria.descricao << std::endl << std::endl; 
 }
 void lExaustCategoriasById(Categoria_Gasto *categorias, IndCategoriaById *indice, int quant)
 {
@@ -443,14 +443,14 @@ int bscCategoriaById(int id, Categoria_Gasto *categorias, IndCategoriaById *indi
                 cursor++;
             }
             
-            std::cout << "\nCategoria Não Encontrada. (Apenas registros Excluídos)";
+            std::cout << "\nCategoria Não Encontrada. (Apenas registros Excluídos)\n\n";
             return 2;
         }
         else if(indice[cursor].id > id) f = cursor-1;
         else if(indice[cursor].id < id) i = cursor+1;
 
 	}
-	std::cout << "\nCategoria Não Encontrada.\n";
+	std::cout << "\nCategoria Não Encontrada.\n\n";
     return 1;
 
 }
@@ -553,7 +553,7 @@ struct IndBancoById
 };
 void printBanco(Banco banco)
 {
-	std::cout << std::endl << banco.id << ", " << banco.descricao << std::endl; 
+	std::cout << std::endl << banco.id << ", " << banco.descricao << std::endl << std::endl; 
 }
 void lExaustBancosById(Banco *bancos, IndBancoById *indice, int quant)
 {
@@ -684,7 +684,7 @@ int bscBancoById(int id, Banco *bancos, IndBancoById *indice, int quant)
                 cursor++;
             }
             
-            std::cout << "\nBanco Não Encontrado. (Apenas registros Excluídos)";
+            std::cout << "\nBanco Não Encontrado. (Apenas registros Excluídos)\n\n";
             return 2;
         }
         else if(indice[cursor].id > id) f = cursor-1;
@@ -692,7 +692,7 @@ int bscBancoById(int id, Banco *bancos, IndBancoById *indice, int quant)
 		
 
 	}
-	std::cout << "\nBanco Não Encontrado.\n";
+	std::cout << "\nBanco Não Encontrado.\n\n";
     return 1;
 
 }
@@ -806,7 +806,7 @@ void printConta(Conta_Bancaria conta)
 				<< "\n  Descrição: " << conta.descricao
 				<< "\n  Saldo: " << conta.saldo
 				<< "\n  Status: " << status
-				<< std::endl; 
+				<< std::endl << std::endl; 
 }
 void printContacomBanco(Conta_Bancaria conta, Banco banco)
 {
@@ -819,7 +819,7 @@ void printContacomBanco(Conta_Bancaria conta, Banco banco)
 				<< "\n  Descrição: " << conta.descricao
 				<< "\n  Saldo: " << conta.saldo
 				<< "\n  Status: " << status
-				<< std::endl; 
+				<< std::endl << std::endl; 
 }
 void lExaustContasById(Conta_Bancaria *contas, IndContaById *indice, int quant)
 {
@@ -973,7 +973,7 @@ int bscContaById(int id, Conta_Bancaria *contas, IndContaById *indice, int quant
                 cursor++;
             }
             
-            std::cout << "\nConta Não Encontrada. (Apenas registros Excluídos)";
+            std::cout << "\nConta Não Encontrada. (Apenas registros Excluídos)\n\n";
             return 2;
         }
         else if(indice[cursor].id > id) f = cursor-1;
@@ -987,7 +987,7 @@ int bscContaById(int id, Conta_Bancaria *contas, IndContaById *indice, int quant
 		*/
 
 	}
-	std::cout << "\nConta Não Encontrada.\n";
+	std::cout << "\nConta Não Encontrada.\n\n";
     return 1;
 
 }
@@ -1118,7 +1118,7 @@ void printTransacao(Transacao transacao)
 	<< "\n Data: "; printData(transacao.data);
 	std::cout 
 	<< "\n Valor: R$ " << sinal << transacao.valor
-	<< "\n Status: " << status << std::endl;
+	<< "\n Status: " << status << std::endl << std::endl;
 	
 }
 void printTransacaoCompleta(Transacao transacao, Categoria_Gasto categoria, Conta_Bancaria conta, Banco banco)
@@ -1146,7 +1146,7 @@ void printTransacaoCompleta(Transacao transacao, Categoria_Gasto categoria, Cont
 	<< "\n Data: "; printData(transacao.data);
 	std::cout 
 	<< "\n Valor: R$ " << sinal << transacao.valor
-	<< "\n Status: " << status << std::endl;
+	<< "\n Status: " << status << std::endl << std::endl;
 	
 }
 /*
@@ -1399,7 +1399,7 @@ int bscTransacaoById(int id, Transacao *transacoes, IndTransacaoById *indice, in
                 cursor++;
             }
             
-            std::cout << "\nTransação Não Encontrada. (Apenas registros Excluídos)";
+            std::cout << "\nTransação Não Encontrada. (Apenas registros Excluídos)\n\n";
             return 2;
         }
         else if(indice[cursor].id > id) f = cursor-1;
@@ -1407,7 +1407,7 @@ int bscTransacaoById(int id, Transacao *transacoes, IndTransacaoById *indice, in
 		
 
 	}
-	std::cout << "\nTransação Não Encontrada.\n";
+	std::cout << "\nTransação Não Encontrada.\n\n";
     return 1;
 
 }
@@ -1596,8 +1596,9 @@ int main()
 					<< "|               Finance Plus               |\n"
 					<< "|------------------------------------------|\n"
                     << "INFORME A OPERAÇÃO QUE DESEJA FAZER: \n"
-                    << "A - Inserir novos Itens\n"
-                    << "J - Listar Transações dentro de um período\n"
+                    << "A - Consultar Itens\n"
+                    << "B - Inserir novos Itens\n"
+                    << "J - Consultar Transações dentro de um período\n"
                     << "X para sair do programa\n\n";
 
 		std::cin >> op;
@@ -1607,6 +1608,38 @@ int main()
 		switch(toupper(op))
         {	
 			case 'A':
+			{
+				char opIns;
+				std::cout << "Consultar Itens\n";
+				std::cout << "Que Tipo de Item você gostaria de Consultar?\n"
+				<< "1 - Categoria\n"
+				<< "2 - Banco\n"
+				<< "3 - Conta\n";
+
+				std::cin >> opIns;
+				std::cin.ignore();
+				std::cout << "\nVocê escolheu Consultar ";
+				switch(toupper(opIns))
+        		{
+					case '1':
+					{	
+						std::cout << "uma Categoria\n";
+						std::cout << "Insira o ID da Categoria que deseja procurar: ";
+						int id;
+						std::cin >> id;
+						std::cin.ignore();
+						bscCategoriaById(id, categorias, indCategorias, quantCategorias);
+						break;
+					}
+					default:
+					{
+						std::cout << "Uma Opção Inválida\n";
+						break;
+					}
+				}
+				break;
+			}
+			case 'B':
 			{
 				char opIns;
 				std::cout << "Inserir novos Itens\n";
