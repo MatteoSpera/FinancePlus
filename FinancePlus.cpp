@@ -1591,6 +1591,7 @@ int main()
                     << "C - Inserir novos Itens\n"
                     << "D - Excluir Itens\n"
 					<< "E - Organizar Arquivos\n"
+					<< "F - Manipular Transações\n"
                     << "J - Consultar Transações dentro de um período\n"
                     << "X para sair do programa\n\n";
 
@@ -1854,6 +1855,44 @@ int main()
 				else {
 					std::cout << "\nReorganização Cancelada.\n";
 					break;
+				}
+				break;
+			}
+			case 'F':
+			{
+				std::cout << "Manipular Transações\n";
+				std::cout << "O que você gostaria de Fazer? \n"
+				<< "1 - Consultar uma Transação por seu ID\n"
+				<< "2\n"
+				<< "3\n";
+
+				char opTran;
+				std::cin.ignore();
+				std::cin >> opTran;
+				std::cout << "\nVocê escolheu ";
+				switch(toupper(opTran))
+        		{
+					case '1':
+					{	
+						std::cout << "Consultar uma Transação por seu ID\n";
+						std::cout << "Insira o ID da Transacao que deseja procurar: ";
+						int id;
+						std::cin.ignore();
+						std::cin >> id;
+						int posTran = posTransacaoById(id, transacoes, indTransId, quantTransacoes);
+						if (posTran!= -1)
+						{
+							std::cout << "\nTransação não encontrada.\n";
+							Transacao transacao = transacoes[posTran];
+							Categoria_Gasto categoria = categorias[posCategoriaById(transacao.idCategoria, categorias, indCategorias, quantCategorias)];
+							Conta_Bancaria conta = contas[posContaById(transacao.idConta, contas, indContas, quantContas)];
+							Banco banco = bancos[posBancoById(conta.idBanco, bancos, indBancos, quantBancos)];
+
+							printTransacaoCompleta(transacao, categoria, conta, banco);
+						}
+						else std::cout << "\nTransação não encontrada.\n";
+						break;
+					}
 				}
 				break;
 			}
