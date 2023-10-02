@@ -1609,7 +1609,6 @@ int main()
                     << "X para sair do programa\n\n";
 
 		std::cin >> op;
-        std::cin.ignore();
         std::cout << "\nVocê escolheu ";
 
 		switch(toupper(op))
@@ -1623,8 +1622,8 @@ int main()
 				<< "2 - Banco\n"
 				<< "3 - Conta\n";
 
-				std::cin >> opIns;
 				std::cin.ignore();
+				std::cin >> opIns;
 				std::cout << "\nVocê escolheu Consultar ";
 				switch(toupper(opIns))
         		{
@@ -1633,8 +1632,8 @@ int main()
 						std::cout << "uma Categoria\n";
 						std::cout << "Insira o ID da Categoria que deseja procurar: ";
 						int id;
-						std::cin >> id;
 						std::cin.ignore();
+						std::cin >> id;
 						bscCategoriaById(id, categorias, indCategorias, quantCategorias);
 						break;
 					}
@@ -1643,8 +1642,8 @@ int main()
 						std::cout << "um Banco\n";
 						std::cout << "Insira o ID do Banco que deseja procurar: ";
 						int id;
-						std::cin >> id;
 						std::cin.ignore();
+						std::cin >> id;
 						bscBancoById(id, bancos, indBancos, quantBancos);
 						break;
 					}
@@ -1653,8 +1652,8 @@ int main()
 						std::cout << "uma Conta\n";
 						std::cout << "Insira o ID da Conta que deseja procurar: ";
 						int id;
-						std::cin >> id;
 						std::cin.ignore();
+						std::cin >> id;
 						bscContaById(id, contas, indContas, quantContas);
 						break;
 					}
@@ -1675,8 +1674,8 @@ int main()
 				<< "2 - Bancos\n"
 				<< "3 - Contas\n";
 
-				std::cin >> opIns;
 				std::cin.ignore();
+				std::cin >> opIns;
 				std::cout << "\nVocê escolheu Listar ";
 				switch(toupper(opIns))
         		{
@@ -1716,7 +1715,6 @@ int main()
 				<< "3 - Conta\n";
 
 				std::cin >> opIns;
-				std::cin.ignore();
 				std::cout << "\nVocê escolheu Inserir ";
 				switch(toupper(opIns))
         		{
