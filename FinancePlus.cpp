@@ -1654,7 +1654,14 @@ int main()
 						int id;
 						std::cin.ignore();
 						std::cin >> id;
-						bscContaById(id, contas, indContas, quantContas);
+						int posConta = posContaById(id, contas, indContas, quantContas);
+						if(posConta != -1)
+						{
+							Conta_Bancaria conta = contas[posConta];
+							Banco banco = bancos[posBancoById(conta.idBanco, bancos, indBancos, quantBancos)];
+							printContacomBanco(conta, banco);
+						}
+						else std::cout << "\nConta não Encontrada\n";
 						break;
 					}
 					default:
@@ -1694,7 +1701,7 @@ int main()
 					case '3':
 					{	
 						std::cout << "todas as Contas\n";
-						lExaustContasById(contas, indContas, quantContas);
+						lExaustContasByIdComBanco(contas, indContas, quantContas, bancos, indBancos, quantBancos);
 						break;
 					}
 					default:
@@ -1806,7 +1813,7 @@ int main()
 			}
 			default:
             {
-                std::cout << "Uma Opção Inválida, Tente Novamente";
+                std::cout << "Uma Opção Inválida";
                 break;
             }
 		}
