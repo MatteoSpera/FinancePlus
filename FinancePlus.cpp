@@ -4,6 +4,7 @@
 #include <string>
 #include <locale>
 #include <ctime>
+#include <windows.h>
 
 #include <sstream>
 
@@ -1746,7 +1747,7 @@ int main()
 		}
 
 
-
+	Sleep(2000);
 	}
 
 	bool teste = false;
