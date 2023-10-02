@@ -1661,6 +1661,46 @@ int main()
 				}
 				break;
 			}
+			case 'B':
+			{
+				char opIns;
+				std::cout << "Listar Itens\n";
+				std::cout << "Quais itens você gostaria de listar?\n"
+				<< "1 - Categorias\n"
+				<< "2 - Bancos\n"
+				<< "3 - Contas\n";
+
+				std::cin >> opIns;
+				std::cin.ignore();
+				std::cout << "\nVocê escolheu Listar ";
+				switch(toupper(opIns))
+        		{
+					case '1':
+					{	
+						std::cout << "todas as Categorias\n";
+						lExaustCategoriasById(categorias, indCategorias, quantCategorias);
+						break;
+					}
+					case '2':
+					{	
+						std::cout << "todos os Bancos\n";
+						lExaustBancosById(bancos, indBancos, quantBancos);
+						break;
+					}
+					case '3':
+					{	
+						std::cout << "todas as Contas\n";
+						lExaustContasById(contas, indContas, quantContas);
+						break;
+					}
+					default:
+					{
+						std::cout << "Uma Opção Inválida\n";
+						break;
+					}
+				}
+				break;
+			}
 			case 'C':
 			{
 				char opIns;
