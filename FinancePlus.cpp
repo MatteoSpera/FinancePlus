@@ -5,6 +5,7 @@
 #include <locale>
 #include <ctime>
 #include <windows.h>
+#include <conio.h>
 
 #include <sstream>
 
@@ -1498,7 +1499,11 @@ int excTransacaoById(int id, Transacao *transacoes, IndTransacaoById *indice, in
     return 1;
 }
 
-
+void voltaMenu()
+{
+	std::cout << "\n\nAperte Qualquer Tecla para Voltar ao Menu\n";
+	getch();
+}
 
 
 int main()
@@ -1798,6 +1803,7 @@ int main()
 			{
 				std::cout << "Sair do Programa. Encerrando...\n\n";
 				run = false;
+				return 0;
 				break;
 			}
 			default:
@@ -1807,8 +1813,7 @@ int main()
             }
 		}
 
-
-	Sleep(2000);
+	voltaMenu();
 	}
 
 	bool teste = false;
@@ -2027,4 +2032,5 @@ int main()
 
 	return 0;
 	}
+return 0;
 }
