@@ -71,18 +71,20 @@ int comparaDatas(Data dA, Data dB) //se a > b, retorna 1, se a < b, retorna -1, 
     return NULL;
 }
 
+struct IndiceId
+{
+	int id;
+    int pos;
+};
+
 struct Pessoa
 {
     int id;
     char nome[40];
 	bool excluido;
 };
-struct IndPessoaById
-{
-	int id;
-    int pos;
-};
-void printIndicePessoa(IndPessoaById *indice, int quant)
+
+void printIndicePessoa(IndiceId *indice, int quant)
 {
     std::cout   << "\n |---------------|"
 				<< "\n | indice. Pessoas  |"
@@ -95,7 +97,7 @@ void printIndicePessoa(IndPessoaById *indice, int quant)
                 << " | " << quant << " Registros\t |"
                 << "\n |---------------|\n";
 }
-void lExaustPessoasById(Pessoa *pessoas, IndPessoaById *indice, int quant)
+void lExaustPessoasById(Pessoa *pessoas, IndiceId *indice, int quant)
 {
     std::cout   << "\n |----------------------------|"
     		   	<< "\n |   Pessoas - ID crescente   |"
@@ -124,7 +126,7 @@ void lExaustPessoasById(Pessoa *pessoas, IndPessoaById *indice, int quant)
                 << " |----------------------------|\n";
      
 }
-void criarIndicePessoas(Pessoa *pessoas, IndPessoaById *indice, int quant) 
+void criarIndicePessoas(Pessoa *pessoas, IndiceId *indice, int quant) 
 // cria indice, com todos os registros (incluindo os logicamente deletados, já que o trabalho de filtrar será da função de organização)
 {
     for (int i = 0; i < quant; i++)
@@ -139,14 +141,14 @@ void criarIndicePessoas(Pessoa *pessoas, IndPessoaById *indice, int quant)
     {
         if (indice[j].id < indice[i].id) 
         {
-            IndPessoaById aux = indice[i];
+            IndiceId aux = indice[i];
             indice[i] = indice[j];
             indice[j] = aux;
         }
     }}
     
 }
-void organizarArquivoPessoas(Pessoa *pessoas, IndPessoaById *novoIndice, int &quant) // Apaga registros logicamente excluí­dos e reorganiza Índice
+void organizarArquivoPessoas(Pessoa *pessoas, IndiceId *novoIndice, int &quant) // Apaga registros logicamente excluí­dos e reorganiza Índice
 {
     // inclui apenas os que não estão logicamente excluí­dos
     int qAux; // variavel auxiliar para quant
@@ -166,7 +168,7 @@ void organizarArquivoPessoas(Pessoa *pessoas, IndPessoaById *novoIndice, int &qu
     criarIndicePessoas(pessoas, novoIndice, quant);
    
 }
-int inserirPessoa(Pessoa *pessoas, int &quant, Pessoa add, IndPessoaById *indice)
+int inserirPessoa(Pessoa *pessoas, int &quant, Pessoa add, IndiceId *indice)
 {
 	// retorna 0 se der certo, 1 se o id informado já estiver registrado e ativo 
     const int q = quant;
@@ -180,7 +182,7 @@ int inserirPessoa(Pessoa *pessoas, int &quant, Pessoa add, IndPessoaById *indice
     }
 
     pessoas[q] = add; // coloca o registro no fim da lista
-    IndPessoaById ind = IndPessoaById{add.id, q};
+    IndiceId ind = IndiceId{add.id, q};
 
     int reg = q;// reg = regressivo, contador que diminui
     for (;reg > cursor; reg--) indice[reg] = indice[reg-1];
@@ -189,7 +191,7 @@ int inserirPessoa(Pessoa *pessoas, int &quant, Pessoa add, IndPessoaById *indice
     quant++; //atualiza a quantidade de registros no fim
 	return 0;
 }
-int bscPessoaById(int id, Pessoa *pessoas, IndPessoaById *indice, int quant)
+int bscPessoaById(int id, Pessoa *pessoas, IndiceId *indice, int quant)
 //retorna 0 se achar, 1 se não, 2 se achar mas estiver excluído, 3 se o desenvolvedor for burro
 {
 	int i = 0, f = quant;
@@ -240,7 +242,7 @@ int bscPessoaById(int id, Pessoa *pessoas, IndPessoaById *indice, int quant)
     return 1;
 
 }
-int excPessoaById(int id, Pessoa *pessoas, IndPessoaById *indice, int &quant)
+int excPessoaById(int id, Pessoa *pessoas, IndiceId *indice, int &quant)
 {
 	//retorna 0 se achar e excluir, 1 se não achar, 2 se achar mas estiver excluído, -1 se a exclusão for cancelada, 3 se o desenvolvedor for burro
 
@@ -309,16 +311,11 @@ struct Categoria_Gasto
     char descricao[40]; 
 	bool excluido;
 };
-struct IndCategoriaById
-{
-	int id;
-	int pos;
-};
 void printCategoria(Categoria_Gasto categoria)
 {
 	std::cout << std::endl << categoria.id << ", " << categoria.descricao << std::endl << std::endl; 
 }
-void lExaustCategoriasById(Categoria_Gasto *categorias, IndCategoriaById *indice, int quant)
+void lExaustCategoriasById(Categoria_Gasto *categorias, IndiceId *indice, int quant)
 {
     std::cout   << "\n |-----------------------------|"
     		   	<< "\n |  Categorias - ID crescente  |"
@@ -347,7 +344,7 @@ void lExaustCategoriasById(Categoria_Gasto *categorias, IndCategoriaById *indice
                 << " |-----------------------------|\n";
      
 }
-void criarIndiceCategorias(Categoria_Gasto *categorias, IndCategoriaById *indice, int quant) 
+void criarIndiceCategorias(Categoria_Gasto *categorias, IndiceId *indice, int quant) 
 {
     for (int i = 0; i < quant; i++)
     {
@@ -361,14 +358,14 @@ void criarIndiceCategorias(Categoria_Gasto *categorias, IndCategoriaById *indice
     {
         if (indice[j].id < indice[i].id) 
         {
-            IndCategoriaById aux = indice[i];
+            IndiceId aux = indice[i];
             indice[i] = indice[j];
             indice[j] = aux;
         }
     }}
     
 }
-void organizarArquivoCategorias(Categoria_Gasto *categorias, IndCategoriaById *novoIndice, int &quant)
+void organizarArquivoCategorias(Categoria_Gasto *categorias, IndiceId *novoIndice, int &quant)
 {
     int qAux; 
 
@@ -396,7 +393,7 @@ Categoria_Gasto lerCategoria(Categoria_Gasto categoria)
 	return categoria;
 
 }
-int inserirCategoria(Categoria_Gasto *categorias, int &quant, Categoria_Gasto add, IndCategoriaById *indice)
+int inserirCategoria(Categoria_Gasto *categorias, int &quant, Categoria_Gasto add, IndiceId *indice)
 {
 	// retorna 0 se der certo, 1 se o id informado já estiver registrado e ativo 
     const int q = quant;
@@ -410,7 +407,7 @@ int inserirCategoria(Categoria_Gasto *categorias, int &quant, Categoria_Gasto ad
     }
 
     categorias[q] = add; 
-    IndCategoriaById ind = IndCategoriaById{add.id, q};
+    IndiceId ind = IndiceId{add.id, q};
 
     int reg = q;
     for (;reg > cursor; reg--) indice[reg] = indice[reg-1];
@@ -419,7 +416,7 @@ int inserirCategoria(Categoria_Gasto *categorias, int &quant, Categoria_Gasto ad
     quant++;
 	return 0;
 }
-int bscCategoriaById(int id, Categoria_Gasto *categorias, IndCategoriaById *indice, int quant)
+int bscCategoriaById(int id, Categoria_Gasto *categorias, IndiceId *indice, int quant)
 //retorna 0 se achar, 1 se não, 2 se achar mas estiver excluído, 3 se o desenvolvedor for burro
 {
 	int i = 0, f = quant;
@@ -456,7 +453,7 @@ int bscCategoriaById(int id, Categoria_Gasto *categorias, IndCategoriaById *indi
     return 1;
 
 }
-int posCategoriaById(int id, Categoria_Gasto *categorias, IndCategoriaById *indice, int quant) //retorna a posição da categoria na lista, retorna -1 se não achar.
+int posCategoriaById(int id, Categoria_Gasto *categorias, IndiceId *indice, int quant) //retorna a posição da categoria na lista, retorna -1 se não achar.
 {
 	int i = 0, f = quant;
 	int cursor = (i + f) / 2;
@@ -482,7 +479,7 @@ int posCategoriaById(int id, Categoria_Gasto *categorias, IndCategoriaById *indi
 	}
     return -1;
 }
-int excCategoriaById(int id, Categoria_Gasto *categorias, IndCategoriaById *indice, int &quant)
+int excCategoriaById(int id, Categoria_Gasto *categorias, IndiceId *indice, int &quant)
 {
 	//retorna 0 se achar e excluir, 1 se não achar, 2 se achar mas estiver excluído, -1 se a exclusão for cancelada, 3 se o desenvolvedor for burro
 
@@ -548,16 +545,11 @@ struct Banco
     char descricao[40];
 	bool excluido;
 };
-struct IndBancoById
-{
-	int id;
-	int pos;
-};
 void printBanco(Banco banco)
 {
 	std::cout << std::endl << banco.id << ", " << banco.descricao << std::endl << std::endl; 
 }
-void lExaustBancosById(Banco *bancos, IndBancoById *indice, int quant)
+void lExaustBancosById(Banco *bancos, IndiceId *indice, int quant)
 {
     std::cout   << "\n |-----------------------------------|"
     		   	<< "\n |       Bancos - ID crescente       |"
@@ -586,7 +578,7 @@ void lExaustBancosById(Banco *bancos, IndBancoById *indice, int quant)
                 << " |-----------------------------------|\n";
      
 }
-void criarIndiceBancos(Banco *bancos, IndBancoById *indice, int quant) 
+void criarIndiceBancos(Banco *bancos, IndiceId *indice, int quant) 
 {
     for (int i = 0; i < quant; i++)
     {
@@ -600,14 +592,14 @@ void criarIndiceBancos(Banco *bancos, IndBancoById *indice, int quant)
     {
         if (indice[j].id < indice[i].id) 
         {
-            IndBancoById aux = indice[i];
+            IndiceId aux = indice[i];
             indice[i] = indice[j];
             indice[j] = aux;
         }
     }}
     
 }
-void organizarArquivoBancos(Banco *bancos, IndBancoById *novoIndice, int &quant) 
+void organizarArquivoBancos(Banco *bancos, IndiceId *novoIndice, int &quant) 
 {
     int qAux; 
 
@@ -636,7 +628,7 @@ Banco lerBanco(Banco banco)
 	return banco;
 
 }
-int inserirBanco(Banco *bancos, int &quant, Banco add, IndBancoById *indice)
+int inserirBanco(Banco *bancos, int &quant, Banco add, IndiceId *indice)
 {
 	// retorna 0 se der certo, 1 se o id informado já estiver registrado e ativo 
     const int q = quant;
@@ -650,7 +642,7 @@ int inserirBanco(Banco *bancos, int &quant, Banco add, IndBancoById *indice)
     }
 
     bancos[q] = add; 
-    IndBancoById ind = IndBancoById{add.id, q};
+    IndiceId ind = IndiceId{add.id, q};
 
     int reg = q;
     for (;reg > cursor; reg--) indice[reg] = indice[reg-1];
@@ -659,7 +651,7 @@ int inserirBanco(Banco *bancos, int &quant, Banco add, IndBancoById *indice)
     quant++;
 	return 0;
 }
-int bscBancoById(int id, Banco *bancos, IndBancoById *indice, int quant)
+int bscBancoById(int id, Banco *bancos, IndiceId *indice, int quant)
 //retorna 0 se achar, 1 se não, 2 se achar mas estiver excluído, 3 se o desenvolvedor for burro
 {
 	int i = 0, f = quant;
@@ -698,7 +690,7 @@ int bscBancoById(int id, Banco *bancos, IndBancoById *indice, int quant)
     return 1;
 
 }
-int posBancoById(int id, Banco *bancos, IndBancoById *indice, int quant) //retorna a posição do banco na lista, retorna -1 se não achar.
+int posBancoById(int id, Banco *bancos, IndiceId *indice, int quant) //retorna a posição do banco na lista, retorna -1 se não achar.
 {
 	int i = 0, f = quant;
 	int cursor = (i + f) / 2;
@@ -724,7 +716,7 @@ int posBancoById(int id, Banco *bancos, IndBancoById *indice, int quant) //retor
 	}
     return -1;
 }
-int excBancoById(int id, Banco *bancos, IndBancoById *indice, int &quant)
+int excBancoById(int id, Banco *bancos, IndiceId *indice, int &quant)
 {
 	//retorna 0 se achar e excluir, 1 se não achar, 2 se achar mas estiver excluído, -1 se a exclusão for cancelada, 3 se o desenvolvedor for burro
 
@@ -792,11 +784,6 @@ struct Conta_Bancaria
 	double saldo;
 	bool excluido;
 };
-struct IndContaById
-{
-	int id;
-	int pos;
-};
 void printConta(Conta_Bancaria conta)
 {
 	std::string status;
@@ -823,7 +810,7 @@ void printContacomBanco(Conta_Bancaria conta, Banco banco)
 				<< "\n  Status: " << status
 				<< std::endl << std::endl; 
 }
-void lExaustContasById(Conta_Bancaria *contas, IndContaById *indice, int quant)
+void lExaustContasById(Conta_Bancaria *contas, IndiceId *indice, int quant)
 {
     std::cout   << "\n -----------------------------------"
     		   	<< "\n        Contas - ID crescente       "
@@ -840,7 +827,7 @@ void lExaustContasById(Conta_Bancaria *contas, IndContaById *indice, int quant)
                 << " -----------------------------------\n";
      
 }
-void lExaustContasByIdComBanco(Conta_Bancaria *contas, IndContaById *indice, int quant, Banco *bancos, IndBancoById *indBancos, int quantBancos)
+void lExaustContasByIdComBanco(Conta_Bancaria *contas, IndiceId *indice, int quant, Banco *bancos, IndiceId *indBancos, int quantBancos)
 {
     std::cout   << "\n -----------------------------------"
     		   	<< "\n        Contas - ID crescente       "
@@ -862,7 +849,7 @@ void lExaustContasByIdComBanco(Conta_Bancaria *contas, IndContaById *indice, int
                 << " -----------------------------------\n";
      
 }
-void criarIndiceContas(Conta_Bancaria *contas, IndContaById *indice, int quant) 
+void criarIndiceContas(Conta_Bancaria *contas, IndiceId *indice, int quant) 
 {
     for (int i = 0; i < quant; i++)
     {
@@ -876,14 +863,14 @@ void criarIndiceContas(Conta_Bancaria *contas, IndContaById *indice, int quant)
     {
         if (indice[j].id < indice[i].id) 
         {
-            IndContaById aux = indice[i];
+            IndiceId aux = indice[i];
             indice[i] = indice[j];
             indice[j] = aux;
         }
     }}
     
 }
-void printIndiceConta(IndContaById *indice, int quant)
+void printIndiceConta(IndiceId *indice, int quant)
 {
     std::cout   << "\n |---------------|"
 				<< "\n |  indice. Contas  |"
@@ -896,7 +883,7 @@ void printIndiceConta(IndContaById *indice, int quant)
                 << " | " << quant << " Registros\t |"
                 << "\n |---------------|\n";
 }
-void organizarArquivoContas(Conta_Bancaria *contas, IndContaById *novoIndice, int &quant) 
+void organizarArquivoContas(Conta_Bancaria *contas, IndiceId *novoIndice, int &quant) 
 {
     int qAux; 
 
@@ -926,7 +913,7 @@ Conta_Bancaria lerConta(Conta_Bancaria conta)
 	return conta;
 
 }
-int inserirConta(Conta_Bancaria *contas, int &quant, Conta_Bancaria add, IndContaById *indice)
+int inserirConta(Conta_Bancaria *contas, int &quant, Conta_Bancaria add, IndiceId *indice)
 {
 	// retorna 0 se der certo, 1 se o id informado já estiver registrado e ativo 
     const int q = quant;
@@ -940,7 +927,7 @@ int inserirConta(Conta_Bancaria *contas, int &quant, Conta_Bancaria add, IndCont
     }
 
     contas[q] = add; // coloca o registro no fim da lista
-    IndContaById ind = IndContaById{add.id, q};
+    IndiceId ind = IndiceId{add.id, q};
 
     int reg = q;// reg = regressivo, contador que diminui
     for (;reg > cursor; reg--) indice[reg] = indice[reg-1];
@@ -949,7 +936,7 @@ int inserirConta(Conta_Bancaria *contas, int &quant, Conta_Bancaria add, IndCont
     quant++; //atualiza a quantidade de registros no fim
 	return 0;
 }
-int bscContaById(int id, Conta_Bancaria *contas, IndContaById *indice, int quant)
+int bscContaById(int id, Conta_Bancaria *contas, IndiceId *indice, int quant)
 //retorna 0 se achar, 1 se não, 2 se achar mas estiver excluído, 3 se o desenvolvedor for burro
 {
 	int i = 0, f = quant;
@@ -993,7 +980,7 @@ int bscContaById(int id, Conta_Bancaria *contas, IndContaById *indice, int quant
     return 1;
 
 }
-int posContaById(int id, Conta_Bancaria *contas, IndContaById *indice, int quant) //retorna a posição da conta na lista, retorna -1 se não achar.
+int posContaById(int id, Conta_Bancaria *contas, IndiceId *indice, int quant) //retorna a posição da conta na lista, retorna -1 se não achar.
 {
 	int i = 0, f = quant;
 	int cursor = (i + f) / 2;
@@ -1019,7 +1006,7 @@ int posContaById(int id, Conta_Bancaria *contas, IndContaById *indice, int quant
 	}
     return -1;
 }
-int excContaById(int id, Conta_Bancaria *contas, IndContaById *indice, int &quant)
+int excContaById(int id, Conta_Bancaria *contas, IndiceId *indice, int &quant)
 {
 	//retorna 0 se achar e excluir, 1 se não achar, 2 se achar mas estiver excluído, -1 se a exclusão for cancelada, 3 se o desenvolvedor for burro
 
@@ -1303,12 +1290,8 @@ void lExaustTransacoesPeriodo(Transacao *transacoes, int quant, Data dataInicio,
 }
 
 
-struct IndTransacaoById
-{
-	int id;
-	int pos;
-};
-void criarIndiceTransacoesById(Transacao *transacoes, IndTransacaoById *indice, int quant) 
+
+void criarIndiceTransacoesById(Transacao *transacoes, IndiceId *indice, int quant) 
 {
     for (int i = 0; i < quant; i++)
     {
@@ -1322,14 +1305,14 @@ void criarIndiceTransacoesById(Transacao *transacoes, IndTransacaoById *indice, 
     {
         if (indice[j].id < indice[i].id) 
         {
-            IndTransacaoById aux = indice[i];
+            IndiceId aux = indice[i];
             indice[i] = indice[j];
             indice[j] = aux;
         }
     }}
     
 }
-void organizarArquivoTransacoesById(Transacao *transacoes, IndTransacaoById *novoIndice, int &quant) 
+void organizarArquivoTransacoesById(Transacao *transacoes, IndiceId *novoIndice, int &quant) 
 {
     int qAux; 
 
@@ -1349,7 +1332,7 @@ void organizarArquivoTransacoesById(Transacao *transacoes, IndTransacaoById *nov
    
 }
 
-int inserirTransacao(Transacao *transacoes, int &quant, Transacao add, IndTransacaoById *indice)
+int inserirTransacao(Transacao *transacoes, int &quant, Transacao add, IndiceId *indice)
 {
 	// retorna 0 se der certo, 1 se o id informado já estiver registrado e ativo 
     const int q = quant;
@@ -1363,7 +1346,7 @@ int inserirTransacao(Transacao *transacoes, int &quant, Transacao add, IndTransa
     }
 
     transacoes[q] = add; 
-    IndTransacaoById ind = IndTransacaoById{add.id, q};
+    IndiceId ind = IndiceId{add.id, q};
 
     int reg = q;
     for (;reg > cursor; reg--) indice[reg] = indice[reg-1];
@@ -1373,7 +1356,7 @@ int inserirTransacao(Transacao *transacoes, int &quant, Transacao add, IndTransa
 	return 0;
 }
 
-int bscTransacaoById(int id, Transacao *transacoes, IndTransacaoById *indice, int quant)
+int bscTransacaoById(int id, Transacao *transacoes, IndiceId *indice, int quant)
 //retorna 0 se achar, 1 se não, 2 se achar mas estiver excluído, 3 se o desenvolvedor for burro
 {
 	int i = 0, f = quant;
@@ -1412,7 +1395,7 @@ int bscTransacaoById(int id, Transacao *transacoes, IndTransacaoById *indice, in
     return 1;
 
 }
-int posTransacaoById(int id, Transacao *transacoes, IndTransacaoById *indice, int quant) //retorna a posição da transação na lista, retorna -1 se não achar.
+int posTransacaoById(int id, Transacao *transacoes, IndiceId *indice, int quant) //retorna a posição da transação na lista, retorna -1 se não achar.
 {
 	int i = 0, f = quant;
 	int cursor = (i + f) / 2;
@@ -1438,7 +1421,7 @@ int posTransacaoById(int id, Transacao *transacoes, IndTransacaoById *indice, in
 	}
     return -1;
 }
-int excTransacaoById(int id, Transacao *transacoes, IndTransacaoById *indice, int &quant)
+int excTransacaoById(int id, Transacao *transacoes, IndiceId *indice, int &quant)
 {
 	//retorna 0 se achar e excluir, 1 se não achar, 2 se achar mas estiver excluído, -1 se a exclusão for cancelada, 3 se o desenvolvedor for burro
 
@@ -1512,29 +1495,29 @@ int main()
 	const int MAX = 60;
 
     Pessoa pessoas[MAX];
-	IndPessoaById indPessoas[MAX];
+	IndiceId indPessoas[MAX];
 	int quantPessoas; // quantia total de registros de Pessoas
 	bool testPessoa = false;
 
 	Conta_Bancaria contas[MAX];
-	IndContaById indContas[MAX];
+	IndiceId indContas[MAX];
 	int quantContas;
 	bool testConta = false;
 
 	Categoria_Gasto categorias[MAX];
-	IndCategoriaById indCategorias[MAX];
+	IndiceId indCategorias[MAX];
 	int quantCategorias;
 	bool testCategoria = false;
 
 	Banco bancos[MAX];
-	IndBancoById indBancos[MAX];
+	IndiceId indBancos[MAX];
 	int quantBancos;
 	bool testBanco = false;
 
 	const int MAXTRANSACOES = 200;
 	Transacao transacoes[MAXTRANSACOES];
 	IndTransacaoByData indTransData[MAX];
-	IndTransacaoById indTransId[MAX];
+	IndiceId indTransId[MAX];
 	int quantTransacoes;
 	bool testTrans = true;
 
