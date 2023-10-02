@@ -1601,7 +1601,7 @@ int main()
         {	
 			case 'A':
 			{
-				char opIns;
+				char opCon;
 				std::cout << "Consultar Itens\n";
 				std::cout << "Que Tipo de Item você gostaria de Consultar?\n"
 				<< "1 - Categoria\n"
@@ -1609,9 +1609,9 @@ int main()
 				<< "3 - Conta\n";
 
 				std::cin.ignore();
-				std::cin >> opIns;
+				std::cin >> opCon;
 				std::cout << "\nVocê escolheu Consultar ";
-				switch(toupper(opIns))
+				switch(toupper(opCon))
         		{
 					case '1':
 					{	
@@ -1660,7 +1660,7 @@ int main()
 			}
 			case 'B':
 			{
-				char opIns;
+				char opLst;
 				std::cout << "Listar Itens\n";
 				std::cout << "Quais itens você gostaria de listar?\n"
 				<< "1 - Categorias\n"
@@ -1668,9 +1668,9 @@ int main()
 				<< "3 - Contas\n";
 
 				std::cin.ignore();
-				std::cin >> opIns;
+				std::cin >> opLst;
 				std::cout << "\nVocê escolheu Listar ";
-				switch(toupper(opIns))
+				switch(toupper(opLst))
         		{
 					case '1':
 					{	
@@ -1779,15 +1779,15 @@ int main()
 			}
 			case 'D':
 			{
-				char opIns;
+				char opExc;
 				std::cout << "Excluir Itens\n";
 				std::cout << "Que Tipo de Item você gostaria de Excluir?\n"
 				<< "1 - Categoria\n"
 				<< "2 - Banco\n"
 				<< "3 - Conta\n";
-				std::cin >> opIns;
+				std::cin >> opExc;
 				std::cout << "\nVocê escolheu Excluir ";
-				switch(toupper(opIns))
+				switch(toupper(opExc))
         		{
 					case '1':
 					{	
@@ -1834,12 +1834,11 @@ int main()
 			}
 			case 'E':
 			{
-				char opIns;
-				std::cout << "Organizar Arquivos\n\n";
-				std::cout << "ATENÇÃO!!!\n";
-				std::cout << "Esta Operação irá excluir permanentemente todos os registros Inativos\n";
-				std::cout << "de Categorias, Bancos, e Contas\n";
-				std::cout << "\nVocê Confirma a Reorganização dos Arquivos? \n (Insira [S] para confirmar)";
+				std::cout 	<< "Organizar Arquivos\n\n"
+							<< "ATENÇÃO!!!\n"
+							<< "Esta Operação irá excluir permanentemente todos os registros Inativos\n"
+							<< "de Categorias, Bancos, e Contas\n"
+							<< "\nVocê Confirma a Reorganização dos Arquivos? \n (Insira [S] para confirmar)";
 				char conf = 0;
 				std::cin >> conf;
 				if (toupper(conf) == 'S') 
