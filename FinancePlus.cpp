@@ -1040,8 +1040,7 @@ int excContaById(int id, Conta_Bancaria *contas, IndContaById *indice, int &quan
                     int pos = indice[cursor].pos;
                     Conta_Bancaria conta = contas[pos];
 
-                    std::cout << "\nConta Encontrada\n"
-                            << conta.id << ", " << conta.descricao << std::endl;
+                    
                     std::cout << "\nVocê Confirma a Exclusão deste Registro? \n (Insira [S] para confirmar)";
 
                     char conf = 0;
@@ -1793,6 +1792,61 @@ int main()
 					}
 				}
 				
+				break;
+			}
+			case 'D':
+			{
+				char opIns;
+				std::cout << "Excluir Itens\n";
+				std::cout << "Que Tipo de Item você gostaria de Excluir?\n"
+				<< "1 - Categoria\n"
+				<< "2 - Banco\n"
+				<< "3 - Conta\n";
+				std::cin >> opIns;
+				std::cout << "\nVocê escolheu Excluir ";
+				switch(toupper(opIns))
+        		{
+					case '1':
+					{	
+						std::cout << "uma Categoria";
+						std::cout << "\nInsira o ID da Categoria que deseja Excluir: ";
+						int id;
+						std::cin.ignore();
+						std::cin >> id;
+						excCategoriaById(id, categorias, indCategorias, quantCategorias);
+						break;
+					}
+					case '2':
+					{
+						std::cout << "um Banco";
+						std::cout << "\nInsira o ID do Banco que deseja Excluir: ";
+						int id;
+						std::cin.ignore();
+						std::cin >> id;
+						excBancoById(id, bancos, indBancos, quantBancos);
+						break;
+					}
+					case '3':
+					{	
+						std::cout << "uma Conta";
+						std::cout << "\nInsira o ID da Conta que deseja Excluir: ";
+						int id;
+						std::cin.ignore();
+						std::cin >> id;
+						while(posContaById(id, contas, indContas, quantContas) == -1)
+						{
+							std::cout << "\nCódigo Inválido, Insira Outro: ";
+							std::cin >> id;
+						}
+						int posConta = posContaById(id, contas, indContas, quantContas);
+						Banco banco = bancos[posBancoById(contas[posConta].idBanco, bancos, indBancos, quantBancos)];
+						std::cout << "\nConta Encontrada\n";
+						printContacomBanco(contas[posConta], banco);
+						excContaById(id, contas, indContas, quantContas);
+
+						break;
+					}
+				}
 				break;
 			}
 			case 'E':
