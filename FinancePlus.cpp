@@ -1548,10 +1548,11 @@ int main()
 		categorias[3] = Categoria_Gasto{5, "Caridade", false};
 		categorias[4] = Categoria_Gasto{6, "Emergências", false};
 		categorias[5] = Categoria_Gasto{7, "Trabalho", false};
+		categorias[6] = Categoria_Gasto{8, "Multas", true};
+		categorias[7] = Categoria_Gasto{9, "Bicos", true};
 		
-		quantCategorias = 6;
+		quantCategorias = 8;
 		criarIndiceCategorias(categorias, indCategorias, quantCategorias);
-		organizarArquivoCategorias(categorias, indCategorias, quantCategorias);
 
 
 		bancos[0] = Banco{1, "SantoAndré", false};
@@ -1559,20 +1560,21 @@ int main()
 		bancos[2] = Banco{3, "Recipiente", false};
 		bancos[3] = Banco{4, "VestidoBank", false};
 		bancos[4] = Banco{5, "Brolesco", false};
+		bancos[5] = Banco{6, "Jamerindus", true};
 
-		quantBancos = 5;
+		quantBancos = 6;
 		criarIndiceBancos(bancos, indBancos, quantBancos);
-		organizarArquivoBancos(bancos, indBancos, quantBancos);
 
 
 		contas[0] = Conta_Bancaria {1, 3, "Poupança do Seu Zé", 20000.0, false};
 		contas[1] = Conta_Bancaria{2, 3, "Conta do Marcão", 1800.0, false};
 		contas[2] = Conta_Bancaria{3, 3, "Conta do João", -1800.0, false};
-		contas[3] = Conta_Bancaria{4, 5, "Fundos da ONG IBP"};
+		contas[3] = Conta_Bancaria{4, 5, "Fundos da ONG IBP", 400, false};
+		contas[4] = Conta_Bancaria{5, 4, "Conta Laranja", 400, true};
+		contas[5] = Conta_Bancaria{7, 5, "Conta Fantasma", 400, true};
 
-		quantContas = 4;
+		quantContas = 6;
 		criarIndiceContas(contas, indContas, quantContas);
-		organizarArquivoContas(contas, indContas, quantContas);
 		
 		transacoes[0] = Transacao{1, 2, 1, Data{25, 9, 2023}, 50.50, 'D', false};
 		transacoes[1] = Transacao{2, 6, 2, Data{26, 9, 2023}, 2000, 'C', false};
@@ -1605,6 +1607,8 @@ int main()
                     << "A - Consultar Itens\n"
                     << "B - Listar Itens\n"
                     << "C - Inserir novos Itens\n"
+                    << "D - Excluir Itens\n"
+					<< "E - Organizar Arquivos\n"
                     << "J - Consultar Transações dentro de um período\n"
                     << "X para sair do programa\n\n";
 
@@ -1777,7 +1781,7 @@ int main()
 						}
 						else {
 							std::cout << "\nInserção Cancelada.\n";
-							return -1;
+							break;
 						}
 						
 					}
@@ -1789,6 +1793,32 @@ int main()
 					}
 				}
 				
+				break;
+			}
+			case 'E':
+			{
+				char opIns;
+				std::cout << "Organizar Arquivos\n\n";
+				std::cout << "ATENÇÃO!!!\n";
+				std::cout << "Esta Operação irá excluir permanentemente todos os registros Inativos\n";
+				std::cout << "de Categorias, Bancos, e Contas\n";
+				std::cout << "\nVocê Confirma a Reorganização dos Arquivos? \n (Insira [S] para confirmar)";
+				char conf = 0;
+				std::cin >> conf;
+				if (toupper(conf) == 'S') 
+				{
+					organizarArquivoBancos(bancos, indBancos, quantBancos);
+					organizarArquivoCategorias(categorias, indCategorias, quantCategorias);
+					organizarArquivoContas(contas, indContas, quantContas);
+					organizarArquivoBancos(bancos, indBancos, quantBancos);
+					
+					std::cout << "\nArquivos Reorganizados com Sucesso! \n";
+					break;
+				}
+				else {
+					std::cout << "\nReorganização Cancelada.\n";
+					break;
+				}
 				break;
 			}
 			case 'J':
