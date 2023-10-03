@@ -1289,7 +1289,35 @@ void lExaustTransacoesPeriodo(Transacao *transacoes, int quant, Data dataInicio,
 
      
 }
+Transacao lerTransacao(Transacao transacao)
+{
+	std::cout << "\nInsira o Valor da Transação: ";
+	std::cin.ignore();
+	std::cin >> transacao.valor;
+	while(transacao.valor <= 0)
+	{
+		std::cout << "\nO valor da Transação deve ser positivo ";
+		std::cin >> transacao.valor;
+	}
 
+
+	std::cout << "\n\nInsira o Tipo da Transação - Crédito [C] ou Débito [D] ";
+	
+	char tipo = 0;
+	std::cin >> tipo;
+	tipo = toupper(tipo);
+	
+	while(tipo != 'C' && tipo != 'D')
+	{
+		std::cout << "\nInsira um Tipo válido [C/D] ";
+		std::cin >> tipo;
+		tipo = toupper(tipo);
+	}
+	transacao.tipo = tipo;
+
+	return transacao;
+
+}
 
 
 void criarIndiceTransacoesById(Transacao *transacoes, IndiceId *indice, int quant) 
@@ -1333,26 +1361,33 @@ void organizarArquivoTransacoesById(Transacao *transacoes, IndiceId *novoIndice,
    
 }
 
-int inserirTransacao(Transacao *transacoes, int &quant, Transacao add, IndiceId *indice)
+int inserirTransacao(Transacao *transacoes, int &quant, Transacao add, IndiceId *indId, IndTransacaoByData *indData)
 {
 	// retorna 0 se der certo, 1 se o id informado já estiver registrado e ativo 
     const int q = quant;
     int cursor = 0;
-    for (;add.id > indice[cursor].id && cursor < q; cursor++);
+    for (;add.id > indId[cursor].id && cursor < q; cursor++);
 
-    if((add.id == indice[cursor].id) && (transacoes[indice[cursor].pos].excluido == false))
+    if((add.id == indId[cursor].id) && (transacoes[indId[cursor].pos].excluido == false))
     {
         std::cout << "Operação inválida: Já existe um registro com este código";
         return 1;
     }
 
     transacoes[q] = add; 
-    IndiceId ind = IndiceId{add.id, q};
+    IndiceId indcId = IndiceId{add.id, q};
 
     int reg = q;
-    for (;reg > cursor; reg--) indice[reg] = indice[reg-1];
-    indice[cursor] = ind;
+    for (;reg > cursor; reg--) indId[reg] = indId[reg-1];
+    indId[cursor] = indcId;
     
+	cursor = 0;
+	for (;comparaDatas(add.data, indData[cursor].data) > 0 && cursor < q; cursor++);
+	IndTransacaoByData indcData = IndTransacaoByData{add.data, q};
+	reg = q;
+	for (;reg > cursor; reg--) indData[reg] =  indData[reg-1];
+	indData[cursor] = indcData; 
+
     quant++;
 	return 0;
 }
@@ -1865,7 +1900,8 @@ int main()
 				std::cout << "O que você gostaria de Fazer? \n"
 				<< "1 - Consultar uma Transação por seu ID\n"
 				<< "2 - Consultar todas as Transações dentro de um Período\n"
-				<< "3\n";
+				<< "4 - Efetuar uma Nova Transação\n"
+				<< "\n";
 
 				char opTran;
 				std::cin.ignore();
@@ -1905,6 +1941,38 @@ int main()
 
 						lExaustTransacoesPeriodo(transacoes, quantTransacoes, dA, dB);
 				
+						break;
+					}
+					case '4':
+					{
+						std::cout << "Efetuar uma Nova Transação\n";
+						int newId = 1;
+						while(posTransacaoById(newId, transacoes, indTransId, quantTransacoes) != -1) newId++;
+
+						int idCat = 0;
+						std::cout << "\n\nInsira o Código da Categoria: ";
+						std::cin >> idCat;
+						while(posCategoriaById(idCat, categorias, indCategorias, quantCategorias) == -1)
+						{
+							std::cout << "\nCódigo Inválido, Insira Outro: ";
+							std::cin >> idCat;
+						}
+
+						int idConta = 0;
+						std::cout << "\n\nInsira o Código da Conta: ";
+						std::cin >> idConta;
+						while(posContaById(idConta, contas, indContas, quantContas) == -1)
+						{
+							std::cout << "\nCódigo Inválido, Insira Outro: ";
+							std::cin >> idConta;
+						}
+
+
+						Transacao transacao{newId, idCat, idConta, hoje, 0, 0, false};
+						transacao = lerTransacao(transacao);
+						inserirTransacao(transacoes, quantTransacoes, transacao, indTransId, indTransData);
+						std::cout << "\nTransação Efetuada com Sucesso! \n";
+						
 						break;
 					}
 				}
