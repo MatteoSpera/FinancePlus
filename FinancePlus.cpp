@@ -1203,6 +1203,7 @@ void lExaustTransacoesPeriodo(Transacao *transacoes, int quant, Data dataInicio,
                 << "\n |   ID   | Conta |    Data    |    Valor    |"
 				//		 000000 |  000  | xx/xx/xxxx | 99999999.99
                 << "\n |-------------------------------------------|\n";
+	int cont = 0;
      for(int i = 0; i < quant; i++) 
      {
 		Transacao transacao = transacoes[indice[i].pos];
@@ -1277,11 +1278,11 @@ void lExaustTransacoesPeriodo(Transacao *transacoes, int quant, Data dataInicio,
 
 			if(transacao.tipo == 'D') saldoTotal -= transacao.valor;
 			else if(transacao.tipo == 'C') saldoTotal += transacao.valor;
-
+			cont++;
 		}
      }
      std::cout  << " |-------------------------------------------|\n"
-                << " |                " << quant << " Registros                |\n"
+                << " |                " << cont << " Registros                |\n"
                 << " |-------------------------------------------|\n"
 				<< " | Saldo Final: " << saldoTotal << std::endl
 				<< " |-------------------------------------------|\n";
@@ -1592,8 +1593,8 @@ int main()
                     << "D - Excluir Itens\n"
 					<< "E - Organizar Arquivos\n"
 					<< "F - Manipular Transações\n"
-                    << "J - Consultar Transações dentro de um período\n"
-                    << "X para sair do programa\n\n";
+                    << "X - Sair do programa\n"
+					<< "\n";
 
 		std::cin >> op;
         std::cout << "\nVocê escolheu ";
@@ -1863,7 +1864,7 @@ int main()
 				std::cout << "Manipular Transações\n";
 				std::cout << "O que você gostaria de Fazer? \n"
 				<< "1 - Consultar uma Transação por seu ID\n"
-				<< "2\n"
+				<< "2 - Consultar todas as Transações dentro de um Período\n"
 				<< "3\n";
 
 				char opTran;
@@ -1893,20 +1894,20 @@ int main()
 						else std::cout << "\nTransação não encontrada.\n";
 						break;
 					}
-				}
-				break;
-			}
-			case 'J':
-			{
-				std::cout << "Listar Transações dentro de um período\n";
-				std::cout << "\nInsira a Data de Início:\n";
-				Data dA = lerData();
+					case '2':
+					{
+						std::cout << "Listar Transações dentro de um período\n";
+						std::cout << "\nInsira a Data de Início:\n";
+						Data dA = lerData();
 
-				std::cout << "\n\nInsira a Data Final:\n";
-				Data dB = lerData();
+						std::cout << "\n\nInsira a Data Final:\n";
+						Data dB = lerData();
 
-				lExaustTransacoesPeriodo(transacoes, quantTransacoes, dA, dB);
+						lExaustTransacoesPeriodo(transacoes, quantTransacoes, dA, dB);
 				
+						break;
+					}
+				}
 				break;
 			}
             case 'X':
