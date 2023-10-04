@@ -1207,7 +1207,7 @@ void lExaustTransacoesPeriodo(Transacao *transacoes, int quant, Data dataInicio,
      for(int i = 0; i < quant; i++) 
      {
 		Transacao transacao = transacoes[indice[i].pos];
-		if(comparaDatas(dataInicio, transacao.data) < 0 && comparaDatas(transacao.data, dataFim) < 0 && !transacao.excluido)
+		if(comparaDatas(dataInicio, transacao.data) <= 0 && comparaDatas(transacao.data, dataFim) <= 0 && !transacao.excluido)
 		{
 			std::cout << std::fixed;
 			std::cout << std::setprecision(2);
@@ -1899,7 +1899,8 @@ int main()
 				std::cout << "Manipular Transações\n";
 				std::cout << "O que você gostaria de Fazer? \n"
 				<< "1 - Consultar uma Transação por seu ID\n"
-				<< "2 - Consultar todas as Transações dentro de um Período\n"
+				<< "2 - Consultar todas as Transações efetuadas dentro de um Período\n"
+				<< "3 - Consultar todas as Transações já efetuadas\n"
 				<< "4 - Efetuar uma Nova Transação\n"
 				<< "\n";
 
@@ -1932,7 +1933,7 @@ int main()
 					}
 					case '2':
 					{
-						std::cout << "Listar Transações dentro de um período\n";
+						std::cout << "Consultar todas as Transações efetuadas dentro de um Período\n";
 						std::cout << "\nInsira a Data de Início:\n";
 						Data dA = lerData();
 
@@ -1941,6 +1942,15 @@ int main()
 
 						lExaustTransacoesPeriodo(transacoes, quantTransacoes, dA, dB);
 				
+						break;
+					}
+					case '3':
+					{
+						std::cout << "Consultar todas as Transações já efetuadas\n";
+						Data dA = transacoes[indTransData[0].pos].data;
+						Data dB = transacoes[indTransData[quantTransacoes-1].pos].data;
+						lExaustTransacoesPeriodo(transacoes, quantTransacoes, dA, dB);
+
 						break;
 					}
 					case '4':
