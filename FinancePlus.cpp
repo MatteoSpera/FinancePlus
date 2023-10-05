@@ -1541,17 +1541,19 @@ int main()
 		organizarArquivoTransacoesData(transacoes, indTransData, quantTransacoes);
 	}
 	
+	//pega a data do sistema e passa para a struct data
 	time_t now = time(0);
     tm *agora = localtime(&now);
     Data hoje = Data{agora->tm_mday, 1+agora->tm_mon, 1900+agora->tm_year};
 
 	bool run = true;
-	bool constClear = false;
+	bool constClear = true; // define se a tela será limpa ao longo do programa
 	char op;
 
 	
 	while(run)
 	{
+		if (constClear) system("cls");
 		cout   << "\n\n|------------------------------------------|\n"
 					<< "|                "; printData(hoje); cout	<< "                |\n";
         cout   << "|------------------------------------------|\n"
@@ -1569,6 +1571,8 @@ int main()
 					<< "\n";
 
 		cin >> op;
+
+		if (constClear) system("cls");
         cout << "\nVocê escolheu ";
 
 		switch(toupper(op))
@@ -1584,6 +1588,7 @@ int main()
 
 				cin.ignore();
 				cin >> opCon;
+				if (constClear) system("cls");
 				cout << "\nVocê escolheu Consultar ";
 				switch(toupper(opCon))
         		{
