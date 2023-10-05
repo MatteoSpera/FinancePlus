@@ -2075,6 +2075,11 @@ int main()
 						inserirTransacao(transacoes, quantTransacoes, transacao, indTransId, indTransData);
 						std::cout << "\nTransação Efetuada com Sucesso! \n";
 						
+						double saldo = transacao.valor;
+						if(transacao.tipo == 'C') saldo *= -1;
+
+						contas[posContaById(idConta, contas, indContas, quantContas)].saldo = saldo;
+
 						break;
 					}
 				}
