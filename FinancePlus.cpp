@@ -2076,9 +2076,9 @@ int main()
 						std::cout << "\nTransação Efetuada com Sucesso! \n";
 						
 						double saldo = transacao.valor;
-						if(transacao.tipo == 'C') saldo *= -1;
+						if(transacao.tipo == 'D') saldo *= -1;
 
-						contas[posContaById(idConta, contas, indContas, quantContas)].saldo = saldo;
+						contas[posContaById(idConta, contas, indContas, quantContas)].saldo += saldo;
 
 						break;
 					}
