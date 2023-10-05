@@ -1965,7 +1965,7 @@ int main()
 				std::cout 	<< "Organizar Arquivos\n\n"
 							<< "ATENÇÃO!!!\n"
 							<< "Esta Operação irá excluir permanentemente todos os registros Inativos\n"
-							<< "de Categorias, Bancos, e Contas\n"
+							<< "de Categorias, Bancos, Contas e Transações\n"
 							<< "\nVocê Confirma a Reorganização dos Arquivos? \n (Insira [S] para confirmar)";
 				char conf = 0;
 				std::cin >> conf;
@@ -1975,6 +1975,8 @@ int main()
 					organizarArquivoCategorias(categorias, indCategorias, quantCategorias);
 					organizarArquivoContas(contas, indContas, quantContas);
 					organizarArquivoBancos(bancos, indBancos, quantBancos);
+					organizarArquivoTransacoesById(transacoes, indTransId, quantTransacoes);
+					organizarArquivoTransacoesData(transacoes, indTransData, quantTransacoes);
 					
 					std::cout << "\nArquivos Reorganizados com Sucesso! \n";
 					break;
