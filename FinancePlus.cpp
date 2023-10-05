@@ -1499,8 +1499,8 @@ int main()
 		categorias[1] = Categoria_Gasto{2, "Lazer", false};
 		categorias[2] = Categoria_Gasto{3, "Saúde", false};
 		categorias[3] = Categoria_Gasto{5, "Caridade", false};
-		categorias[4] = Categoria_Gasto{6, "Emergências", false};
-		categorias[5] = Categoria_Gasto{7, "Trabalho", false};
+		categorias[4] = Categoria_Gasto{6, "CriptoMoedas", false};
+		categorias[5] = Categoria_Gasto{7, "Renda Passiva", false};
 		categorias[6] = Categoria_Gasto{8, "Multas", true};
 		categorias[7] = Categoria_Gasto{9, "Bicos", true};
 		
@@ -1509,32 +1509,42 @@ int main()
 
 
 		bancos[0] = Banco{1, "SantoAndré", false};
-		bancos[1] = Banco{2, "Banco do Paraguai", true};
-		bancos[2] = Banco{3, "Recipiente", false};
+		bancos[1] = Banco{2, "Brolesco", false};
+		bancos[2] = Banco{3, "Eitaú", false};
 		bancos[3] = Banco{4, "VestidoBank", false};
-		bancos[4] = Banco{5, "Brolesco", false};
-		bancos[5] = Banco{6, "Jamerindus", true};
+		bancos[4] = Banco{5, "Sijoob", false};
+		bancos[5] = Banco{6, "Xinance", true};
+		bancos[6] = Banco{7, "Jamerindus", true};
 
-		quantBancos = 6;
+		quantBancos = 7;
 		criarIndiceBancos(bancos, indBancos, quantBancos);
 
 
-		contas[0] = Conta_Bancaria{1, 5, "Poupança do Seu Zé", 20000.0, false};
-		contas[1] = Conta_Bancaria{2, 3, "Conta do Marcão", 1800.0, false};
-		contas[2] = Conta_Bancaria{3, 4, "Conta do João", -1800.0, false};
-		contas[3] = Conta_Bancaria{4, 5, "Fundos da ONG IBP", 400, false};
-		contas[4] = Conta_Bancaria{5, 1, "Fundos da ONG JDA", 0, false};
-		contas[5] = Conta_Bancaria{6, 4, "Conta Laranja", 400, true};
-		contas[6] = Conta_Bancaria{7, 5, "Conta Fantasma", 400, true};
+		contas[0] = Conta_Bancaria{1, 5, "Poupança do Seu Zé", 20221.9, false};
+		contas[1] = Conta_Bancaria{2, 4, "Conta do Marcos", 1200.3, false};
+		contas[2] = Conta_Bancaria{3, 3, "Conta do João", -500.04, false};
+		contas[3] = Conta_Bancaria{4, 2, "Instituto Brasileiro de Nomes Longos", 139202.82, false};
+		contas[4] = Conta_Bancaria{5, 1, "ONG Patas Fofas", 2601.41, false};
+		contas[6] = Conta_Bancaria{6, 6, "Conta Laranja", 400, true};
+		contas[5] = Conta_Bancaria{7, 5, "Conta Fantasma", 0, true};
+		contas[7] = Conta_Bancaria{6, 6, "Carteira Cripto do Túlio", -20000, false};
 
-		quantContas = 6;
+		quantContas = 8;
 		criarIndiceContas(contas, indContas, quantContas);
 		
-		transacoes[0] = Transacao{1, 2, 1, Data{25, 9, 2023}, 50.50, 'D', false};
-		transacoes[1] = Transacao{2, 6, 2, Data{26, 9, 2023}, 2000, 'C', false};
-		transacoes[2] = Transacao{3, 3, 4, Data{29, 10, 2023}, 5000.00, 'C', false};
+		transacoes[0] = Transacao{1, 1, 1, Data{25, 9, 2023}, 30.2, 'D', false}; //Seu zé almoçou
+		transacoes[1] = Transacao{2, 1, 2, Data{25, 9, 2023}, 100, 'D', false};	//Depois foi no cinema com dona Jurema
+		transacoes[2] = Transacao{3, 1, 7, Data{27, 9, 2023}, 352.1, 'C', false}; //Recebeu Juros da poupança
 
-		quantTransacoes = 3;
+		transacoes[3] = Transacao{4, 2, 3, Data{30, 9, 2023}, 500.00, 'D', false}; //Marcos Foi ao dentista
+		transacoes[4] = Transacao{5, 2, 5, Data{2, 10, 2023}, 1000.00, 'D', false}; // doou para a ong de animais
+		transacoes[5] = Transacao{6, 5, 5, Data{2, 10, 2023}, 1000.00, 'C', false};	// ong de animais recebeu
+		
+		transacoes[6] = Transacao{7, 6, 6, Data{5, 10, 2023}, 20000, 'D', false}; //Túlio gastou a poupança da vida toda em dogecoin 
+																					//logo antes da corretora xinance quebrar
+		
+		quantTransacoes = 7;
+		
 		criarIndiceTransacoesById(transacoes, indTransId, quantTransacoes);
 		criarIndiceTransacoesData(transacoes, indTransData, quantTransacoes);
 		organizarArquivoTransacoesById(transacoes, indTransId, quantTransacoes);
