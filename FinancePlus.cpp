@@ -780,19 +780,7 @@ struct Conta_Bancaria
 	double saldo;
 	bool excluido;
 };
-void printConta(Conta_Bancaria conta)
-{
-	string status;
-	if (conta.excluido) status = "Cancelada";
-	else status = "Ativa";
 
-	cout 	<< "\n  ID: " << conta.id 
-				<< "\n  Cód Banco:" << conta.idBanco
-				<< "\n  Descrição: " << conta.descricao
-				<< "\n  Saldo: " << conta.saldo
-				<< "\n  Status: " << status
-				<< endl << endl; 
-}
 void printContacomBanco(Conta_Bancaria conta, Banco banco)
 {
 	string status;
@@ -805,23 +793,6 @@ void printContacomBanco(Conta_Bancaria conta, Banco banco)
 				<< "\n  Saldo: " << conta.saldo
 				<< "\n  Status: " << status
 				<< endl << endl; 
-}
-void lExaustContasById(Conta_Bancaria *contas, IndiceId *indice, int quant)
-{
-    cout   << "\n -----------------------------------"
-    		   	<< "\n        Contas - ID crescente       "
-    		   	<< "\n -----------------------------------";
-				
-     for(int i = 0; i < quant; i++) 
-     {
-        Conta_Bancaria conta = contas[indice[i].pos];
-        
-        printConta(conta);
-     }
-     cout  << " -----------------------------------\n"
-                << "             " << quant << " Registros            \n"
-                << " -----------------------------------\n";
-     
 }
 void lExaustContasByIdComBanco(Conta_Bancaria *contas, IndiceId *indice, int quant, Banco *bancos, IndiceId *indBancos, int quantBancos)
 {
@@ -1022,44 +993,7 @@ int inserirConta(Conta_Bancaria *contas, int &quant, Conta_Bancaria add, IndiceI
     quant++; //atualiza a quantidade de registros no fim
 	return 0;
 }
-int bscContaById(int id, Conta_Bancaria *contas, IndiceId *indice, int quant)
-//retorna 0 se achar, 1 se não, 2 se achar mas estiver excluído, 3 se o desenvolvedor for burro
-{
-	int i = 0, f = quant;
-	int cursor = (i + f) / 2;
 
-	for 
-        (;
-        f >= i; 
-        cursor= (i + f) / 2)
-    {
-		if (indice[cursor].id == id)
-        { 
-            
-            while (indice[cursor].id == id) 
-            {
-                if (!contas[indice[cursor].pos].excluido)
-                {
-                    Conta_Bancaria conta = contas[indice[cursor].pos];
-                    cout << "\nConta Encontrada\n"
-                            << conta.id << ", " << conta.descricao << endl;
-                            return 0;
-                }
-                cursor++;
-            }
-            
-            cout << "\nConta Não Encontrada. (Apenas registros Excluídos)\n\n";
-            return 2;
-        }
-        else if(indice[cursor].id > id) f = cursor-1;
-        else if(indice[cursor].id < id) i = cursor+1;
-		
-
-	}
-	cout << "\nConta Não Encontrada.\n\n";
-    return 1;
-
-}
 int posContaById(int id, Conta_Bancaria *contas, IndiceId *indice, int quant) //retorna a posição da conta na lista, retorna -1 se não achar.
 {
 	int i = 0, f = quant;
@@ -1161,34 +1095,6 @@ struct IndTransacaoByData
 	int pos;
 };
 
-void printTransacao(Transacao transacao)
-{
-	cout << fixed;
-    cout << setprecision(2);
-
-	char sinal;
-	if(transacao.tipo == 'D') sinal = '-';
-	else if(transacao.tipo == 'C') sinal = '+';
-	else 
-	{
-		cout << "\n A transação tem um tipo Inválido\n";
-		return;
-	}	
-
-	string status;
-	if (transacao.excluido) status = "Estornada";
-	else status = "Efetivada";
-
-	cout 
-	<< "\n ID: " << transacao.id 
-	<< "\n Categoria Nº " << transacao.idCategoria
-	<< "\n Conta Nº " << transacao.idConta
-	<< "\n Data: "; printData(transacao.data);
-	cout 
-	<< "\n Valor: R$ " << sinal << transacao.valor
-	<< "\n Status: " << status << endl << endl;
-	
-}
 void printTransacaoCompleta(Transacao transacao, Categoria_Gasto categoria, Conta_Bancaria conta, Banco banco)
 {
 	cout << fixed;
@@ -1461,45 +1367,6 @@ int inserirTransacao(Transacao *transacoes, int &quant, Transacao add, IndiceId 
 	return 0;
 }
 
-int bscTransacaoById(int id, Transacao *transacoes, IndiceId *indice, int quant)
-//retorna 0 se achar, 1 se não, 2 se achar mas estiver excluído, 3 se o desenvolvedor for burro
-{
-	int i = 0, f = quant;
-	int cursor = (i + f) / 2;
-
-	for 
-        (;
-        f >= i; 
-        cursor= (i + f) / 2)
-    {
-		if (indice[cursor].id == id)
-        { 
-            
-            
-            while (indice[cursor].id == id) 
-            {
-                if (!transacoes[indice[cursor].pos].excluido)
-                {
-                    Transacao transacao = transacoes[indice[cursor].pos];
-                    cout << "\nTransação Encontrada\n";
-                    printTransacao(transacao);
-                    return 0;
-                }
-                cursor++;
-            }
-            
-            cout << "\nTransação Não Encontrada. (Apenas registros Excluídos)\n\n";
-            return 2;
-        }
-        else if(indice[cursor].id > id) f = cursor-1;
-        else if(indice[cursor].id < id) i = cursor+1;
-		
-
-	}
-	cout << "\nTransação Não Encontrada.\n\n";
-    return 1;
-
-}
 int posTransacaoById(int id, Transacao *transacoes, IndiceId *indice, int quant) //retorna a posição da transação na lista, retorna -1 se não achar.
 {
 	int i = 0, f = quant;
@@ -1618,7 +1485,7 @@ int main()
 	int quantBancos;
 	bool testBanco = false;
 
-	const int MAXTRANSACOES = 200;
+	const int MAXTRANSACOES = MAX*10;
 	Transacao transacoes[MAXTRANSACOES];
 	IndTransacaoByData indTransData[MAX];
 	IndiceId indTransId[MAX];
@@ -1652,7 +1519,7 @@ int main()
 		criarIndiceBancos(bancos, indBancos, quantBancos);
 
 
-		contas[0] = Conta_Bancaria {1, 5, "Poupança do Seu Zé", 20000.0, false};
+		contas[0] = Conta_Bancaria{1, 5, "Poupança do Seu Zé", 20000.0, false};
 		contas[1] = Conta_Bancaria{2, 3, "Conta do Marcão", 1800.0, false};
 		contas[2] = Conta_Bancaria{3, 4, "Conta do João", -1800.0, false};
 		contas[3] = Conta_Bancaria{4, 5, "Fundos da ONG IBP", 400, false};
