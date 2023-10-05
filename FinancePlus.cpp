@@ -55,7 +55,7 @@ string dataToString(Data data)
 
 	return txt;
 }
-int comparaDatas(Data dA, Data dB) //se a > b, retorna 1, se a < b, retorna -1, se a == b, retorna 0
+int comparaDatas(Data dA, Data dB) //se a > b, retorna 1, se a < b, retorna -1, se a == b, retorna 0. Se algo der muito errado(hipotético) retorna -2
 {
     if (dA.ano > dB.ano) return 1;
 	else if (dA.ano < dB.ano) return -1;
@@ -70,7 +70,8 @@ int comparaDatas(Data dA, Data dB) //se a > b, retorna 1, se a < b, retorna -1, 
 			else return 0;
 		}
 	}
-    return NULL;
+	cout << "\nERRO NA FUNÇÃO COMPARADATAS, O PROGRAMADOR É MUITO BURRO\n";
+    return -2;
 }
 
 struct IndiceId
