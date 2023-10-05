@@ -1111,7 +1111,8 @@ int posTransacaoById(int id, Transacao *transacoes, IndiceId *indice, int quant)
 		{ 
 			while (indice[cursor].id == id) 
 			{
-				if (!transacoes[indice[cursor].pos].excluido) return indice[cursor].pos;
+				if (!transacoes[indice[cursor].pos].excluido) 
+				return indice[cursor].pos;
 				cursor++;
 			}
 			return -1;
@@ -1248,11 +1249,11 @@ int main()
 		
 
 		transacoes[0] = Transacao{1, 1, 1, Data{25, 9, 2023}, 30.2, 'D', false}; //Seu zé almoçou
-		transacoes[1] = Transacao{2, 1, 2, Data{25, 9, 2023}, 100, 'D', false};	//Depois foi no cinema com dona Jurema
-		transacoes[2] = Transacao{3, 1, 7, Data{27, 9, 2023}, 352.1, 'C', false}; //Recebeu Juros da poupança
+		transacoes[1] = Transacao{2, 2, 1, Data{25, 9, 2023}, 100, 'D', false};	//Depois foi no cinema com dona Jurema
+		transacoes[2] = Transacao{3, 7, 1, Data{27, 9, 2023}, 352.1, 'C', false}; //Recebeu Juros da poupança
 
-		transacoes[3] = Transacao{4, 2, 3, Data{30, 9, 2023}, 500.00, 'D', false}; //Marcos Foi ao dentista
-		transacoes[4] = Transacao{5, 2, 5, Data{2, 10, 2023}, 1000.00, 'D', false}; // doou para a ong de animais
+		transacoes[3] = Transacao{4, 3, 2, Data{30, 9, 2023}, 500.00, 'D', false}; //Marcos Foi ao dentista
+		transacoes[4] = Transacao{5, 5, 2, Data{2, 10, 2023}, 1000.00, 'D', false}; // doou para a ong de animais
 		transacoes[5] = Transacao{6, 5, 5, Data{2, 10, 2023}, 1000.00, 'C', false};	// ong de animais recebeu
 		
 		transacoes[6] = Transacao{7, 6, 6, Data{5, 10, 2023}, 20000, 'D', false}; 
@@ -1271,7 +1272,7 @@ int main()
 	Data hoje = Data{agora->tm_mday, 1+agora->tm_mon, 1900+agora->tm_year};
 
 	bool run = true;
-	bool constClear = true; // define se a tela será limpa ao longo do programa
+	bool constClear = false; // define se a tela será limpa ao longo do programa
 	char op;
 
 	while(run) {
@@ -1596,7 +1597,7 @@ int main()
 			int posTran = posTransacaoById(id, transacoes, indTransId, quantTransacoes);
 			if (posTran!= -1)
 			{
-				cout << "\nTransação não encontrada.\n";
+				cout << "\nTransação encontrada.\n";
 				Transacao transacao = transacoes[posTran];
 				Categoria categoria = categorias[posCategoriaById(transacao.idCategoria, categorias, indCategorias, quantCategorias)];
 				Conta conta = contas[posContaById(transacao.idConta, contas, indContas, quantContas)];
@@ -1689,7 +1690,12 @@ int main()
 			Banco banco = bancos[posBancoById(conta.idBanco, bancos, indBancos, quantBancos)];
 
 			printTransacaoCompleta(transacao, categoria, conta, banco);
-			excTransacaoById(id, transacoes, indTransId, quantTransacoes);
+			if(excTransacaoById(id, transacoes, indTransId, quantTransacoes) == 0)
+			{
+				double valor = transacao.valor;
+				if (transacao.tipo == 'C') valor *= -1;
+				contas[posContaById(transacao.idConta, contas, indContas, quantContas)].saldo += valor;
+			};
 			break;
 		}
 		default:
