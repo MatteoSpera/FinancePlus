@@ -849,6 +849,96 @@ void lExaustContasByIdComBanco(Conta_Bancaria *contas, IndiceId *indice, int qua
                 << " -----------------------------------\n";
      
 }
+void lstSaldos(Conta_Bancaria *contas, IndiceId *indice, int quant, Banco *bancos, IndiceId *indBancos, int quantBancos)
+{
+	std::cout   << "\n |-------------------------------------------|"
+    		   	<< "\n |               Listando Saldos             |"
+    		   	<< "\n |-------------------------------------------|"
+                << "\n | Conta |        Banco       |     Saldo    |"
+				//	   |  000  | Banco blablablabla | 99999999.99  |
+                << "\n |-------------------------------------------|\n";
+	int cont = 0;
+	double saldoTotal;
+	for(int i = 0; i < quant; i++) 
+	{
+		Conta_Bancaria conta = contas[indice[i].pos];
+		if( !conta.excluido)
+		{
+			std::cout << std::fixed;
+			std::cout << std::setprecision(2);
+
+			Banco banco;
+			int posBanco = posBancoById(conta.idBanco, bancos, indBancos, quantBancos);
+			if(posBanco >= 0) banco = bancos[posBanco];
+			else (banco = Banco{0, "???", false});
+
+			std::string descBanco = banco.descricao;
+			if(descBanco.size() > 18) 
+			{
+				descBanco.resize(17, ' ');
+				descBanco.append(".");
+			}
+			else descBanco.resize(18, ' ');
+			
+			int contZero;
+			int digitos;
+
+		
+			std::string id = "";
+			digitos = 0;
+			int auxConta = conta.id;
+			while (auxConta > 0)
+			{
+				digitos++;
+				auxConta/=10;
+			}
+			contZero = 3 - digitos;
+			while (contZero > 0)
+			{
+				id.append("0");
+				contZero--;
+			}
+			id += (std::to_string(conta.id));
+			
+
+
+			std::ostringstream streamSaldo; 
+			streamSaldo << std::fixed << std::setprecision(2) << conta.saldo;
+			std::string saldo = "";
+			if(conta.saldo > 0) saldo += '+';
+			else if(conta.saldo == 0) saldo += ' ';
+			digitos = 0;
+			int auxSaldo = (int)conta.saldo;
+			if (auxSaldo < 0) auxSaldo *= -1;
+			if (auxSaldo == 0) auxSaldo = 1;
+			while (auxSaldo > 0)
+			{
+				digitos++;
+				auxSaldo/=10;
+			}
+			contZero = 7 - digitos;
+			
+			saldo += streamSaldo.str();
+			while (contZero >= 1)
+			{
+				saldo.append(" ");
+				contZero--;
+			}
+
+			std::cout   << " |  " << id << "  | " << descBanco <<  " | " << saldo << "  |\n";
+
+			saldoTotal += conta.saldo;
+			cont++;
+		}
+     }
+	std::cout  	<< " |-------------------------------------------|\n"
+				<< " |                " << cont << " Registros                |\n"
+				<< " |-------------------------------------------|\n"
+				<< " | Saldo Final: " << saldoTotal << std::endl
+				<< " |-------------------------------------------|\n";
+
+     
+}
 void criarIndiceContas(Conta_Bancaria *contas, IndiceId *indice, int quant) 
 {
     for (int i = 0; i < quant; i++)
@@ -1584,12 +1674,13 @@ int main()
 		criarIndiceBancos(bancos, indBancos, quantBancos);
 
 
-		contas[0] = Conta_Bancaria {1, 3, "Poupança do Seu Zé", 20000.0, false};
+		contas[0] = Conta_Bancaria {1, 5, "Poupança do Seu Zé", 20000.0, false};
 		contas[1] = Conta_Bancaria{2, 3, "Conta do Marcão", 1800.0, false};
-		contas[2] = Conta_Bancaria{3, 3, "Conta do João", -1800.0, false};
+		contas[2] = Conta_Bancaria{3, 4, "Conta do João", -1800.0, false};
 		contas[3] = Conta_Bancaria{4, 5, "Fundos da ONG IBP", 400, false};
-		contas[4] = Conta_Bancaria{5, 4, "Conta Laranja", 400, true};
-		contas[5] = Conta_Bancaria{7, 5, "Conta Fantasma", 400, true};
+		contas[4] = Conta_Bancaria{5, 1, "Fundos da ONG JDA", 0, false};
+		contas[5] = Conta_Bancaria{6, 4, "Conta Laranja", 400, true};
+		contas[6] = Conta_Bancaria{7, 5, "Conta Fantasma", 400, true};
 
 		quantContas = 6;
 		criarIndiceContas(contas, indContas, quantContas);
@@ -1628,6 +1719,7 @@ int main()
                     << "D - Excluir Itens\n"
 					<< "E - Organizar Arquivos\n"
 					<< "F - Manipular Transações\n"
+					<< "G - Listar Saldos de todas as contas\n"
                     << "X - Sair do programa\n"
 					<< "\n";
 
@@ -1988,7 +2080,13 @@ int main()
 				}
 				break;
 			}
-            case 'X':
+            case 'G':
+			{
+				std::cout 	<< "Listar Saldos de todas as contas\n\n";
+				lstSaldos(contas, indContas, quantContas, bancos, indBancos, quantBancos);
+				break;
+			}
+			case 'X':
 			{
 				std::cout << "Sair do Programa. Encerrando...\n\n";
 				run = false;
