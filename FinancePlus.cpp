@@ -1568,8 +1568,7 @@ int excTransacaoById(int id, Transacao *transacoes, IndiceId *indice, int &quant
                     int pos = indice[cursor].pos;
                     Transacao transacao = transacoes[pos];
 
-                    std::cout << "\nTransação Encontrada\n";
-                    printTransacao(transacao);
+                    
                     std::cout << "\nVocê Confirma a Exclusão deste Registro? \n (Insira [S] para confirmar)";
 
                     char conf = 0;
@@ -1578,7 +1577,7 @@ int excTransacaoById(int id, Transacao *transacoes, IndiceId *indice, int &quant
                     {
 
                         transacoes[pos].excluido = true;
-                        std::cout << "\nRegistro Excluído com sucesso.\n";
+                        std::cout << "\nTransação Estornada com sucesso.\n";
                         quant--;
                         return 0;
                     }
@@ -1687,7 +1686,7 @@ int main()
 		
 		transacoes[0] = Transacao{1, 2, 1, Data{25, 9, 2023}, 50.50, 'D', false};
 		transacoes[1] = Transacao{2, 6, 2, Data{26, 9, 2023}, 2000, 'C', false};
-		transacoes[2] = Transacao{3, 4, 4, Data{29, 10, 2023}, 5000.00, 'C', false};
+		transacoes[2] = Transacao{3, 3, 4, Data{29, 10, 2023}, 5000.00, 'C', false};
 
 		quantTransacoes = 3;
 		criarIndiceTransacoesById(transacoes, indTransId, quantTransacoes);
@@ -1994,6 +1993,7 @@ int main()
 				<< "2 - Consultar todas as Transações efetuadas dentro de um Período\n"
 				<< "3 - Consultar todas as Transações já efetuadas\n"
 				<< "4 - Efetuar uma Nova Transação\n"
+				<< "5 - Estornar uma Transação\n"
 				<< "\n";
 
 				char opTran;
@@ -2080,6 +2080,30 @@ int main()
 
 						contas[posContaById(idConta, contas, indContas, quantContas)].saldo = saldo;
 
+						break;
+					}
+					case '5':
+					{
+						std::cout << "Estornar uma Transação\n";
+						std::cout << "\nInsira o ID da Transação que deseja Excluir: ";
+						int id;
+						std::cin.ignore();
+						std::cin >> id;
+						while(posTransacaoById(id, transacoes, indTransId, quantTransacoes) == -1)
+						{
+							std::cout << "\nCódigo Inválido, Insira Outro: ";
+							std::cin >> id;
+						}
+						Transacao transacao = transacoes[posTransacaoById(id, transacoes, indTransId, quantTransacoes)];
+						
+						std::cout << "\nTransacao Encontrada\n";
+						
+						Categoria_Gasto categoria = categorias[posCategoriaById(transacao.idCategoria, categorias, indCategorias, quantCategorias)];
+						Conta_Bancaria conta = contas[posContaById(transacao.idConta, contas, indContas, quantContas)];
+						Banco banco = bancos[posBancoById(conta.idBanco, bancos, indBancos, quantBancos)];
+
+						printTransacaoCompleta(transacao, categoria, conta, banco);
+						excTransacaoById(id, transacoes, indTransId, quantTransacoes);
 						break;
 					}
 				}
