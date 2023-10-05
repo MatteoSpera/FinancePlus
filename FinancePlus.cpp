@@ -313,18 +313,18 @@ void printCategoria(Categoria_Gasto categoria)
 }
 void lExaustCategoriasById(Categoria_Gasto *categorias, IndiceId *indice, int quant)
 {
-    cout   << "\n |-----------------------------|"
-    		   	<< "\n |  Categorias - ID crescente  |"
-    		   	<< "\n |-----------------------------|"
-                << "\n |  ID   | Descrição | Status  |"
-                << "\n |-----------------------------|\n";
+    cout   << "\n |------------------------------|"
+    		   	<< "\n |  Categorias - ID crescente   |"
+    		   	<< "\n |------------------------------|"
+                << "\n |  ID   | Descrição | Status   |"
+                << "\n |------------------------------|\n";
      for(int i = 0; i < quant; i++) 
      {
         Categoria_Gasto categoria = categorias[indice[i].pos];
         
         string status;
-        if (!categoria.excluido) status = "Ativo  ";
-        if (categoria.excluido) status = "Inativo";
+        if (!categoria.excluido) status = "Ativa   ";
+        if (categoria.excluido) status = "Excluída";
 
         string descricao = categoria.descricao;
         if(descricao.size() > 8) 
@@ -335,9 +335,9 @@ void lExaustCategoriasById(Categoria_Gasto *categorias, IndiceId *indice, int qu
         else descricao.resize(8, ' ');
         cout   << " | "<< categoria.id <<"\t | "<< descricao <<"  | "<< status <<" |\n";
      }
-     cout  << " |-----------------------------|\n"
-                << " | " << quant << " Registros                 |\n"
-                << " |-----------------------------|\n";
+     cout  << " |------------------------------|\n"
+                << " | " << quant << " Registros                  |\n"
+                << " |------------------------------|\n";
      
 }
 void criarIndiceCategorias(Categoria_Gasto *categorias, IndiceId *indice, int quant) 
@@ -547,18 +547,18 @@ void printBanco(Banco banco)
 }
 void lExaustBancosById(Banco *bancos, IndiceId *indice, int quant)
 {
-    cout   << "\n |-----------------------------------|"
-    		   	<< "\n |       Bancos - ID crescente       |"
-    		   	<< "\n |-----------------------------------|"
-                << "\n |  ID   |    Descrição    | Status  |"
-                << "\n |-----------------------------------|\n";
+    cout   << "\n |------------------------------------|"
+    		   	<< "\n |        Bancos - ID crescente       |"
+    		   	<< "\n |------------------------------------|"
+                << "\n |  ID   |    Descrição    | Status   |"
+                << "\n |------------------------------------|\n";
      for(int i = 0; i < quant; i++) 
      {
         Banco banco = bancos[indice[i].pos];
         
         string status;
-        if (!banco.excluido) status = "Ativo  ";
-        if (banco.excluido) status = "Inativo";
+        if (!banco.excluido) status = "Ativo   ";
+        if (banco.excluido) status = "Quebrado";
 
         string descricao = banco.descricao;
         if(descricao.size() > 14) 
@@ -569,9 +569,9 @@ void lExaustBancosById(Banco *bancos, IndiceId *indice, int quant)
         else descricao.resize(14, ' ');
         cout   << " | "<< banco.id <<"\t | "<< descricao <<"  | "<< status <<" |\n";
      }
-     cout  << " |-----------------------------------|\n"
-                << " |            " << quant << " Registros            |\n"
-                << " |-----------------------------------|\n";
+     cout  << " |------------------------------------|\n"
+                << " |            " << quant << " Registros             |\n"
+                << " |------------------------------------|\n";
      
 }
 void criarIndiceBancos(Banco *bancos, IndiceId *indice, int quant) 
@@ -1574,7 +1574,7 @@ int main()
                     << "B - Listar Itens\n"
                     << "C - Inserir novos Itens\n"
                     << "D - Excluir Itens\n"
-					<< "E - Organizar Arquivos\n"
+					<< "E - Reorganizar Arquivos\n"
 					<< "F - Manipular Transações\n"
 					<< "G - Listar Saldos de todas as contas\n"
                     << "X - Sair do programa\n"
@@ -1823,7 +1823,7 @@ int main()
 			}
 			case 'E':
 			{
-				cout 	<< "Organizar Arquivos\n\n"
+				cout 	<< "Reorganizar Arquivos\n\n"
 							<< "ATENÇÃO!!!\n"
 							<< "Esta Operação irá excluir permanentemente todos os registros Inativos\n"
 							<< "de Categorias, Bancos, Contas e Transações\n"
