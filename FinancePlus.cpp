@@ -1305,6 +1305,7 @@ int main()
 	cout << "\nVocê escolheu ";
 
 	switch(toupper(op)) {	
+	case '1':
 	case 'A':
 	{
 		char opCon;
@@ -1364,6 +1365,7 @@ int main()
 
 		break;
 	}
+	case '2':
 	case 'B':
 	{
 		char opLst;
@@ -1403,6 +1405,7 @@ int main()
 		}
 		break;
 	}
+	case '3':
 	case 'C':
 	{
 		char opIns;
@@ -1480,6 +1483,7 @@ int main()
 		
 		break;
 	}
+	case '4':
 	case 'D':
 	{
 		char opExc;
@@ -1540,6 +1544,7 @@ int main()
 		}
 		break;
 	}
+	case '5':
 	case 'E':
 	{
 		cout 	
@@ -1569,6 +1574,7 @@ int main()
 		}
 		break;
 	}
+	case '6':
 	case 'F':
 	{
 		cout 
@@ -1705,12 +1711,14 @@ int main()
 		
 		break;
 	}
+	case '7':
 	case 'G':
 	{
 		cout 	<< "Listar Saldos de todas as contas\n\n";
 		lstSaldos(contas, indContas, quantContas, bancos, indBancos, quantBancos);
 		break;
 	}
+	case '0':
 	case 'X':
 	{
 		cout << "Sair do Programa. Encerrando...\n\n";
