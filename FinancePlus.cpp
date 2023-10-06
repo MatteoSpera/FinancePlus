@@ -1423,9 +1423,14 @@ int main()
 		case '1':
 		{	
 			cout << "uma Categoria";
-			int newId = 1;
-			// procura um Id que esteja Livre para inserir nova Categoria
-			while(posCategoriaById(newId, categorias, indCategorias, quantCategorias) != -1) newId++;
+			int newId;
+			cout << "\nInsira o Código da Categoria: ";
+			cin >> newId;
+			while(posCategoriaById(newId, categorias, indCategorias, quantCategorias) != -1)
+			{
+				cout << "\nCódigo Inválido, Insira Outro: ";
+				cin >> newId;
+			}
 			Categoria categoria{newId, "", false};
 			categoria = lerCategoria(categoria);
 			if(inserirCategoria(categorias, quantCategorias, categoria, indCategorias) == 0)
@@ -1435,8 +1440,14 @@ int main()
 		case '2':
 		{
 			cout << "um Banco";
-			int newId = 1;
-			while(posBancoById(newId, bancos, indBancos, quantBancos) != -1) newId++;
+			int newId;
+			cout << "\nInsira o Código do Banco: ";
+			cin >> newId;
+			while(posBancoById(newId, bancos, indBancos, quantBancos) != -1)
+			{
+				cout << "\nCódigo Inválido, Insira Outro: ";
+				cin >> newId;
+			}
 			Banco banco{newId, "", false};
 			banco = lerBanco(banco);
 			inserirBanco(bancos, quantBancos, banco, indBancos);
@@ -1446,9 +1457,13 @@ int main()
 		case '3':
 		{
 			cout << "uma Conta";
-			int newId = 1;
-			while(posContaById(newId, contas, indContas, quantContas) != -1) newId++;
-			
+			int newId;
+			cout << "\nInsira o Código do Banco: ";
+			while(posContaById(newId, contas, indContas, quantContas) != -1)
+			{
+				cout << "\nCódigo Inválido, Insira Outro: ";
+				cin >> newId;
+			}
 			int codBanco = 0;
 			cout << "\nInsira o Código do Banco: ";
 			cin >> codBanco;
